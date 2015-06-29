@@ -1,0 +1,20 @@
+---
+title: "Model Set-up"
+author: "Lyndon Estes"
+date: "05 February 2015"
+output: html_document
+---
+
+## Notes on setting up tradeoffMod
+
+Installing the model. 
+
+The model uses functions from a custom library `lmisc`. To install it use the following commands. 
+
+```{r}
+if(!"devtools" %in% installed.packages()) install.packages("devtools")
+require(devtools)
+install_github("PrincetonUniversity/lmisc")
+require(lmisc)
+```
+

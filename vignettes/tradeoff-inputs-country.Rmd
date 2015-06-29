@@ -1,0 +1,403 @@
+---
+title: "Developing country-scale inputs for tradeoff analysis"
+author: "Lyndon Estes"
+date: "16 January 2015"
+output: 
+  html_document:
+    highlight: tango
+    theme: spacelab
+    toc: yes 
+---
+
+### Steps
+
+1. Downscale to continent level datasets to level of different countries. Notes:
++ For the first round of doing this to redevelop tradeoff model, I am going to start with the 10 km resolution for faster development.  
++ The code below can be modified so that inputs at any scale can be created. E.g. for whole Africa inputs, or all GS, then a code can be specified to select the data for a specific region, such as Guinea savanna range countries, or a specific country. 
+
+```{r}
+library(raster)
+library(rgdal)
+library(lmisc)
+library(tradeoffMod)
+p_proj <- set_base_path()
+p_dat <- full_path(p_proj, "external/ext_data")
+```
+
+
+```{r}
+# This will be done in lapply if more than one country is being assessed
+cnames <- "ZA"  # "GSR" could be added to specify data for all range states
+load("data/cropnames.rda")  # load cropnames 
+# (note: we might have to redo selection for each country)
+load("data/crop-prod-table.rda")  # save the currently used crop names in data folder
+cntr_l <- lapply(cnames, function(x) {
+  cntr <- raster(paste0("external/ext_data/", x, "-grid.tif"))  # 
+})
+names(cntr_l) <- cnames
+af <- readOGR(dsn = "external/ext_data/africa_countries_alb.sqlite", 
+              layer = "africa_countries_alb")
+afgcs <- readOGR(dsn = "external/ext_data/africa_noislands.sqlite", 
+                 layer = "africa_noislands")
+
+```
+
+```{r, eval = FALSE}
+# Crops
+# current production
+lapply(cnames, function(x) {
+  fname <- full_path("external/ext_data/", paste0(x, "-current-production.tif"))
+  b <- mask(crop(brick("external/ext_data/current-production.tif"), cntr_l[[x]]), 
+            af[af$fips_cntry == x,  ])
+  writeRaster(b, filename = fname, overwrite = TRUE)
+})
+
+# potential yield
+lapply(cnames, function(x) {
+  fname <- full_path("external/ext_data/", paste0(x, "-potential-yields.tif"))
+  b <- mask(crop(brick("external/ext_data/potential-yields.tif"), cntr_l[[x]]), 
+            af[af$fips_cntry == x,  ])
+  writeRaster(b, filename = fname)
+})
+
+# potential production, current area
+lapply(cnames, function(x) {
+  fname <- full_path("external/ext_data/", 
+                     paste0(x, "-potential-production-current-area.tif")
+  b <- mask(crop(brick("external/ext_data/potential-production-current-area.tif"), 
+                 cntr_l[[x]]), af[af$fips_cntry == x,  ])
+  writeRaster(b, filename = fname)
+})
+
+# unfarmed area
+lapply(cnames, function(x) {
+  fname <- full_path("external/ext_data/", paste(x, "-unfarmed.tif", sep = ""))
+  b <- mask(crop(brick("external/ext_data/unfarmed.tif"), cntr_l[[x]]), 
+            af[af$fips_cntry == x,  ])
+  writeRaster(b, filename = fname)
+})
+
+# Carbon
+lapply(cnames, function(x) {
+  fname <- full_path("external/ext_data/", paste(x, "-carbon.tif", sep = ""))
+  b <- mask(crop(brick("external/ext_data/carbon.tif"), cntr_l[[x]]), 
+            af[af$fips_cntry == x,  ])
+  writeRaster(b, filename = fname, overwrite = TRUE)
+})
+carbon_cnt <- lapply(cnames, function(x) {
+  fname <- full_path("external/ext_data/", paste(x, "-carbon.tif", sep = ""))
+  brick(fname)
+})
+
+# Carbon prob
+lapply(1:length(cnames), function(x) {
+  nm <- cnames[x]
+  fname <- full_path("external/ext_data/", paste0(nm, "-carbon-priorities.tif"))
+  carb <- carbon_cnt[[x]][[3]]
+  r <- 1 - (carb - cellStats(carb, min)) / diff(cellStats(carb, range)) 
+  writeRaster(r, filename = fname, overwrite = TRUE)
+})
+
+# Biodiversity
+af_pas_r <- raster("external/ext_data/af-pas-10km.tif")
+af_mamdiv <- raster("external/ext_data/af_mammal_div.tif")
+af_nat_areas10 <- raster("external/ext_data/af-natural-cover-10km.tif")
+
+lapply(1:length(cnames), function(x) {
+  pas <- mask(crop(af_pas_r, cntr_l[[x]]), af[af$fips_cntry == cnames[x],  ], 
+              filename = paste0("external/ext_data/", cnames[x], 
+                                "-pas-10km.tif"))
+  mam <- mask(crop(af_mamdiv, cntr_l[[x]]), af[af$fips_cntry == cnames[x],  ], 
+              filename = paste0("external/ext_data/", cnames[x], 
+                                "-mammal-div.tif"))
+  nat <- mask(crop(af_nat_areas10, cntr_l[[x]]), 
+              af[af$fips_cntry == cnames[x],  ], 
+              filename = paste0("external/ext_data/", cnames[x], 
+                                "-natural-cover-10km.tif"))
+})
+
+lapply(cnames, function(x) {
+  pas <- raster(paste0("external/ext_data/", cnames[x], "-pas-10km.tif"))
+  mam <- raster(paste0("external/ext_data/", cnames[x], "-mammal-div.tif"))
+  nat <- raster(paste0("external/ext_data/", cnames[x], 
+                       "-natural-cover-10km.tif"))
+  a <- pawt   # From before Here is where weights applied to PAs can be changed  
+  b <- cellStats(pas, range)
+  pawts <- coef(lm(a ~ b))
+  pas_p <- pawts[1] + pas * pawts[2]  # Reweight grid
+  bdmask <- is.na(pas_p)  # Make a mask of PAs for the BD layer 
+  bd_p <- 1 - (mam - cellStats(mam, min)) / diff(cellStats(mam, range))  # inverse BD prob
+  nat_p <- 1 - (nat - cellStats(nat, min)) / diff(cellStats(nat, range))
+  bd_inpas <- bd_p * pas_p / pas_p  # BD in PAs
+  pas_p[is.na(pas_p)] <- 0  # NAs to 0
+  fname <- full_path("external/ext_data/",
+                     paste(x, "-cons-priorities.tif", sep = ""))
+  natbd <- (nat_p + bd_p) / 2 * bdmask + pas_p
+  writeRaster(natbd, filename = fname, overwrite = TRUE)
+})
+
+# cost (setting up dummy here for now) - we will have to do a country-specific one here
+# lapply(cnames, function(x) {
+#   r <- raster(full_path(p_dat, paste(x, "-cons-priorities.tif", sep = "")))
+#   fname <- full_path("external/ext_data/", paste(x, "-cost.tif", sep = ""))
+#   writeRaster(r >= 0, fname)
+# })
+
+# new cost variable: Tim Thomas' cost distance surface for Zambia, travel time to nearest town of 100 K
+zam100k <- raster("../../Data/Zambia/cost_distance/IFPRI/zambia_100k/zambia_100k/w001001.adf")
+sinu <- "+proj=sinu +lon_0=20 +x_0=0 +y_0=0 +a=6371007.181 +b=6371007.181 +units=m +no_defs"
+projection(zam100k) <- sinu
+fact <- res(raster("external/ext_data/ZA-mask.tif"))[1] %/% res(zam100k)[1]
+zam100kagg <- aggregate(zam100k, fact = fact)
+zcost <- projectRaster(zam100kagg, raster("external/ext_data/ZA-mask.tif"))
+zcostp <- 1 - (zcost - cellStats(zcost, min)) / diff(cellStats(zcost, range))  # inverse BD prob
+mask(zcostp, raster("external/ext_data/ZA-mask.tif"), maskvalue = 0, 
+     filename = "external/ext_data/ZA-cost.tif", overwrite = TRUE)
+```
+Here's a plot of the biodiversity data. Might need to redo to check that low priority patch in the western end.
+```{r}
+cons_p_cnt <- lapply(cnames, function(x) {
+  raster(full_path(p_dat, paste(x, "-cons-priorities.tif", sep = "")))
+})
+plot(cons_p_cnt[[1]])
+```
+
+Here's a plot of the cost surface, converted to 0-1.
+```{r}
+cost_p_cnt <- lapply(cnames, function(x) {
+  raster(full_path(p_dat, paste0(x, "-cost.tif")))
+})
+plot(cost_p_cnt[[1]])
+```
+
+2. Now that we have those datasets, let's figure out how to do the cropland share. First create some necessary inputs regarding cropland area, standardized potential yields and cropland area for the country in question
+```{r, eval = FALSE}
+# Production areas
+lapply(cnames, function(x) {
+ fname <- full_path("external/ext_data/", paste(x, "-crop-areas.tif", sep = ""))
+ b <- mask(crop(brick("external/ext_data/cropareas-af-p.tif"), cntr_l[[x]]), af[af$fips_cntry == x,  ])
+ writeRaster(b, filename = fname)
+})
+
+# Standardized potential yields are also the probability of conversion
+potylds_cnt <- lapply(cnames, function(x) {
+ fname <- full_path("external/ext_data/", paste(x, "-potential-yields.tif", sep = ""))
+ brick(fname)
+})
+lapply(1:length(cnames), function(x) {
+ nm <- cnames[x]
+ r <- potylds_cnt[[x]]
+ l <- lapply(1:nlayers(r), function(y) (r[[y]] - cellStats(r[[y]], min)) / diff(cellStats(r[[y]], range)))
+ brick(stack(l), filename = full_path("external/ext_data/", paste(nm, "-potential-yields-std.tif", sep = "")))
+})
+
+```
+Make a few plots of these 
+```{r}
+# First read in relevant grids
+currprod_cnt <- lapply("ZA", function(x) {
+ fname <- full_path(p_dat, paste(x, "-current-production.tif", sep = ""))
+ b <- brick(fname)
+ names(b) <- cropnames
+ b
+})
+cropareas_cnt <- lapply(cnames, function(x) {
+ fname <- full_path(p_dat, paste(x, "-crop-areas.tif", sep = ""))
+ b <- brick(fname)
+ names(b) <- cropnames
+ b
+})
+#names(cropareas_cnt[[1]]) <- cropnames
+potylds_cnt_std <- lapply(cnames, function(x) {
+ fname <- full_path(p_dat, paste(x, "-potential-yields-std.tif", sep = ""))
+ b <- brick(fname)
+ names(b) <- cropnames
+ b
+})
+unfarmed_cnt <- lapply(cnames, function(x) {
+ fname <- full_path(p_dat, paste(x, "-unfarmed.tif", sep = ""))
+ r <- raster(fname)
+ names(r) <- x
+ r
+})
+
+par(mfrow = c(2, 2), height = 700, width = 700, mar = c(1, 2, 1, 3), oma = c(0, 0, 0, 1))
+plot(currprod_cnt[[1]][[1]], main = "maize area", axes = FALSE, box = FALSE)
+plot(cropareas_cnt[[1]][[1]], main = "maize yield, current", axes = FALSE, box = FALSE)
+plot(potylds_cnt_std[[1]][[1]], main = "maize yield, standardized potential", axes = FALSE, box = FALSE)
+plot(unfarmed_cnt[[1]], main = "unfarmed land", axes = FALSE, box = FALSE)
+```
+
+Figure out some values based on country-level statistics also: each crop's proportion of total planted area and total production in the country. That is an entryway to figuring out some sort of share based on suitability. 
+```{r}
+# Select data from production table
+crop_prod_sel <- crop_prod_tab[sapply(cropnames, function(x) {
+  grep(x, crop_prod_tab$crop, ignore.case = TRUE)
+}), ]
+crop_prod_sel$seas <- ifelse(crop_prod_sel$crop == "Wheat", 2, 1)  # 1 for summer crops, 2 for winter
+crop_sel_tab <- crop_prod_sel[, c(1, 4:5, 11)]
+crop_sel_tab$crop <- cropnames
+```
+
+Next, some principles for determining pixel sharing:  
+1. A winter crop like wheat can go in rotation with summer crops, so it can use 100% of a pixel as can any single summer crop. 
+
+2. Sharing pixels between crops on the same calendar. 
++ Share of crop in pixel should be determined by its potential productivity, and its planted area, given the following rules:
+     + For any pixel, the crop having the highest potential (standardized) productivity will be given the maximum share of cropland. 
+     + The remaining crops will be allocated the remaining area in proportion to how much area they should normally occupy in that area. 
+     + The area each crop normally occupies is determined as the maximum of these two values: 
+          i. The share of total area each has historically occupied in the country
+          ii. Each crop's share of currently occupied cropland
+     + This allows for some spatial correlation to be factored into cropland expansion (provided it is kriged a bit), in that areas near areas that have historically been farmed for that crop are more likely to be farmed for that crop in the future given the infrastructure and/or other socio-economic factors that lead a particular crop to be planted in a particular area.
++ Allocations can be altered as a function of demand growth. E.g. if the growth in demand for soybean is higher than the growth in demand for maize, then the area allocated to maize can be reduced by some proportion. 
+
+3. Ultimately, an optimization function should be used to minimize the total area planted across all crops while hitting their necessary targets, after other land-use constraints are applied (e.g. carbon minimization).  
+
+4. A scaling function will also be needed, such that as the resolution of analysis increases, the share of a crop in any given pixel should expand such that a pixel may be dominated by the few most dominant crops.
+
+First step in this. Create a brick that has the starting cropland shares across all crops.  
+```{r, eval = FALSE}
+# Start with a few small helper functions
+which_max_fun <- function(x, na.rm = na.rm) {
+  if(any(!is.na(x))) {
+    o <- which(x == max(x, na.rm = na.rm))[1]
+  } else {
+    o <- NA
+  }
+  as.integer(o)
+}
+max_fun <- function(x, na.rm = na.rm) {
+  if(all(is.na(x))) {
+    o <- NA
+  } else {
+    o <- max(x, na.rm = na.rm)
+  }
+  o
+}
+
+seas_max <- 0.5  # sets up the maximum share of cropland that any crop can have in a given pixel
+lapply(1:length(cnames), function(x) {
+  nm <- cnames[x]
+  area_props <- ifelse(crop_prod_sel$seas == 1, crop_prod_sel$area_prop * 1.2, seas_max)
+  area_props_sameseas <- area_props[crop_prod_sel$seas == 1]
+  ta <- calc(cropareas_cnt[[x]], sum)
+  prop <- cropareas_cnt[[x]] / ta  # convert planted areas to local proportion of total crop area
+  prop <- stack(sapply(1:nlayers(prop), function(x) {
+   r <- prop[[x]]
+   r[is.na(r)] <- 0
+   r[(r > seas_max)] <- seas_max
+   r
+  }))  # st max in any area to seas_max, to prevent
+  names(prop) <- crop_sel_tab$crop
+  potyld_sameseas <- potylds_cnt_std[[x]]  # potential yields for crops growing in the same season
+  potmax <- calc(potyld_sameseas, fun = which_max_fun, na.rm = TRUE)  # which crop highest yield pot
+  potmax_bin <- stack(sapply(1:nlayers(potyld_sameseas), function(x) potmax == x))  # as binary stack
+  areas <- stack(sapply(1:nlayers(prop), function(y) {
+     r <- prop[[y]]
+     r[!is.na(r)] <- crop_sel_tab$area_prop[y]
+     s <- stack(r, prop[[y]])
+     o <- calc(s, fun = max_fun, na.rm = TRUE)
+  }))  # calculate maximum area for each crop, as function of 
+  names(areas) <- crop_sel_tab$crop
+  areamax <- calc(areas, fun = which_max_fun, na.rm = TRUE)  # which crop highest yield pot
+  areamax_bin <- stack(sapply(1:nlayers(areas), function(x) areamax == x))
+  
+  # Assign area share
+  out_areas <- stack(sapply(1:nlayers(areas), function(x) {
+    both  <- ((potmax_bin[[x]] == 1) & (areamax_bin[[x]] == 1)) * seas_max  # max yield & area = seas_max
+    amax <- ((potmax_bin[[x]] == 0) & (areamax_bin[[x]] == 1)) * areas[[x]]  # max area = areas
+    ymax <- ((potmax_bin[[x]] == 1) & (areamax_bin[[x]] == 0)) * areas[[x]]  # max yield only = areas
+    none <- ((potmax_bin[[x]] == 0) & (areamax_bin[[x]] == 0)) * area_props[x]  # max area = areas
+    out <- both + amax + ymax + none
+  }))
+  out_areas <- out_areas * unfarmed_cnt[[x]]  # reduce fractions by amount of available unfarmed land
+  #plot(calc(out_areas[[1:8]], sum))
+  names(out_areas) <- names(areas)
+  # Segregate out same season crops from off-season crops
+  sameseas <- which(crop_prod_sel$seas == 1)  # indices
+  offseas <- which(crop_prod_sel$seas == 2)  # indices
+  ta <- calc(out_areas[[sameseas]], sum) # total proportion of area under same season crops
+  out_areas_r <- stack(sapply(sameseas, function(x) {
+    r <- out_areas[[x]]
+    ro <- (r / ta)
+  }))
+  out_stack <- stack(out_areas_r, out_areas[[offseas]])  # combine standardized same season with off-season
+  names(out_stack) <- c(names(areas[[sameseas]]), names(areas[[offseas]]))
+  fname <- full_path("external/ext_data/", paste(nm, "-crop-convert-fractions-base.tif", sep = ""))
+  brick(out_stack, filename = fname, overwrite = TRUE)  # write out the base fractions
+})
+```
+That provides the default cropland shares for all crops (same season and off-season), based on the current rules, with same season crops' areas standardized to 1. The code above does the following: 
+
++ Define a base share for each crop from the same season that is linked to the share of the total cropped area (from FAO) for that crop in the country. This number is inflated by 20%, and applies only to crops sharing the same growing season.  
+     + A maximum share (`seas_max`) of total cropland is set (50%)
+     + Off-season crops (e.g. wheat) are set to the maximum share
++ The actual cropped areas for each crop (from Monfreda) in each pixel are compared against the base share of the crop, and the maximum of the two is assigned. The actual cropped areas are standardized against the total cropped area in each pixel (for these 7 crops), but no value is allowed to exceed `seas_max`. Why was this done? To allow for current distributions of cropland to determine, somewhat, where future distributions are concentrated, so if there is a high current local abundance in an area, then the future abundance might also be high. But they shouldn't be too high (hence the `seas_max` limit), 
++ The shares are then further modified using a set of rules based on the areas assigned as mentioned above, and as a function of potential productivity: 
+     + If a crop is the most productive and has the highest share in a given pixel of all selected crops, then it is assigned the `seas_max` value. 
+     + If it is not the most productive, but has the highest share of area in the pixel, (or the converse of these two) it is assigned the share determined in the previous step
+     + If it is neither, it is given the base share.  
++ It remains to be seen whether this system is overly convoluted or not.  
+
+The next step will be to write a function that can alter the shares of cropland in proportion to demand, but I will first develop the basic model, absent the road cost distance function (11:50; 6/1/2015).  
+
+9.Other
++ Set up a data/no data grid to give index of valid cells to key functions
+
+```{r, eval = FALSE}
+crop_share_cnt <- lapply(cnames, function(x) {
+  brick(full_path(p_dat, paste0(x, "-crop-convert-fractions-base.tif")))
+})
+lapply(1:length(cnames), function(x) {
+  nm <- cnames[x]
+  na1 <- calc(potylds_cnt_std[[x]], sum, na.rm = FALSE)
+  na2 <- calc(carbon_cnt[[x]], sum, na.rm = FALSE)
+  na3 <- calc(crop_share_cnt[[x]], sum, na.rm = FALSE)
+  rast_math(!is.na(na1 + na2 + na3 + unfarmed_cnt[[x]] + cons_p_cnt[[x]]), 
+           filename = paste0("external/ext_data/", nm, "-mask.tif"))
+})
+masks <- lapply(cnames, function(x) {
+  brick(full_path(p_dat, paste0(x, "-mask.tif")))
+})
+plot(masks[[1]])  
+```
++ Convert input grid to data.tables, for faster version of `tradeoff_mod`. 
+
+```{r, eval = FALSE}
+lapply(1:length(cnames), function(x) {
+  nm <- cnames[x]
+  il <- fetch_inputs(input_key = nm, input = "R")
+  dt_nms <- c("p_yield", "pp_curr", "currprod", "cropfrac", "carbon", 
+              "richness", "pas", "carbon_p", "cons_p", "cost")
+  for(i in dt_nms) mask(il[[i]], il$mask, maskvalue = 0, 
+                        filename = filename(il[[i]]), overwrite = TRUE)
+  il <- fetch_inputs(input_key = nm, input = "R")
+  valinds <- which(values(il$mask) == 1)
+  lapply(il[dt_nms], function(x) {
+    #x <- il[dt_nms][[1]]
+    DT <- as.data.table.raster(x)[valinds, ]
+    fnm <- paste0("external/ext_data/dt/", 
+                  gsub(paste0(p_dat, "|\\/|\\.tif"), "", filename(x)), ".csv")
+    write.table(DT, file = fnm, sep = ",", col.names = TRUE, row.names = FALSE)
+  })
+  base_dt <- as.data.table.raster(il$mask, xy = TRUE)
+  setnames(base_dt, old = names(il$mask), new = "val")
+  base_dt[, ind := 1:nrow(base_dt)]
+  base_dt <- base_dt[!val == 0][, val := NULL]
+  fnm <- paste0("external/ext_data/dt/", nm, "-mask.csv")
+  write.table(base_dt, file = fnm, sep = ",", col.names = TRUE, 
+              row.names = FALSE)
+})
+
+il <- fetch_inputs("ZA")
+ilr <- fetch_inputs("ZA",input = "R")
+round(colSums(il$currprod, na.rm = TRUE), 7) == 
+ round(cellStats(ilr$currprod, sum), 7)
+```
+
+
+
+
+
+

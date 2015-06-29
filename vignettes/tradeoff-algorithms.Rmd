@@ -1,0 +1,38 @@
+---
+title: "Comparing Tradeoff Algorithms"
+author: "Lyndon Estes"
+date: "04 February 2015"
+output: slidy_presentation
+---
+
+## Dummy Tradeoff Data
+```{r}
+a <- sample(1000:8000, size = 100, replace = TRUE) / 1000  # yield dummy
+b <- sample(9000:40000, size = 100, replace = TRUE) / 1000  # carbon dummy
+cl <- b / a   # carbon loss:yield
+astd <- (a - min(a)) / diff(range(a))   # standardized yield
+bstd <- 1 - (b - min(b)) / diff(range(b))  # standardized carbon
+```
+
+## Distribution of data
+```{r, echo = FALSE}
+par(mfrow = c(3, 3))
+hist(a, main = "Dummy yield")
+hist(b, main = "Dummy carbon")
+hist(astd, main = "Standardized yield")
+hist(bstd, main = "Standardized carbon")
+hist(cl, main = "C/yld")
+hist(bstd * astd, main = "C std * Y std")
+hist(bstd + astd, main = "C std + Y std")
+```
+
+## Comparing algorithms to one another
+```{r, echo = FALSE}
+par(mfrow = c(2, 2))
+plot(cl, astd + bstd, main = "C/yld vs C std + Y std")
+plot(cl, astd * bstd, main = "C/yld vs C std * Y std")
+plot(astd * bstd, astd + bstd, main = "C std * Y std vs C std + Y std")
+
+
+```
+

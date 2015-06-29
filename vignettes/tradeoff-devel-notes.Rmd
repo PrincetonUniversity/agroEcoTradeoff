@@ -1,0 +1,62 @@
+---
+title: "Tradeoff model development and background"
+author: "Lyndon Estes"
+date: "04 December 2014"
+output: 
+  html_document:
+    highlight: tango
+    theme: spacelab
+    toc: yes 
+---
+
+### Background
+This model was initially developed as a class teaching tool, with the ultimate ambition of turning it into a working research tool.  It was designed to evaluate fairly simple tradeoff scenarios in the African wet savannas, as defined by the FAO, and to be an extension of the work begun by Searchinger et al (cite here). The model was designed to identify the land that would be converted for new maize and soybean production, given their potential productivity and certain option constraints regarding other land use priorities: protect carbon stocks, protect biodiversity, and preferentially select those areas having the largest runoff (this was a year 2 add-on to the model).  The model itself was based on work by Koh and Ghazoul (2010), in that it converts the value of land for each aspect (e.g. maize yield potential, carbon density, protected area presence, mammal diversity) to a standarized value (0-1), where 1 represents an area that will be converted first, and 0 an area to be converted last, if that value is chosen as a constraint. Let's take an example of three model grid cells
+
+ID     | Maize yield | Carbon | Biodiversity
+------ | ----------- | ------ | ------------
+Cell 1 |   1         |   0.5  |      0.1
+Cell 2 |   0.5       |   1    |      0.5
+Cell 3 |   0.25      |   0.75 |      1
+
+If you only cared about prioritizing maize yields, you would convert cells 1-3 in order.  If you cared only about carbon, you would convert cell 2 first (because it is has the least carbon stock--we calculate carbon as 1 - standardized tons of carbon), followed 3 and then 1. Biodiversity only gives us an order of cells 3-1.  But then we can specify multiple constraints. By multiplying the values in all three cells, we account for the values of all 3.  That gives us the following order: 
+
+```{r}
+sort(c("cell1" = 1 * 0.5 * 0.1, "cell2" =  0.5 * 1 * 0.5, "cell3" = 0.25 * 0.75 * 1), decreasing = TRUE)
+```
+
+Cell 2 goes first, because it has middling yield but very low carbon and moderate biodiversity.  So that's basically how it works at it's core.  But we need to build it out and downscale it now.  
+
+### Next steps
+The model was next downscaled and improved for Zambia. Key changes:
+
+* Resolution increased to 1 km 
+* More crops added
+* Other development factors included, particularly transports costs
+* Biodiversity and carbon representations improved/enhanced
+* Crop allocation on different cells improved - crops (if competing for same cell) given allocation in proportion to their relative values for that cell (a tricky problem to solve)
+* Topographically marginal areas removed
+
+Key changes in model structure were also made: 
+* Model converted to R package, therefore made more modular (many of its components converted to functions), with the intention that it can be rescaled more easily (I ultimately want to facilitate comparisons between tradeoffs made at local, national, and regional scales)
+* gdal based calculations implemented for faster raster operations
+
+### Model run notes
+1. To use `gdal_calc` (via R function) on my mac I had to manually edit the first line of the file in `/Library/Frameworks/GDAL.framework/Programs/gdal_calc.py` from `#!/usr/bin/env python2.7` to `\usr\bin\python` as apparently the anaconda install I have does not know where to find gdal.  
+2. write geotiff brick reading/writing function that saves and reinserts layer names. 
+3. Rstudio might not find the path to gdal_calc.py, so to get around it, open Rstudio from terminal: 
+`open -a RStudio`
+
+### Development notes
+1. There are two alternate versions of the model: one that relies on raster-based calculations, the other on data.table. It remains to be seen which is faster.  I have noted several things so far (as of 23/1/15): 
+
+    + `data.table` seems to create much faster results
+    + However, that might be because I force all raster steps to be written to disk. In memory speeds might be comparable.  I have noted in head-to-heads that R does multiplication on large vectors faster than data.table. Matrix multiplication is faster than both of those.  
+    + So I am writing rastTest (my raster evaluation function) to only write to disk when needed. raster already takes care of this automatically, so I don't have to write in that logic. What I might want to do, in future, is parallelize.  
+    + Update, 25/1/15: Even with in-memory processing the `data.table` version is still twice as fast as the `raster`-based version. 
+
+
+
+
+
+
+

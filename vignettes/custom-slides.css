@@ -1,0 +1,24 @@
+.reveal .slides>section,
+.reveal .slides>section>section {
+    background-color: black !important;
+}
+
+table {
+  max-width: 95%;
+  border: 1px solid #ccc;
+  font-size: 6px;
+}
+th {
+  height: 10px;
+  padding: 2px;
+  background-color: #000000;
+  line-height: 10px;
+  color: #ffffff;
+}
+td {
+  height: 5px;
+  padding: 0px;
+  line-height: 10px;
+  background-color: #dcdcdc;
+}
+

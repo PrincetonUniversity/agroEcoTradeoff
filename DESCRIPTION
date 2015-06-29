@@ -1,0 +1,22 @@
+Package: agroEcoTradeoffs
+Type: Package
+Title: Landuse Tradeoff analysis model
+Description: As above, but package was developed later than initial model
+Version: 0.2
+Date: 09-01-2015
+Author: Lyndon Estes <lestes@princeton.edu>
+Maintainer: Lyndon Estes <lestes@princeton.edu>
+Depends:
+    R (>= 3.0.0),
+    raster,
+    rgdal,
+    lmisc,
+    data.table,
+    RColorBrewer
+Imports:
+    raster,
+    rgdal,
+    lmisc,
+    data.table,
+    RColorBrewer
+License: GPL (>= 3)

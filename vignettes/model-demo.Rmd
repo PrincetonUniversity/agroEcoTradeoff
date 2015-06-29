@@ -1,0 +1,126 @@
+---
+title: "Model demo"
+author: "Lyndon Estes"
+date: "13 January 2015"
+output:
+  html_document:
+    highlight: tango
+    theme: spacelab
+    toc: yes
+  pdf: null
+  pdf_document:
+    toc: yes
+bibliography: trade.bib
+---
+
+## Spatial Tradeoff Model (___trademod___) 
++ Evaluates tradeoffs between:
+    + Meeting production targets for key crops
+    + Satisfying other land use constraints, including biodiversity and carbon protection
++ Four primary components:
+
+    1. `targets` - determines amount of production increases needed for a given scenario
+    
+    2. `constraints` - determines probability of pixels being converted to meet `targets`
+    
+        + Can be altered by change in yield potential, or application of 3 constraints
+            1. Carbon density of landscape
+            2. Biodiversity value (existing PAs, degree of fragmentation, mammal richness)
+            3. Transport cost (in development)
+            
+    3. `convert` - determines which pixels are converted to meet the crop production target
+    
+    4. `impacts` - assesses impacts in terms of land converted, carbon lost, protected areas transformed, etc. (outstanding)
+    
+## Some examples
+
+### A few of the input datasets
+
+
+```{r, message = FALSE, echo = FALSE}
+library(trademod)
+path <- full_path(proj_root("trademod"), "trademod")
+load(full_path(path, "data/cropnames.rda"))
+y <- brick(full_path(path, "external/ext_data/ZA-potential-yields-std.tif"))
+clist <- list("C" = brick(full_path(path, "external/ext_data/ZA-carbon-priorities.tif")), 
+              "bd" = brick(full_path(path, "external/ext_data/ZA-cons-priorities.tif")), 
+              "cost" = raster(full_path(path, "external/ext_data/ZA-cost.tif")))
+crop_frac <- brick(full_path(path, "external/ext_data/ZA-crop-convert-fractions-base.tif"))
+pot_yield <- brick(full_path(path, "external/ext_data/ZA-potential-yields.tif"))
+na1 <- calc(y, sum, na.rm = FALSE)
+na2 <- calc(pot_yield, sum, na.rm = FALSE)
+na3 <- calc(crop_frac, sum, na.rm = FALSE)
+valind <- which(!is.na(values(na1 + na2 + na3)))
+
+par(mfrow = c(2, 2), mar = c(1, 2, 1, 3), oma = c(0, 0, 0, 1))
+plot(pot_yield[[1]], main = "potential maize yield", axes = FALSE, box = FALSE)
+plot(pot_yield[[5]], main = "potential soy yield", axes = FALSE, box = FALSE)
+plot(clist$C, main = "carbon stocks", axes = FALSE, box = FALSE)
+plot(clist$bd, main = "biodiversity value", axes = FALSE, box = FALSE)
+```
+
+### And a few analyses
+#### Let's establish production targets
+
+A doubling in the need for 9 crops (over current production), except for maize (4X) and soybean (8X): 
+```{r, message=FALSE}
+setwd(path)
+currprod <- brick(full_path(path, "external/ext_data/ZA-current-production.tif"))
+prod_targ <- c("maize" = 4, "cassava" = 2, "ground" = 2, "cotton" = 2, "soy" = 8, "pulse" = 2, 
+               "sunflower" = 2, "sugarcane" = 2, "wheat" = 2)
+potprod <- brick(full_path(path, "external/ext_data/ZA-potential-production-current-area.tif"))
+target <- targets(prod_targ = prod_targ, currprod = currprod, potprod = potprod, ybeta = NULL)
+target
+```
+
+#### And then run `constraints` to see which areas are most likely to be converted
+We'll first assume no constraint other than crop yield potential is applied
+```{r, message=FALSE}
+setwd(path)
+con1 <- constraints(y = y, ybeta = NULL, cbetas = c(0, 0, 0), clist = clist)
+names(con1) <- cropnames
+plot(con1,axes = FALSE, box = FALSE) 
+```
+
+Next we'll assume that we care about protecting carbon and biodiversity also
+```{r, message=FALSE}
+setwd(path)
+con2 <- constraints(y = y, ybeta = NULL, cbetas = c(1, 1, 0), clist = clist)
+names(con2) <- cropnames
+plot(con2,axes = FALSE, box = FALSE) 
+```
+
+### Lastly, let's see what get's converted given the crop production targets we need to meet
+```{r, message=FALSE}
+setwd(path)
+converted1 <- convert2(con1, target, crop_frac = crop_frac, pot_yield = pot_yield, valind = valind, 
+                       cropnames = cropnames)
+converted2 <- convert2(con2, target, crop_frac = crop_frac, pot_yield = pot_yield, valind = valind,
+                       cropnames = cropnames)
+```
+
+
+If crop yield is the only constraint
+```{r, message=FALSE, echo=FALSE}
+c1r <- dt_to_raster(dt = converted1, CRSobj = projection(con1))
+plot(c1r, axes = FALSE, box = FALSE) 
+```
+
+If we also care about carbon and biodiversity
+```{r, message=FALSE, echo=FALSE}
+c2r <- dt_to_raster(dt = converted2, CRSobj = projection(con2))
+plot(c2r, axes = FALSE, box = FALSE) 
+```
+
+
+
+
+
+
+
+
+
+
+
+
+

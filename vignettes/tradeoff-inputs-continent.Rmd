@@ -1,0 +1,417 @@
+---
+title: "Developing continent-scale inputs for tradeoff analysis"
+author: "Lyndon Estes"
+date: "04 December 2014"
+output: 
+  html_document:
+    highlight: tango
+    theme: spacelab
+    toc: yes 
+---
+
+### Developing grids for tradeoff analysis 
+Set up a base grid against which all other grids can be rectified. This will be drawn from the new Alber's grid that goes into mappingafrica, developed under a separate project, mappingafrica
+
+```{r, message = FALSE}
+library(raster)
+library(rgdal)
+library(lmisc)
+library(rgeos)
+#library(gdalUtils)
+#library(maptools)
+library(SAcropland)
+# library(GSIF)  # doesn't work at the moment
+p_proj <- set_base_path()
+p_dat <- full_path(p_proj, "external/ext_data")
+```
+
+#### Define the study areas first. Makes grids covering Africa, the GS, and Zambia.
+```{r, eval = FALSE}
+# Africa
+setwd(p_proj)
+af <- readOGR(dsn = "external/ext_data/africa_countries_alb.sqlite", 
+              layer = "africa_countries_alb")
+afgcs <- readOGR(dsn = "external/ext_data/africa_noislands.sqlite", 
+                 layer = "africa_noislands")
+afr <- raster("external/ext_data/africa_grid.tif")
+
+# GS
+gs <- raster("external/ext_data/gs.tif")
+r <- raster(extent(afr))
+res(r) <- res(gs)
+projection(r) <- projection(gs)
+r[] <- 1
+
+# Resample Africa to same extent as GS
+afr10 <- aggregate(afr, fact = 9)  # 9-10 km af mask
+afr10 <- resample(afr10, r, method = "ngb")
+afr10[which(!is.na(values(afr10)))] <- 1:length(which(!is.na(values(afr10))))
+writeRaster(afr10, filename = "external/ext_data/africa-grid-10km.tif", 
+            datatype = "INT4S", overwrite = TRUE)  # 10 km grid #s
+afr10 <- raster("external/ext_data/africa-grid-10km.tif")
+afrmask10 <- !is.na(afr10)
+afrmask10[which(values(afrmask10) == 0)] <- NA
+writeRaster(afrmask10, filename = "external/ext_data/africa-mask-10km.tif", 
+            datatype = "INT4S", overwrite = TRUE)
+afrmask10 <- raster("external/ext_data/africa-mask-10km.tif") # 10 km Afr mask
+
+gspoly <- rasterToPolygons(gs, dissolve = TRUE)
+gscnt <- af[which(!is.na(af %over% gspoly)), ]
+gscnt@data <- gscnt@data[, c(4, 6)]
+gscnt$id <- 1:nrow(gscnt)
+rasterize(gscnt, afr10, field = "id", 
+          filename = "external/ext_data/gs-countries.tif")
+gs_cnt_r <- raster("external/ext_data/africa-grid-10km.tif")
+
+# Country rasters
+cnames <- "ZA"  ####################
+lapply(cnames, function(x) {
+  cnt <- af[af$fips_cntry == x,  ]
+  print(x)
+  cntr <- crop(afr, cnt)
+  cntr2 <- mask(cntr, mask = cnt, filename = paste0("external/ext_data/", x, "-grid.tif"), 
+               datatype = "INT4S", overwrite = TRUE) 
+})
+names(cntr_l) <- cnames
+cntr_l <- lapply(cnames, function(x) {
+  fnm <- full_path("external/ext_data/", paste0(x, "-grid.tif"))
+  brick(fnm)
+})
+
+# Areas
+afha <- res(afr10)[1]^2 / 10000
+cntha <- res(cntr_l[[1]])[1]^2 / 10000
+```
+
+#### Actual yield data for major crops
+The Monfreda et al (2008) data were obtained for this iteration, to be used in conjunction with Licker et al's (2010) climate potential yields. This is only a starting point, because the Monfreda data are unfortunately based on the Ramankutty et al (2008) cropland distribution map, which has substantial biases over Africa.  A first step for fixing these will be to do an update based on a better cropland map.  
+
+1. To figure out which crops to include in the model, we use the last 5 years of FAOStats production from Zambia to determine the most significant crops by production value. Selecting the crops that comprise 90% of mean 2008-2013 production or 90% of area harvested. Note: eventually I am going to want to replace this with a larger basket of Africa-wide crops. Country-level data prep will be done in separate files. 
+
+```{r}
+options(stringsAsFactors = FALSE)
+fao <- read.csv(full_path(p_dat, "zambia_crops_2008-2013.csv"))
+# plot(fao[(fao$ElementName == "Area harvested") & (fao$ItemName == "Wheat"), "Value"])
+crops <- unique(fao$ItemName)
+type <- unique(fao$ElementName)[1:2]
+crop_prod <- do.call(rbind, lapply(crops, function(x) {
+ v <- sapply(type, function(y) {
+   mean(fao[(fao$ItemName == x) & (fao$ElementName == y), "Value"], 
+        na.rm = TRUE)
+ })
+ cbind.data.frame("crop" = x, t(v))
+}))
+crop_prod <- crop_prod[grep("Total|Primary|Equivalent|Eqv", 
+                            crop_prod$crop, invert = TRUE), ]
+crop_prod <- crop_prod[!is.na(rowSums(crop_prod[, 2:3])), ]
+names(crop_prod)[2] <- "area"
+crop_prod$crop[grep("sugar", crop_prod$crop, ignore.case = TRUE)] <- "sugarcane"
+crop_prod <- crop_prod[order(crop_prod$Production, decreasing = TRUE), ]
+crop_prod$prod_prop <- round(crop_prod$Production / sum(crop_prod$Production), 2)
+crop_prod$area_prop <- round(crop_prod$area / sum(crop_prod$area), 2)
+crop_prod$prod_csum <- cumsum(crop_prod$Production)
+crop_prod$prod_fcum <- round(crop_prod$prod_csum / sum(crop_prod$Production), 2)
+crop_prod <- crop_prod[order(crop_prod$area, decreasing = TRUE), ]
+crop_prod$area_csum <- round(cumsum(crop_prod$area))
+crop_prod$area_fcum <- round(crop_prod$area_csum / sum(crop_prod$area), 2)
+crop_prod$sel <- ifelse((crop_prod$area_fcum < 0.9) | 
+                         (crop_prod$prod_fcum < 0.9), 1, 0)
+
+plot(sort(crop_prod$prod_fcum), type = "l", ylab = "fraction of total", lwd = 2, 
+     xlab = "N crops")
+lines(sort(crop_prod$area_fcum), col = "blue", lwd = 2)
+legend("bottomright", legend = c("production", "area"), lwd = 2, lty = 1, 
+       col = c("black", "blue"), bty = "n")
+sel_crops <- sapply(strsplit(crop_prod$crop[crop_prod$sel == 1], ","), 
+                    function(x) x[1])  # get crop names
+sel_crops <- tolower(gsub(" |Seed|seed|nuts|potatoes|beans|s$", "", sel_crops))
+crop_prod_tab <- crop_prod
+sel_crops
+```
+
+2. Find which of these selected crops have Monfreda data available, and load them. Also load the same datasets from Licker et al (2010) for climate potential yields. Area and actual yields are from Monfreda et al (2008), downloaded [here](http://www.geog.mcgill.ca/landuse/pub/Data/175crops2000/NetCDF/). Crop these down to just Africa. 
+```{r}
+yld_dir <- "~/eMaphepha_ami/Past_postdoc/Data/Crops/YieldGap/"
+flder <- "area-yield"
+ydat_nms <- dir(full_path(yld_dir, flder), pattern = "5")
+yldnms <- sapply(sel_crops, function(x) ydat_nms[grep(tolower(x), ydat_nms)])
+yldnms <- yldnms[which(sapply(yldnms, function(x) length(x)) == 1)]  # remove missing ones
+```
+```{r, eval = FALSE}
+cropylds <- stack(lapply(yldnms, function(x) raster(full_path(yld_dir, full_path(flder, x)), level = 2)))
+extent(cropylds)@xmin <- -180
+extent(cropylds)@xmax <- 180
+cropareas <- stack(lapply(yldnms, function(x) raster(full_path(yld_dir, full_path(flder, x)), level = 1)))
+extent(cropareas)@xmin <- -180
+extent(cropareas)@xmax <- 180
+
+flder <- "potential"
+ydat_nms <- dir(full_path(yld_dir, flder), pattern = "90")
+yldnms <- sapply(sel_crops, function(x) ydat_nms[grep(tolower(x), ydat_nms)])
+yldnms <- yldnms[which(sapply(yldnms, function(x) length(x)) == 1)]  # remove missing ones
+potylds <- stack(lapply(yldnms, function(x) raster(full_path(yld_dir, full_path(flder, x)))))
+extent(potylds)@xmin <- -180
+extent(potylds)@xmax <- 180
+
+# Crop them down to Africa
+cropylds_af <- crop(cropylds, afgcs)
+names(cropylds_af) <- names(yldnms)
+cropareas_af <- crop(cropareas, afgcs)
+names(cropareas_af) <- names(yldnms)
+potylds_af <- crop(potylds, afgcs)
+names(potylds_af) <- names(yldnms)
+cropnames <- names(yldnms)
+save(cropnames, file = "data/cropnames.rda")  # save crop names in data folder
+save(crop_prod_tab, file = "data/crop-prod-table.rda")  # save crop tab
+load("data/cropnames.rda")
+
+
+# And project to Albers for larger area work
+projectRaster(from = cropylds_af, to = afr10, progress = "text", 
+              filename = "external/ext_data/crop-yields.tif")
+projectRaster(from = cropareas_af, to = afr10, progress = "text", 
+              filename = "external/ext_data/crop-areas.tif")
+projectRaster(from = potylds_af, to = afr10, progress = "text", 
+              filename = "external/ext_data/potential-yields.tif")
+cropylds_af_p <- brick("external/ext_data/crop-yields.tif")
+cropsareas_af_p <- brick("external/ext_data/crop-areas.tif")
+potylds_af_p <- brick("external/ext_data/potential-yields.tif")
+```
+
+3. Set up some masks of current cropland/non-cropland and urban areas
+```{r, eval = FALSE}
+afgcsr <- rasterize(afgcs, potylds_af[[1]])
+# Cropland
+cropland_dir <- "~/eMaphepha_ami/RSGIS/Base_data/Agriculture" 
+cropland <- raster(full_path(cropland_dir, "africa.cropland.tif"))
+cropland <- crop(cropland, afgcsr)
+cropland <- resample(cropland, afgcsr)
+nocropland <- afgcsr - cropland
+
+# Urban areas
+urb_dir <- "~/eMaphepha_ami/RSGIS/Base_data/Africa/af_grumpv1_urextent_ascii_30/" 
+urb <- raster(full_path(urb_dir, "afurextents.asc"))
+urb10 <- aggregate(urb, fact = 10)
+urb10 <- resample(urb10, cropland, method = "ngb")
+urb10 <- crop(urb10, cropland)
+
+# Make a mask for farming out of the urban extent layer
+nofarm <- (urb10 == 2) * 2
+nofarm[nofarm == 2] <- 0
+nofarm[nofarm == 0] <- 1
+unfarmed <- nocropland * nofarm  # Mask applied to non farm fractions
+unfarmed[unfarmed < 0] <- 1
+projectRaster(unfarmed, to = afr10, filename = "external/ext_data/unfarmed.tif", 
+              overwrite = TRUE)
+# unfarmed <- raster("external/ext_data/africa-unfarmed.tif")
+```
+And use that to figure out total current and potential production at 10 km resolution
+```{r, eval = FALSE}
+# Current production, confined to actual croplands
+curprod <- sapply(1:nlayers(cropsareas_af_p), function(x) {
+  r <- cropsareas_af_p[[x]]
+  r[r < 0] <- 0  # remove areas lt 0
+  r[is.na(r)] <- 0   # zero out NA areas
+  y <- cropylds_af_p[[x]]
+  y[is.na(y)] <- 0  # zero out NA areas
+  rha <-  r * afha
+  prod <- (rha * y) * afrmask10
+})
+brick(stack(curprod), filename = "external/ext_data/current-production.tif", 
+      overwrite = TRUE)
+curprod <- brick("external/ext_data/current-production.tif")
+
+potprod_curarea <- sapply(1:nlayers(cropsareas_af_p), function(x) {
+  r <- cropsareas_af_p[[x]]
+  r[r < 0] <- 0
+  rha <-  r * afha
+  prod <- rha * potylds_af_p[[x]]
+  prod
+})
+brick(stack(potprod_curarea), 
+      filename = "external/ext_data/potential-production-current-area.tif")
+potprod_curarea <- brick("external/ext_data/potential-production-current-area.tif")
+ 
+# unfarmed_ha <-  unfarmed * afha
+# potprod <- sapply(1:nlayers(potylds_af_p), function(x) {
+#   prod <- unfarmed_ha * potylds_af_p[[x]]
+# })
+# brick(stack(potprod), filename = "external/ext_data/potential-production.tif")
+# potprod <- brick("external/ext_data/potential-production.tif")
+
+```
+4. Carbon datasets. I am reusing most of the carbon data used in the Searchinger et al, (in revision) analysis to get an Africa wide dataset that I can downsample. I adapted some codde from `wet.savannas_Carbon.R`, but could not use the full approach that augments IGBP soil C with HWSD soils to account for wetlands and histosols.
+```{r, eval = FALSE}
+lpj_dir <- paste0("~/eMaphepha_ami/Post_doc/Pubs+presentations/Wet_savannas/", 
+                  "Wet_savannas_analysis/Beringer_04102012/")
+wsdat_dir <-"~/eMaphepha_ami/RSGIS/Post_doc_data/Wet_savannas_spatial/" 
+
+vegc <- raster(full_path(wsdat_dir, "C_datasets/c_5m/vc.af.grd"))  
+soilc <- raster(full_path(lpj_dir, "lpj/ref_carbon_data/soilc.res.grd"))
+
+# disaggregate and reproject to Albers 10 km
+cpool <- lapply(list(vegc, soilc), function(x) {
+  r <- disaggregate(x, fact = 3)
+  ra <- projectRaster(r, afr10, progress = "text")
+})
+names(cpool) <- c("veg", "soil")
+
+# convert to total carbon in pixel, and create total carbon layer
+carbon_names <- c("veg", "soil", "total")
+#carbon <- lapply(cpool, function(x) (x * afha) / 1000) 
+carbon <- lapply(cpool, function(x) x)  # I converted to total--should keep t 
+carbon$tot <- calc(stack(carbon), sum)
+brick(stack(carbon), filename = "external/ext_data/carbon.tif", overwrite = TRUE)
+carbon <- brick("external/ext_data/carbon.tif")
+save(carbon_names, file = "data/carbon-names.rda")  # save names for layers
+plot(carbon)
+```
+
+5. Protected area and biodiversity data
++ First is the older approach, where PAs and mammal diversity data are brought in and processed. 
+```{r, eval = FALSE}
+bdiv_dir <- "~/eMaphepha_ami/RSGIS/Base_data/Protected_areas/All_Africa_PAs/"
+setwd(bdiv_dir)
+af_pas <- readOGR(dsn = "All_Africa_PAs.shp", layer = "All_Africa_PAs")
+setwd(p_proj)
+
+af_pas_r <- af_pas[af_pas@data$is_point == 0, ]  # Keep marine b/c coastal parks
+af_pas_r@data <- af_pas_r@data[, c(1:2, 9:11, 15)]  # Reduce size of data table
+length(af_pas_r)  # 5209
+ramsar <- unique(af_pas_r@data$desig_eng[grep("Wetlands", # Remove Ramsar sites
+                                              af_pas_r@data$desig_eng)])  
+af_pas_r2 <- af_pas_r[!af_pas_r@data$desig_eng %in% ramsar, ]  # Remove RAMSAR
+length(af_pas_r2)  # 5139
+
+# Assign conversion probabilities
+af_pas_r2@data$ConvProb <- rep(0, nrow(af_pas_r2))
+af_pas_r2@data$ConvProb[af_pas_r2@data$desig_eng == "National Park"]  <- 1
+af_pas_r2@data$ConvProb[grep("National Park", af_pas_r2@data$desig_eng)] <- 1
+af_pas_r2@data$ConvProb[grep("Strict", af_pas_r2@data$desig_eng)] <- 1
+af_pas_r2@data$ConvProb[grep("Scientific", af_pas_r2@data$desig_eng)] <- 1
+af_pas_r2@data$ConvProb[grep("World Heritage", af_pas_r2@data$desig_eng)] <- 1
+af_pas_r2@data$ConvProb[af_pas_r2@data$iucncat == "Ib"]  <- 1
+af_pas_r2@data$ConvProb[af_pas_r2@data$iucncat == "II"] <- 1
+af_pas_r2@data$ConvProb[af_pas_r2@data$iucncat == "III"] <- 1
+af_pas_r2@data$ConvProb[af_pas_r2@data$iucncat == "Ib"] <- 2
+af_pas_r2@data$ConvProb[grep("Botanical|Monument", 
+                             af_pas_r2@data$desig_eng)] <- 2
+af_pas_r2@data$ConvProb[grep("Provincial", af_pas_r2@data$desig_eng)] <- 2
+af_pas_r2@data$ConvProb[grep("National Heritage", 
+                             af_pas_r2@data$desig_eng)] <- 2
+af_pas_r2@data$ConvProb[af_pas_r2@data$iucncat == "IV"] <- 3
+af_pas_r2@data$ConvProb[af_pas_r2@data$iucncat == "V"] <- 3
+af_pas_r2@data$ConvProb[grep("Voluntary|Private|Voluntary", 
+                             af_pas_r2@data$desig_eng)] <- 3
+af_pas_r2@data$ConvProb[grep("Forest", af_pas_r2@data$desig_eng)] <- 3
+af_pas_r2@data$ConvProb[grep("Wildlife", af_pas_r2@data$desig_eng)] <- 3
+af_pas_r2@data$ConvProb[grep("Catchment", af_pas_r2@data$desig_eng)] <- 3
+af_pas_r2@data$ConvProb[grep("Game Farm", af_pas_r2@data$desig_eng)] <- 3
+af_pas_r2@data$ConvProb[grep("Game Reserve", af_pas_r2@data$desig_eng)] <- 3
+af_pas_r2@data$ConvProb[grep("Biosphere", af_pas_r2@data$desig_eng)] <- 4
+af_pas_r2@data$ConvProb[af_pas_r2@data$iucncat == "VI"] <- 4
+af_pas_r2@data$ConvProb[grep("ommunity|illage", af_pas_r2@data$desig_eng)] <- 4
+af_pas_r2@data$ConvProb[grep("Hunting|hunting", af_pas_r2@data$desig_eng)] <- 4
+af_pas_r2@data$ConvProb[grep("Forest", af_pas_r2@data$desig_eng)] <- 4
+af_pas_r2@data$ConvProb[af_pas_r2@data$status %in% 
+                         c("Proposed", "Recommended")] <- 5
+
+# And the set the 300 odd remaining to class 3
+rem <- unique(af_pas_r2@data$desig_eng[af_pas_r2@data$ConvProb == 0])
+for(i in 1:length(rem)) { 
+  af_pas_r2@data$ConvProb[which(af_pas_r2@data$ConvProb == 0 & 
+                                 grep(rem[i], af_pas_r2@data$desig_eng))] <- 3
+}
+
+# Rasterize Africa and GS country level PAs
+af_pas_r3 <- af_pas_r2
+af_pas_r3@data <- af_pas_r3@data[, -c(2:6)]
+Pls <- slot(af_pas_r3, "polygons")  # Fix orphaned polygn hole first
+Pls1 <- lapply(Pls, checkPolygonsHoles)
+slot(af_pas_r3, "polygons") <- Pls1
+af_pas_alb <- spTransform(af_pas_r3, CRSobj = gspoly@proj4string)
+over_gs <- over(af_pas_alb, gBuffer(gscnt, width = 0))
+gs_pas <- af_pas_r3[which(over_gs == 1), ]
+rasterize(af_pas_alb, afr10, field = "ConvProb", progress = "text", 
+          filename = "external/ext_data/af-pas-10km.tif")
+af_pas_r <- raster("external/ext_data/af-pas-10km.tif")
+#plot(pas.r, col = bpy.colors(5))
+
+# Mammal diversity
+load("external/ext_data/mamdiv.rda")
+mamdiv <- disaggregate(m.r, fact = 3)
+af_mamdiv <- projectRaster(mamdiv, afr10, progress = "text")  # 10 km mamdiv
+gs_mamdiv <- af_mamdiv * !is.na(gs_cnt_r)  # GS range country mammal diversity
+writeRaster(af_mamdiv, filename = "external/ext_data/af_mammal_div.tif")
+af_mamdiv <- raster("external/ext_data/af_mammal_div.tif")
+writeRaster(gs_mamdiv, filename = "external/ext_data/gs_mammal_div.tif")
+gs_mamdiv <- raster("external/ext_data/gs_mammal_div.tif")
+```
+
++ Second, I am adding a new approach, which is to use the [GLC-Share](http://www.glcn.org/databases/lc_glcshare_en.jsp) landcover dataset to define natural vegetation cover, and then pass a moving window over that to calculate how natural the vegetation is in each neighborhood--this will allow areas that are fairly undisturbed to be favored. 
+```{r, eval = FALSE}
+glc_dir <- "~/eMaphepha_ami/RSGIS/Base_data/Globe/Landcover/"
+
+# Down the dominant landcover class layer
+url <- paste0("http://www.fao.org/geonetwork/srv/en/", 
+              "resources.get?id=47948&fname=GlcShare_v10_", 
+              "Dominant.zip&access=private")
+download.file(url, method = "auto", 
+              destfile = full_path(glc_dir, "glc_share.zip"))
+unzip(full_path(glc_dir, "glc_share.zip"), 
+      exdir = full_path(glc_dir, "glc_share"))
+glc <- raster(full_path(glc_dir, "glc_share/glc_shv10_DOM.Tif"))
+projection(glc) <- projection(afgcsr)
+af_glc <- crop(glc, y = afgcs, file = full_path(glc_dir, "glc-africa.tif"), 
+               overwrite = TRUE)  # crop to Af
+gdalwarp(srcfile = af_glc@file@name, 
+         dstfile = "external/ext_data/glc-africa-alb.tif", 
+         t_srs = af@proj4string@projargs, te = bbox(afr)[1:4], 
+         tr = c(1000, 1000), r = "near")
+af_lc <- raster("external/ext_data/glc-africa-alb.tif")
+af_nat_cov <- af_lc %in% c(3:11)  # include all classes but artificial and cropland
+af_nat_cov <- mask(af_nat_cov, mask = afr)
+w <- matrix(1, nrow = 21, ncol = 21)
+af_nat_areas <- focal(af_nat_cov, w = w, fun = mean, na.rm = TRUE, 
+                      filename = "external/ext_data/af-natural-cover.gri", 
+                      progress = "text")
+writeRaster(af_nat_areas, filename = "external/ext_data/af-natural-cover.tif")
+#file.remove(dir("external/ext_data/", pattern = "af-natural-cover.gr"))
+af_nat_areas <- raster("external/ext_data/af-natural-cover.tif")  # 1 km version
+af_nat_areas10 <- aggregate(af_nat_areas, fact = 9)
+resample(af_nat_areas10, y = afr10, 
+         filename = "external/ext_data/af-natural-cover-10km.tif")
+af_nat_areas10 <- raster("external/ext_data/af-natural-cover-10km.tif")
+```
+
++ Third, merge the biodiversity data into a biodiversity value grid
+```{r, eval = FALSE}
+pawt <- c(0.05, 0.001)   # Here is where weights applied to PAs can be changed  
+b <- cellStats(af_pas_r, range)
+pawts <- coef(lm(pawts ~ b))
+pas_p <- pawts[1] + af_pas_r * pawts[2]  # Reweight grid
+bdmask <- is.na(pas_p)  # Make a mask of PAs for the BD layer 
+bd_p <- 1 - (af_mamdiv - cellStats(af_mamdiv, min)) / 
+ diff(cellStats(af_mamdiv, range))  # inverse BD prob
+af_nat_p <- 1 - (af_nat_areas10 - cellStats(af_nat_areas10, min)) / 
+ diff(cellStats(af_nat_areas10, range))
+pas_p[is.na(pas_p)] <- 0  # NAs to 0
+natbd <- (af_nat_p + bd_p) / 2 * bdmask + pas_p
+writeRaster(natbd, filename = "external/ext_data/af-cons-priorities-10km.tif", 
+            overwrite = TRUE)
+cons_p <- raster("external/ext_data/af-cons-priorities-10km.tif")
+
+# Do this for GS region as well
+
+```
+6. Africa elevation data. I started by downloading the global grid from the WorldGrids website, which I would have accessed through R if the GSIF package was not somehow broken. So I manually downloaded to my directory from [here](http://worldgrids.org/doku.php?id=wiki:demsre3). I could have also downloaded using the getData() function from the raster package, but that's tedious since I have to figure out the coordinates or download country by country. This will be used to create a cost distance surface, and maybe a ruggedness map to screen out certain areas from being potential farmland. 
+```{r, eval = FALSE}
+dem <- raster("~/eMaphepha_ami/RSGIS/Base_data/elevation/demsre2a.tif")
+
+#### DEM of Zambia (convert to topographic roughness
+# develop cost raster here
+
+```
+
+7. Calculate cropland fractions here (currently this is only done for countries/regions)
+
