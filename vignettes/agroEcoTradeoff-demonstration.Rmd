@@ -1,0 +1,476 @@
+---
+title: "__tradeoff\\_mod__ Demo"
+author: "Lyndon Estes"
+date: "29 January 2015"
+output: 
+  ioslides_presentation: 
+    fig_width: 7
+    fig_height: 5
+    fig_caption: true
+    css: custom-slides.css
+---
+## Overview 
+In this initial demonstration of `tradeoff_mod`, we test the effects of applying:
+
+- Each of the 4 land use constraints (productivity, carbon density, biodiversity, and transport access)
+- Under conditions where crop yields are at rainfed potential, or increased or decreased by 20%
+- Production targets for each of the 7 crops that are 2, 3, and 4 times that of current production
+
+This simulations runs throughs 54 permutations of these combinations using the model's batch mode function, `tradeoff_batch`. 
+
+```{r, eval = FALSE, echo = FALSE}
+# Define parameter sets
+# Constraints
+# library(gtools)
+# permutations(2, 4, v=0:1, set = TRUE, repeats.allowed = TRUE)
+library(agroEcoTradeoff)
+cnames <- c("Ag", "C", "bd", "cost")
+cblist <- list(c(1, 0, 0, 0),
+               c(0, 1, 0, 0), 
+               c(0, 0, 1, 0), 
+               c(0, 0, 0, 1), 
+               c(1, 1, 0, 0),
+               c(1, 0, 1, 0),
+               c(1, 0, 0, 1),
+               c(1, 1, 1, 0), 
+               c(1, 1, 0, 1), 
+               c(1, 1, 1, 1))
+               
+# yield modificationsmod space
+yblist <- list(yb1 <- c(1, 1), 
+               yb2 <- c(0.8, 1),
+               yb3 <- c(1.2, 1))
+# prod_targ space
+tnames <- c("maize", "cassava", "ground", "cotton", "soy", "pulse", "sunflower",
+            "sugarcane", "wheat")
+targlist <- list(targ1 <- rep(2, length(tnames)), 
+                 targ2 <- rep(3, length(tnames)), 
+                 targ3 <- rep(4, length(tnames)))
+                 
+parms <- do.call(rbind, lapply(yblist, function(x) {
+  do.call(rbind, lapply(targlist, function(y) {
+    do.call(rbind, lapply(cblist, function(z) {
+      v <- c(z, x, y)
+      names(v) <- c(cnames, "y1", "y2", tnames)
+      v
+   }))
+ }))
+}))
+batch_test <- tradeoff_batch(parms = parms, input_key = "ZA", todisk = TRUE,
+                             silent = TRUE)
+dnm <- dir("external/output/batch/dt")
+save(batch_test, file = paste0("external/output/batch/dt/", dnm, 
+                               "/out_tables.rda"))
+save(parms, file = paste0("external/output/batch/dt/", dnm, "/parms.rda"))
+
+```
+
+# Model Inputs
+
+----
+
+<div class="centered">
+Productivity of 9 key crops (t/ha)
+</div>
+```{r, echo = FALSE, message = FALSE, cache = TRUE, fig.align='center'}
+library(agroEcoTradeoff)
+setwd(full_path(proj_root("agroEcoTradeoff"), "agroEcoTradeoff"))
+dnm <- dir("external/output/batch/dt")
+load(paste0("external/output/batch/dt/", dnm, "/out_tables.rda"))
+load(paste0("external/output/batch/dt/", dnm, "/parms.rda"))
+il <- fetch_inputs(input_key = "ZA", input = "R")
+CRSobj <- projection(il$currprod)
+plot(il$p_yield, axes = FALSE, box = FALSE, cex.main = 2)
+```
+
+----
+
+<div class="centered"> 
+Maize and Soy Potential Yields (t/ha)
+</div>
+```{r, echo = FALSE, message = FALSE, fig.align='center'}
+cols <- colorRampPalette(c("lightgoldenrod4", "gold", "green4"))
+par(mar = c(0, 0, 0, 0), oma = c(1, 1, 1, 1))
+plot(il$p_yield[[c(1, 5)]], axes = FALSE, box = FALSE, cex.main = 1.5)
+```
+
+----
+
+<div class="centered"> 
+Biodiversity Protection Priorities (lower is more important) 
+</div>
+```{r, echo = FALSE, message = FALSE, fig.align='center'}
+par(mar = c(2, 2, 0, 0))
+plot(il$cons_p, axes = FALSE, box = FALSE, cex.main = 2, 
+     col = terrain.colors(25))
+```
+
+----
+
+<div class="centered"> 
+Vegetative + Soil Carbon (t/ha) 
+</div> 
+```{r plot, echo = FALSE, message = FALSE, fig.align='center', fig.width = 7.5}
+par(mar = c(2, 2, 0, 0))
+plot(il$carbon$total, axes = FALSE, box = FALSE, cex.main = 2)
+```
+
+----
+
+<div class="centered"> 
+Potential Carbon Loss to Yield Ratio (t/ha, lower is better)
+</div>
+```{r, echo = FALSE, message = FALSE, fig.align='center'}
+closs <- nm_up((il$carbon$veg + il$carbon$soil * 0.25) / il$p_yield[[c(1, 5)]],
+               c("maize", "soy"))
+par(mar = c(0, 0, 0, 0), oma = c(1, 1, 1, 1))
+plot(closs, axes = FALSE, box = FALSE, cex.main = 1.5, col = terrain.colors(25))
+```
+
+----
+
+<div class="centered"> 
+Yield X Carbon Constraint (highest is first to convert)
+</div>
+```{r, echo = FALSE, message = FALSE, fig.align='center'}
+setwd(full_path(proj_root("agroEcoTradeoff"), "agroEcoTradeoff"))
+ild <- fetch_inputs(input_key = "ZA", input = "D")
+to <- tradeoff_mod(parms[1, ild$cropnames], ybetas = list(1, 1), 
+                   cbetas = c(1, 1, 0, 0), input_key = "ZA")
+yxp <- cbind(to$inputs$mask[, c("x", "y"), with = FALSE], 
+             to$inputs$y_std[, maize] * to$inputs$carbon_p)
+yxps <- cbind(to$inputs$mask[, c("x", "y"), with = FALSE], 
+              to$inputs$y_std[, soy] * to$inputs$carbon_p)
+par(mfrow = c(1, 2), mar = c(0, 0, 0, 0), oma = c(1, 1, 1, 1))
+s <- nm_up(stack(dt_to_raster(yxp, CRSobj = CRSobj), 
+                 dt_to_raster(yxps, CRSobj = CRSobj)), c("maize", "soy"))
+plot(s, axes = FALSE, box = FALSE, cex.main = 1.5)
+```
+
+----
+
+<div class="centered"> 
+Inputs: Transport Costs 
+</div>   
+```{r, echo = FALSE, message = FALSE, fig.align='center'}
+par(mar = c(2, 2, 0, 0))
+plot(il$cost, axes = FALSE, box = FALSE, cex.main = 2)
+```
+
+# Results 
+
+## The Impact of The Four Constraints
+- These examples will be from the intermediate case that:  
+    - Assumes a tripling of demand for all 9 crops
+    - No modification of yield potential
+- The `targets*` function of the tradeoff_mod library specifies: 
+    - The productions targets (in tonnes) that need to met
+    - What percent of those can be met on existing cropland
+    - What percent will have to come from new cropland
+
+----
+
+<div class="centered"> 
+Crop Production Targets 
+</div>
+```{r, echo=FALSE, results = 'asis', fig.height = 4}
+target <- targets_r(prod_targ = parms[11, il$cropnames], 
+                    currprod = il$currprod, potprod = il$pp_curr,
+                    cropnames = il$cropnames)
+colnames(target)[5:6]  <- c("%existing", "%newland")
+knitr::kable(target[, -4])
+```
+
+```{r, echo=FALSE, cache = TRUE, fig.align='center'}
+# Load up some background data
+library(RColorBrewer)
+setwd(full_path(proj_root("agroEcoTradeoff"), "agroEcoTradeoff"))
+nat <- raster("external/ext_data/ZA-natural-cover-10km.tif")
+cropland <- raster("external/ext_data/ZA-crop-areas.tif")
+zam <- raster("external/ext_data/ZA-mask.tif")
+frac <- fread("external/ext_data/dt/ZA-crop-convert-fractions-base.csv")
+fracr <- nm_up(brick("external/ext_data/ZA-crop-convert-fractions-base.tif"),
+               il$cropnames)
+CRSobj <- projection(cropland)
+# fblock <- spTransform(readOGR("../../Data/Zambia/ZARI/NEW4GEO/Fblocks.sqlite", layer = "fblocks"), 
+#                       CRSobj = CRS(CRSobj))
+
+#plot(fblock, add = TRUE)
+#writeRaster(fblockr > 1, filename = "external/ext_data/farm-blocks.tif", overwrite = TRUE)
+fblock <- raster("external/ext_data/farm-blocks.tif")
+# plot(il$carbon$veg)
+# plot(fblock, add = TRUE)
+
+dtrs <- lapply(11:14, function(x) {
+  dt <- fread(paste0("external/output/batch/dt/", dnm, "/", 
+                     names(batch_test)[x], ".csv"))
+  dto <- cbind(dt[, c("x", "y"), with = FALSE], 
+               do.call(cbind, lapply(colnames(dt)[-c(1:2)], function(i) {
+                 dt[, c(i), with = FALSE] * frac[, c(i), with = FALSE]
+               })))
+  dtr <- dt_to_raster(dto, CRSobj = CRSobj)
+})
+
+brks <- c(0, 0.01, 0.05, 0.1, 0.15, 0.2)
+brks2 <- c(0, seq(0.001, 0.601, 0.15))
+yor <- c("transparent", brewer.pal(9, name = "YlOrRd")[5:8])
+gr <-  c("transparent", brewer.pal(9, name = "Greens")[5:8])
+bp <- c("grey90", brewer.pal(9, name = "Blues")[c(4, 6, 7, 9)])
+ldim = c(0.4, 0.75)
+sdim = c(0.03, 0.12, 0.25)
+legdim = c(0.8, 0.15)
+tdim = c(0.58, 0.18)
+# leg_fun <- function(ldim = c(0.4, 0.75), sdim = c(0.03, 0.12, 0.25), 
+#                     tdim = c(0.58, 0.18), 
+#                     legdim = c(0.8, 0.15)) {
+#   cx <- 1.2
+#   flex_legend(ncuts = length(brks) - 1, legend.text = "% Existing Cropland",
+#               legend.vals = brks * 100, 
+#               horiz = TRUE, legend.pos = c(3, 2), 
+#               leg.adj = list(c(0, 1), c(-0.2, -0.5)), cex.val = cx,  
+#               longdims = ldim, shortdims = c(sdim[3], 0.02), colvec = bp)
+#   flex_legend(ncuts = length(brks2) - 2, 
+#               legend.text = "In Untransformed Areas", cex.val = cx, 
+#               legend.vals = round(brks2[-1] * 100), horiz = TRUE, 
+#               legend.pos = c(3, 3), 
+#               leg.adj = list(c(0, 1), c(0.4, -0.5)), longdims = ldim, 
+#               shortdims = c(sdim[2], 0.02), 
+#               colvec = yor[-1])
+#   flex_legend(ncuts = length(brks2) - 2, 
+#               legend.text = "In Farm Blocks/Existing Cropland", 
+#               legend.vals = round(brks2[-1] * 100), cex.val = cx,
+#               horiz = TRUE, legend.pos = c(3, 2), 
+#               leg.adj = list(c(0, 1), c(0.2, -0.5)), 
+#               longdims = ldim, shortdims = c(sdim[1], 0.02), colvec = gr[-1])
+#   par(xpd = NA)
+#   text(grconvertX(tdim[1], from = "ndc", to = "user"), 
+#        grconvertY(tdim[2], from = "ndc", to = "user"), "% New Cropland", 
+#        cex = cx)
+#   legend(grconvertX(legdim[1], from = "ndc", to = "user"), 
+#          grconvertY(legdim[2], from = "ndc", to = "user"), pt.cex = 2, 
+#          legend = "Farm blocks", 
+#          fill = "grey50", bty = "n", cex = cx) 
+# }
+
+# conv_plot <- function(scen) {
+#   par(mar = c(0, 0, 2, 0), mfrow = c(3, 3))
+#   for(i in 1:length(il$cropnames[!il$cropnames %in% 
+#                                   c("sugarcane", "wheat")])) {
+#     r1 <- ((dtrs[[scen]][[i]] > 0) & (cropland > 0.01)) * dtrs[[scen]][[i]]
+#     r2 <- ((dtrs[[scen]][[i]] > 0) & (fblock > 0)) * dtrs[[scen]][[i]]
+#     leg <- ifelse(i == 2, TRUE, FALSE)
+#     plot(cropland, breaks = brks, col = bp, axes = FALSE, box = FALSE, 
+#          legend = FALSE, 
+#          main = il$cropnames[i], cex.main = 1.2)
+#     image(fblock, add = TRUE,  legend = FALSE, col = "grey50")
+#     image(dtrs[[scen]][[i]], breaks = brks2, axes = FALSE, cex.main = 2, 
+#           add = TRUE, 
+#           col = yor, xlab = "", ylab = "")
+#     image(r1, breaks = brks2, col = gr, legend = FALSE, add = TRUE)
+#     image(r2, breaks = brks2, col = gr, legend = FALSE, add = TRUE)
+#   }
+#   leg_fun()
+# } 
+
+# conv_plot_1 <- function(r, ldim, sdim, tdim, legdim) {
+#   par(mar = c(0, 0, 0, 0), oma = c(8, 0, 0, 0))
+#   r1 <- ((r > 0) & (cropland > 0.01)) * r
+#   r2 <- ((r > 0) & (fblock > 0)) * r
+#   leg <- ifelse(i == 2, TRUE, FALSE)
+#   plot(cropland, breaks = brks, col = bp, axes = FALSE, box = FALSE, 
+#        legend = FALSE, cex.main = 1.2)
+#   image(fblock, add = TRUE,  legend = FALSE, col = "grey50")
+#   image(r, breaks = brks2, axes = FALSE, cex.main = 2, add = TRUE, 
+#         col = yor, xlab = "", ylab = "")
+#   image(r1, breaks = brks2, col = gr, legend = FALSE, add = TRUE)
+#   image(r2, breaks = brks2, col = gr, legend = FALSE, add = TRUE)
+#   leg_fun(ldim = ldim, sdim = sdim)
+# } 
+
+```
+
+----
+
+<div class="centered">
+Constraint: Yield
+</div>
+```{r, echo=FALSE, fig.align='center'}
+conv_plot(scen = 1)
+```
+----
+
+<div class="centered">
+Constraint: Carbon
+</div>
+```{r, echo=FALSE, fig.align='center'}
+conv_plot(scen = 2)
+```
+
+
+----
+ 
+<div class="centered">
+Constraint: Biodiversity
+</div>
+```{r, echo=FALSE, fig.align='center'}
+conv_plot(scen = 3)
+```
+
+----
+ 
+<div class="centered">
+Constraint: Transport Cost
+</div>
+```{r, echo=FALSE, fig.align='center'}
+conv_plot(scen = 4)
+```
+
+----
+ 
+<div class="centered">
+ Constraints: Yield & Carbon
+</div>
+```{r, echo=FALSE, fig.align='center'}
+setwd(full_path(proj_root("agroEcoTradeoff"), "agroEcoTradeoff"))
+CRSobj <- projection(il$currprod)
+#parms[c(15:18, 20), 1:4]
+dtrs <- lapply(c(15:18, 20), function(x) {
+  dt <- fread(paste0("external/output/batch/dt/", dnm, "/", 
+                     names(batch_test)[x], ".csv"))
+  dto <- cbind(dt[, c("x", "y"), with = FALSE], 
+               do.call(cbind, lapply(colnames(dt)[-c(1:2)], function(i) {
+                 dt[, c(i), with = FALSE] * frac[, c(i), with = FALSE]
+               })))
+  dtr <- dt_to_raster(dto, CRSobj = CRSobj)
+})
+
+conv_plot(scen = 1)
+```
+
+----
+ 
+<div class="centered">
+Constraints: Yield & Biodiversity
+</div>
+```{r, echo=FALSE, fig.align='center'}
+conv_plot(scen = 2)
+```
+
+----
+ 
+<div class="centered">
+Constraints: Yield & Transport Cost
+</div>
+```{r, echo=FALSE, fig.align='center'}
+conv_plot(scen = 3)
+```
+
+----
+ 
+<div class="centered">
+Yield & Carbon & Biodiversity
+</div>
+```{r, echo=FALSE, fig.align='center'}
+conv_plot(scen = 4)
+```
+
+----
+
+<div class="centered">
+Constraints: Yield & Carbon & Biodiversity & Transport Cost
+</div>
+```{r, echo=FALSE, cache = TRUE, fig.align='center'}
+conv_plot(scen = 5)
+```
+
+----
+
+### Cropland Conversion Impacts
+- The mode summarizes the country-level impacts along various dimensions, for each crop in terms of: 
+    - New area converted
+    - Mean species richness (in this case, for mammals) per converted grid cell
+    - The mean richness per ton of crop yield in converted cells
+    - The loss (in ha) of protected areas
+    - The tons of carbon lost at conversion per ton of crop yield
+    - The total carbon lost (in tonnes)
+
+----
+ 
+```{r, echo=FALSE, results = 'asis', fig.height = 4}
+knitr::kable(batch_test[[18]])
+```
+
+----
+ 
+<div class="centered">
+Plotted values of the last 5 scenarios, aggregated across all crops
+</div>
+```{r, echo=FALSE, cache = TRUE, fig.align='center'}
+# batch_test[[1]]
+cl <- 1.5
+cols <- bpy.colors(5)
+par(mfrow = c(3, 2), mar = c(2, 4, 1, 2), mgp = c(2, 1, 0))
+v <- sapply(c(15:18, 20), function(x) sum(batch_test[[x]]$conv_area) / 1000)
+plot(v, pch = 20, cex = 4, col = cols, ylab = "ha/1000", xaxt = "n", xlab = "", ylim = range(v), cex.lab = cl) 
+v <- sapply(c(15:18, 20), function(x) sum(batch_test[[x]]$pa_loss) / 1000)
+plot(v, pch = 20, cex = 4, col = cols, ylab = "ha/1000", xaxt = "n", xlab = "", ylim = range(v) * 1.1, 
+     cex.lab = cl) 
+v <- sapply(c(15:18, 20), function(x) mean(batch_test[[x]][, 3], na.rm = TRUE))
+plot(v, pch = 20, cex = 4, col = cols, ylab = "spp/tY", xaxt = "n", xlab = "", ylim = range(v), cex.lab = cl) 
+v <- sapply(c(15:18, 20), function(x) mean(batch_test[[x]][, 5], na.rm = TRUE))
+plot(v, pch = 20, cex = 4, col = cols, ylab = "tC/tY", xaxt = "n", xlab = "", ylim = range(v), cex.lab = cl) 
+v <- sapply(c(15:18, 20), function(x) sum(batch_test[[x]][, 6], na.rm = TRUE) / 1000)
+plot(v, pch = 20, cex = 4, col = cols, ylab = "C loss (tonnes / 1000)", xaxt = "n", xlab = "",
+     ylim = range(v), cex.lab = cl)
+plot(1:1000, 1:1000, pch = "", axes = FALSE, ylab = "")
+points(rep(400, 5), seq(50, 950, 200), pch = 20, col = cols, cex = 4)
+text(rep(440, 5), seq(50, 950, 200), labels = c("Y X C", "Y X BD", "Y X TC", "Y X BD X C", "Y X BD X C X TC"), 
+     adj = 0)
+
+
+#axis(1, at = 1:5, labels = c("Y X C", "Y X BD", "Y X TC", "Y X BD X C", "Y X BD X C X TC"), las = 2)
+
+
+```
+
+```{r, echo = FALSE, message = FALSE, fig.align='center'}
+r <- calc(dtrs[[1]][[1:7]], sum)
+conv_plot_1(r, ldim = c(0.3, 0.6), sdim = c(0.05, 0.15, 0.28), 
+            tdim = c(0.58, 0.18), legdim = c(0.8, 0.15))
+```
+
+
+----
+
+<div class="centered">
+tC/tY versus Yield X Carbon constraints
+</div>
+```{r, echo = FALSE, message = FALSE, fig.align='center'}
+setwd(full_path(proj_root("agroEcoTradeoff"), "agroEcoTradeoff"))
+il <- fetch_inputs(input_key = "ZA", input = "D")
+crat <- il$carbon$total / il$p_yield$maize
+to <- tradeoff_mod(parms[1, il$cropnames], ybetas = list(1, 1), 
+                   cbetas = c(1, 1, 0, 0), input_key = "ZA")
+yxc <- to$inputs$y_std$maize * to$inputs$carbon_p$ZA.carbon.priorities
+# ypc <- to$inputs$y_std$maize + to$inputs$carbon_p$ZA.carbon.priorities
+# ydc <- to$inputs$carbon_p$ZA.carbon.priorities / to$inputs$y_std$maize
+par(mfrow = c(1, 2), mar = c(6, 4, 6, 2))
+plot(crat, yxc, cex = 0.1, ylab = "Maize yield X Carbon", 
+     xlab = "Carbon (t/ha) / Maize yield (t/ha)")
+plot(il$carbon$total, il$p_yield$maize, cex = 0.1, xlab = "Carbon (t/ha)", 
+     ylab = "Maize (t/ha)")
+# hist(to$inputs$y_std$maize)
+# hist(crat)
+# hist(yxc)
+
+```
+
+
+
+
+
+
+
+
+
+
