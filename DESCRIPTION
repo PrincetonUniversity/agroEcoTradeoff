@@ -1,4 +1,4 @@
-Package: agroEcoTradeoffs
+Package: agroEcoTradeoff
 Type: Package
 Title: Landuse Tradeoff analysis model
 Description: As above, but package was developed later than initial model

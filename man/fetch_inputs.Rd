@@ -4,8 +4,7 @@
 \alias{fetch_inputs}
 \title{Fetches inputs from file structure for trademod}
 \usage{
-fetch_inputs(path = "tradeoffMod/external/ext_data", input_key = "ZA",
-  input = "D")
+fetch_inputs(path = "external/ext_data", input_key = "ZA", input = "D")
 }
 \arguments{
 \item{input_key}{A unique file identifier for simulation-specific inputs}

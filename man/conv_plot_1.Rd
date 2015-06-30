@@ -8,7 +8,7 @@ conv_plot_1(r, ldim, sdim, tdim, legdim, brks = c(0, 0.01, 0.05, 0.1, 0.15,
   0.2), brks2 = c(0, seq(0.001, 0.601, 0.15)), yor = c("transparent",
   brewer.pal(9, name = "YlOrRd")[5:8]), gr = c("transparent", brewer.pal(9,
   name = "Greens")[5:8]), bp = c("grey90", brewer.pal(9, name = "Blues")[c(4,
-  6, 7, 9)]), cx = 1.2, oma = c(8, 0, 0, 0), ladj)
+  6, 7, 9)]), cx = 1.2, oma = c(8, 0, 0, 0), ladj = 1)
 }
 \arguments{
 \item{r}{Input raster showing cropland conversions}

@@ -36,7 +36,6 @@ bibliography: trade.bib
 
 ### A few of the input datasets
 
-
 ```{r, message = FALSE, echo = FALSE}
 library(trademod)
 path <- full_path(proj_root("trademod"), "trademod")

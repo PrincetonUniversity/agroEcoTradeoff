@@ -52,7 +52,7 @@ conv_plot <- function(scen, ldim = c(0.4, 0.75), sdim = c(0.03, 0.12, 0.25),
                              brewer.pal(9, name = "Greens")[5:8]), 
                       bp = c("grey90", 
                              brewer.pal(9, name = "Blues")[c(4, 6, 7, 9)]), 
-                      cx = 1.2, ladj) {
+                      cx = 1.2, ladj=1) {
   par(mar = c(0, 0, 2, 0), mfrow = c(3, 3))
   for(i in 1:length(il$cropnames[!il$cropnames %in% 
                                   c("sugarcane", "wheat")])) {
@@ -88,13 +88,13 @@ conv_plot_1 <- function(r, ldim, sdim, tdim, legdim,
                                brewer.pal(9, name = "Greens")[5:8]), 
                         bp = c("grey90", 
                                brewer.pal(9, name = "Blues")[c(4, 6, 7, 9)]), 
-                        cx = 1.2, oma = c(8, 0, 0, 0), ladj) {
+                        cx = 1.2, oma = c(8, 0, 0, 0), ladj=1) {
   par(mar = c(0, 0, 0, 0), oma = oma, bg = "transparent")
   r1 <- ((r > 0) & (cropland > 0.01)) * r
   r2 <- ((r > 0) & (fblock > 0)) * r
-  plot(zam, border = "grey90", col = "grey90")
+  #plot(zam, border = "grey90", col = "grey90")
   plot(cropland, breaks = brks, col = bp, axes = FALSE, box = FALSE, 
-       legend = FALSE, cex.main = 1.2, add = TRUE)
+       legend = FALSE, cex.main = 1.2)#, add = TRUE)
   image(fblock, add = TRUE,  legend = FALSE, col = "grey50")
   image(r, breaks = brks2, axes = FALSE, cex.main = 2, add = TRUE, 
         col = yor, xlab = "", ylab = "")

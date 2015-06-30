@@ -96,17 +96,18 @@ nm_up <- function(x, namevec) {
 #' @export
 set_base_path <- function() {
   dpath <- getwd()
-  if(!"tradeoffMod" %in% strsplit(dpath, .Platform$file.sep)[[1]]) {
+  if(!"agroEcoTradeoff" %in% strsplit(dpath, .Platform$file.sep)[[1]]) {
     stop("setwd() into tradeoffMod", .call = FALSE)
   }
-  full_path(gsub("(tradeoffMod.*)", "", dpath, perl = TRUE), "tradeoffMod")
+  full_path(gsub("(agroEcoTradeoff.*)", "", dpath, perl = TRUE), 
+            "agroEcoTradeoff")
 }
 
 #' Fetches inputs from file structure for trademod
 #' @param input_key A unique file identifier for simulation-specific inputs
 #' @keywords internal
 #' @export
-fetch_inputs <- function(path = "tradeoffMod/external/ext_data", 
+fetch_inputs <- function(path = "external/ext_data", 
                          input_key = "ZA", input = "D") {
   path <- ifelse(input == "D", 
                  full_path(set_base_path(), "external/ext_data/dt"), 

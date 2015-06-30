@@ -10,7 +10,7 @@ conv_plot(scen, ldim = c(0.4, 0.75), sdim = c(0.03, 0.12, 0.25),
   yor = c("transparent", brewer.pal(9, name = "YlOrRd")[5:8]),
   gr = c("transparent", brewer.pal(9, name = "Greens")[5:8]),
   bp = c("grey90", brewer.pal(9, name = "Blues")[c(4, 6, 7, 9)]), cx = 1.2,
-  ladj)
+  ladj = 1)
 }
 \arguments{
 \item{scen}{List index specification which of several results to read in}
