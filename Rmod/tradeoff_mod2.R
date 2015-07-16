@@ -74,18 +74,30 @@ tradeoff_mod2 <- function(prod_targ, ybetas, cbetas, input_key = "ZA",
   }
   
   
-  yield <- il$p_yield * il$cropfrac
+  yield <- il$p_yield
   carbonperyield <- 1/yield #for division
+  carbon <- il$carbon$veg + il$carbon$soil * 0.25
   for(j in il$cropnames) set(carbonperyield, i = NULL, j = j, carbonperyield[[j]] * 
-                            il$carbon$total)
+                            carbon)
   for(j in il$cropnames) set(carbonperyield, i = NULL, j = j, 
                              1 - (carbonperyield[[j]] - min(carbonperyield[[j]]))/
                                diff(range(carbonperyield[[j]])))
   
+  # Temporarily use protected areas as sole biodiversity metric
+  
+  bdperyield <- 1/yield
+  bd <- il$pas
+  bd[(is.na(bd))] <- 0
+  for(j in il$cropnames) set(bdperyield, i = NULL, j = j, bdperyield[[j]] * 
+                               bd)
+  for(j in il$cropnames) set(bdperyield, i = NULL, j = j, 
+                             1 - (bdperyield[[j]] - min(bdperyield[[j]]))/
+                               diff(range(bdperyield[[j]])))
+  
   # constraints module 
   if(input == "D") {
     c_prob <- constraints_dt2(inlist = list("y_std" = il$y_std, "C" = carbonperyield, 
-                                            "bd" = il$cons_p, "cost" = il$cost), 
+                                            "bd" = bdperyield, "cost" = il$cost), 
                               cbetas = cbetas, code = rc, 
                               cropnames = il$cropnames, ctype = ctype, 
                               silent = silent)
@@ -97,24 +109,9 @@ tradeoff_mod2 <- function(prod_targ, ybetas, cbetas, input_key = "ZA",
                             silent = silent)
   }
   
-  
-  #if(input == "D") {
-  #  c_prob <- constraints_dt2(inlist = list("y_std" = il$y_std, "C" = il$carbon_p, 
-  #                                         "bd" = il$cons_p, "cost" = il$cost), 
-  #                           cbetas = cbetas, code = rc, 
-  #                           cropnames = il$cropnames, ctype = ctype, 
-  #                           silent = silent)
-  #} else if(input == "R") {
-  #  rasterOptions(tmpdir = "external/output/temp")  # set tempfile directory
-  #  c_prob <- constraints_r(inlist = list("y_std" = il$y_std, "C" = il$carbon_p, 
-  #                                        "bd" = il$cons_p, "cost" = il$cost), 
-  #                          cbetas = cbetas, code = rc, cropnames = il$cropnames, 
-  #                          silent = silent)
-  #}
-  
   # convert module
   if(input == "D") {
-    converted <- convert_dt(conv_prob = c_prob, target = target, 
+    converted <- convert_dt2(conv_prob = c_prob, target = target, 
                             crop_frac = il$cropfrac, pot_yield = il$p_yield, 
                             cropnames = il$cropnames, base = il$mask, ha = ha, 
                             keep_index = FALSE)
