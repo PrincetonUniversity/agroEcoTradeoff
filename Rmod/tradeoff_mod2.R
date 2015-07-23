@@ -66,7 +66,7 @@ tradeoff_mod2 <- function(prod_targ, ybetas, cbetas, input_key = "ZA",
   
   # target module
   if(input == "D") {
-    target <- targets_dt(prod_targ = prod_targ, currprod = il$currprod, 
+    target <- targets_dt2(prod_targ = prod_targ, currprod = il$currprod, 
                          potprod = il$pp_curr)
   } else if(input == "R") {
     target <- targets_r(prod_targ = prod_targ, currprod = il$currprod, 
@@ -79,9 +79,7 @@ tradeoff_mod2 <- function(prod_targ, ybetas, cbetas, input_key = "ZA",
   carbon <- il$carbon$veg + il$carbon$soil * 0.25
   for(j in il$cropnames) set(carbonperyield, i = NULL, j = j, carbonperyield[[j]] * 
                             carbon)
-  for(j in il$cropnames) set(carbonperyield, i = NULL, j = j, 
-                             1 - (carbonperyield[[j]] - min(carbonperyield[[j]]))/
-                               diff(range(carbonperyield[[j]])))
+  carbonperyield <- 1 - (carbonperyield - min(carbonperyield))/diff(range(carbonperyield))
   
   # Temporarily use protected areas as sole biodiversity metric
   
@@ -90,13 +88,15 @@ tradeoff_mod2 <- function(prod_targ, ybetas, cbetas, input_key = "ZA",
   bd[(is.na(bd))] <- 0
   for(j in il$cropnames) set(bdperyield, i = NULL, j = j, bdperyield[[j]] * 
                                bd)
-  for(j in il$cropnames) set(bdperyield, i = NULL, j = j, 
-                             1 - (bdperyield[[j]] - min(bdperyield[[j]]))/
-                               diff(range(bdperyield[[j]])))
+  bdperyield <- 1 - (bdperyield - min(bdperyield))/diff(range(bdperyield))
+  
+  # New standardized yields
+  
+  y_std_tot <- (il$p_yield - min(il$p_yield))/diff(range(il$p_yield))
   
   # constraints module 
   if(input == "D") {
-    c_prob <- constraints_dt2(inlist = list("y_std" = il$y_std, "C" = carbonperyield, 
+    c_prob <- constraints_dt2(inlist = list("y_std" = y_std_tot, "C" = carbonperyield, 
                                             "bd" = bdperyield, "cost" = il$cost), 
                               cbetas = cbetas, code = rc, 
                               cropnames = il$cropnames, ctype = ctype, 
@@ -111,7 +111,7 @@ tradeoff_mod2 <- function(prod_targ, ybetas, cbetas, input_key = "ZA",
   
   # convert module
   if(input == "D") {
-    converted <- convert_dt2(conv_prob = c_prob, target = target, 
+    converted <- convert_dt4(conv_prob = c_prob, target = target, 
                             crop_frac = il$cropfrac, pot_yield = il$p_yield, 
                             cropnames = il$cropnames, base = il$mask, ha = ha, 
                             keep_index = FALSE)
@@ -123,7 +123,7 @@ tradeoff_mod2 <- function(prod_targ, ybetas, cbetas, input_key = "ZA",
   
   # impacts
   if(input == "D") {
-    impacts <- impact_dt(conv = converted, 
+    impacts <- impact_dt2(conv = converted, 
                          carbon = il$carbon[, c("veg", "soil"), with = FALSE], 
                          pot_yield = il$p_yield, 
                          div_list = il[c("richness", "pas")], 
