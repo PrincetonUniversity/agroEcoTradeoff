@@ -79,15 +79,15 @@ convert_dt4 <- function(conv_prob, target, crop_frac, pot_yield, cropnames, base
   setkey(base, ind)
   #prod_dt <- pot_yield[valind, ] * crop_frac[valind, ] * ha
   #prod_dt <- pot_yield * crop_frac * ha
-  prod_dt <- data.table::as.data.table(as.matrix(pot_yield) * ha)
+  prod_dt <- data.table::as.data.table(as.matrix(pot_yield) * ha) #temporarily removed crop_frac
   prod_dt[, ind := base$ind]
   if(any(is.na(prod_dt)) | any(is.na(conv_prob))) {
     stop("NAs are not allowed", call. = FALSE)
   }
   conv_dt <- data.table(ind = base$ind, key = "ind")
   
-  conv_prob$ind <- 1:nrow(conv_prob)
-  sequence = 1:length(cropnames)
+  conv_prob$ind <- 1:nrow(conv_prob) #use inds to keep track of unallocated pixels
+  sequence = c(1:length(cropnames)) #sequence by which crops are considered
   T <- rep(-1, nrow(conv_prob)) #vector representing allocation of pixels to crops
   targ_rem <- NULL
   
@@ -113,9 +113,8 @@ convert_dt4 <- function(conv_prob, target, crop_frac, pot_yield, cropnames, base
         alloc_rp[inds[1:j]] = alloc_rp[inds[1:j]] + (conv_prob_u[[i]][inds[1:j]] - nextp) #update resid profit vector
       }
     }
-    #Shift sequence to change the order in which the crops are considered
-    sequence = (sequence + 1)%%length(cropnames)
-    sequence[sequence == 0] <- length(cropnames)
+    #Eliminate the last crop considered from the sequence. Its target has been met.
+    sequence <- sequence[1:(length(sequence)-1)]
   }
   
   for (i in 1:length(cropnames)) {

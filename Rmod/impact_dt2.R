@@ -48,13 +48,11 @@
 #'                      ha = ha)
 
 #' @export
-impact_dt2 <- function(conv, carbon, pot_yield, div_list, crop_frac, cropnames,
+impact_dt2 <- function(conv, carbon, pot_yield, div_list, cost, crop_frac, cropnames,
                       ha) {
    cn <- cropnames
    mymean <- function(x) mean(x[x > 0], na.rm = TRUE)
    mysum <- function(x) sum(x, na.rm = TRUE)
-   # zero out frac in uncoverted
-   conv_frac <- crop_frac[, cn, with = FALSE] * conv[, cn, with = FALSE] 
    # areas of conv crops (No longer multiplied by the crop fraction.)
    conv_area <- conv[, cn, with = FALSE] * ha  
    conv_area[, tot := Reduce(`+`, .SD)] # total area of conversion
@@ -68,6 +66,11 @@ impact_dt2 <- function(conv, carbon, pot_yield, div_list, crop_frac, cropnames,
    # Total C loss
    closs_sum <- unlist(lapply(cn, function(i) {
     (conv_area[, i, with = FALSE] * closs)[, lapply(.SD, sum, na.rm = TRUE)]
+   }))
+   
+   # Total cost
+   cost_sum <- unlist(lapply(cn, function(i) {
+     (conv_area[, i, with = FALSE] * cost)[, lapply(.SD, sum, na.rm = TRUE)]
    }))
 
    # Biodiversity loss - species richness
@@ -87,9 +90,9 @@ impact_dt2 <- function(conv, carbon, pot_yield, div_list, crop_frac, cropnames,
    }))
    conv_areat <- round(conv_area[, lapply(.SD, mysum), .SDcol = cn])
    crop_impacts <- cbind.data.frame(t(conv_areat), bdloss, round(cyld, 1),
-                                    closs_sum)
+                                    closs_sum, cost_sum)
    colnames(crop_impacts) <- c("conv_area", "rich_mu", "rich/t_yld", "pa_loss",
-                               "tC/t_yld", "C_tot")
+                               "tC/t_yld", "C_tot", "cost_tot")
    return(crop_impacts)
 }
 

@@ -1,16 +1,19 @@
 library(agroEcoTradeoff)
 source("Rmod/tradeoff_mod2.R")
-source("Rmod/constraints_dt2.R")
+source("Rmod/constraints_dt3.R")
 source("Rmod/convert_dt4.R")
 source("R/pareto.R")
 source("Rmod/targets2.R")
 source("Rmod/impact_dt2.R")
+source("Rmod/input_handler2.R")
+source("Rmod/fetch_inputs2.R")
+source("Rmod/yield_mod2.R")
 
 # 2 Constraints
 # Yield modification
 yblist <- list(yb1 <- c(1, 1))
 # Target multiplier
-targ <- 2
+targ <- 3
 # Refine the step interval over which to search for optimal solutions
 step <- 0.025
 # Pick the constraints to optimize over
@@ -25,7 +28,7 @@ plot(ot$land, ot$carbon, xlab = "Total Area Converted (ha)", ylab = "Total Carbo
 # Yield modification
 yblist <- list(yb1 <- c(1, 1))
 # Target multiplier
-targ <- 2
+targ <- 3
 # Refine the step interval over which to search for optimal solutions
 step <- 0.1
 # Pick the constraints to optimize over

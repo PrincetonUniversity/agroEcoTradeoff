@@ -151,9 +151,8 @@ pareto <- function(cnames, step = 0.1, yblist, targ) {
       outputtable$carbon[count] <- sum(to$impacts$C_tot, na.rm = TRUE)
     if ("bd" %in% cnames)
       outputtable$biodiversity[count] <- sum(to$impacts$pa_loss, na.rm = TRUE)
-    # No cost output yet! Carbon is dummy.
     if ("cost" %in% cnames)
-      outputtable$cost[count] <- sum(to$impacts$C_tot, na.rm = TRUE)
+      outputtable$cost[count] <- sum(to$impacts$cost_tot, na.rm = TRUE)
     count <- count + 1
   }
   
