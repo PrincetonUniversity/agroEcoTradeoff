@@ -60,7 +60,7 @@ tradeoff_mod2 <- function(prod_targ, ybetas, cbetas, input_key = "ZA",
   ha <- res(raster(rnm))[1]^2 / 10000  # nasty, hard-coded
   rc <- run_code(input_key)  # creates a once off code for any outputs
   #il <- input_handler(input_key = input_key, ybetas = ybetas, input = input, code = rc)
-  il <- input_handler(input_key = input_key, ybetas = ybetas, input = input, 
+  il <- input_handler2(input_key = input_key, ybetas = ybetas, input = input, 
                       code = rc, ybeta_update = ybeta_update, 
                       exist_list = exist_list, silent = silent)
   
@@ -73,38 +73,17 @@ tradeoff_mod2 <- function(prod_targ, ybetas, cbetas, input_key = "ZA",
                         potprod = il$pp_curr, cropnames = il$cropnames)
   }
   
-  
-  yield <- il$p_yield
-  carbonperyield <- 1/yield #for division
-  carbon <- il$carbon$veg + il$carbon$soil * 0.25
-  for(j in il$cropnames) set(carbonperyield, i = NULL, j = j, carbonperyield[[j]] * 
-                            carbon)
-  carbonperyield <- 1 - (carbonperyield - min(carbonperyield))/diff(range(carbonperyield))
-  
-  # Temporarily use protected areas as sole biodiversity metric
-  
-  bdperyield <- 1/yield
-  bd <- il$pas
-  bd[(is.na(bd))] <- 0
-  for(j in il$cropnames) set(bdperyield, i = NULL, j = j, bdperyield[[j]] * 
-                               bd)
-  bdperyield <- 1 - (bdperyield - min(bdperyield))/diff(range(bdperyield))
-  
-  # New standardized yields
-  
-  y_std_tot <- (il$p_yield - min(il$p_yield))/diff(range(il$p_yield))
-  
   # constraints module 
   if(input == "D") {
-    c_prob <- constraints_dt2(inlist = list("y_std" = y_std_tot, "C" = carbonperyield, 
-                                            "bd" = bdperyield, "cost" = il$cost), 
+    c_prob <- constraints_dt3(inlist = list("y_std" = il$y_std, "C" = il$carbon_p, 
+                                            "bd" = il$cons_p, "cost" = il$cost_p), 
                               cbetas = cbetas, code = rc, 
                               cropnames = il$cropnames, ctype = ctype, 
                               silent = silent)
   } else if(input == "R") {
     rasterOptions(tmpdir = "external/output/temp")  # set tempfile directory
     c_prob <- constraints_r(inlist = list("y_std" = il$y_std, "C" = il$carbon_p, 
-                                          "bd" = il$cons_p, "cost" = il$cost), 
+                                          "bd" = il$cons_p, "cost" = il$cost_p), 
                             cbetas = cbetas, code = rc, cropnames = il$cropnames, 
                             silent = silent)
   }
@@ -126,7 +105,8 @@ tradeoff_mod2 <- function(prod_targ, ybetas, cbetas, input_key = "ZA",
     impacts <- impact_dt2(conv = converted, 
                          carbon = il$carbon[, c("veg", "soil"), with = FALSE], 
                          pot_yield = il$p_yield, 
-                         div_list = il[c("richness", "pas")], 
+                         div_list = il[c("richness", "pas")],
+                         cost = il$cost,
                          crop_frac = il$cropfrac, 
                          cropnames = il$cropnames, ha = ha)
   } else if(input == "R") {

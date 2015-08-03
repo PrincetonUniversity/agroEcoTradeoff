@@ -102,7 +102,7 @@
 #'                        cropnames = il$cropnames)  
 #' plot(con6r - con6b)  # equivalent to constraints_r
 #' @export
-constraints_dt2 <- function(inlist, cbetas, code, cropnames, ctype = "X", 
+constraints_dt3 <- function(inlist, cbetas, code, cropnames, ctype = "X", 
                            silent = TRUE) {
   if(length(cbetas) != 4) stop("cbetas must be a 4 element vector")
   cbetas_gt0 <- ifelse(cbetas != 0, 1, 0)  # vector to select inputs
@@ -129,40 +129,19 @@ constraints_dt2 <- function(inlist, cbetas, code, cropnames, ctype = "X",
   names(rlist_mod) <- names(rlist)
   
   # create output
-  cnames <- names(rlist_mod)[which(!names(rlist_mod) %in% "y_std")]  
-  yname <- names(rlist_mod)[which(names(rlist_mod) == "y_std")]  # pp a constraint?
-  p_y <- data.table(ind = 1:nrow(inlist$y_std))  # set-up output data.table
-  if(length(cnames) > 0) {  # if constraints are in result,
-    shhh(paste("processing constraints", paste(cnames, collapse = ", ")), 
-         silent = silent)
-    # modified to account for unique constraint values for each crop
+  shhh(paste("processing constraints", paste(cnames, collapse = ", ")), 
+       silent = silent)
+  # modified to account for unique constraint values for each crop
+  i <- 1
+  p_y <- rlist_mod[[i]]
+  while (i < length(rlist_mod)) {
+    i <- i + 1
     if(ctype == "X") {
-      cp <- data.table(c_p = Reduce(`*`, rlist_mod[cnames]))
+      p_y <- p_y + rlist_mod[[i]]
     } else if(ctype == "+") {
-      cp <- data.table(c_p = Reduce(`+`, rlist_mod[cnames]))
+      p_y <- p_y + rlist_mod[[i]]
     }
   }
-  if(length(yname) == 1) {
-    shhh("yield is...", silent = silent)
-    p_y[, c(cropnames) := rlist_mod[[yname]]]  # add y_dt into out_df
-    p_y[, ind := NULL]  # drop index
-    if(exists("cp")) {  # multiply by constraints, if exist
-      shhh("...constrained", silent = silent)
-      if(ctype == "X") {
-        p_y <- p_y * cp
-      } else if(ctype == "+") {
-        p_y <- p_y + cp
-      }
-      rm(cp)  # free up memory
-    } else {
-      shhh("...unconstrained", silent = silent)
-    }
-  } else if(length(yname) == 0) {  # if y_std is not factor, then p_y becomes c_p
-    shhh("p_y for each crop is equal to product of constraints", 
-         silent = silent) 
-    p_y <- cp
-  }
-  setnames(p_y, cropnames)
   return(p_y)
 }
 
