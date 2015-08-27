@@ -1,0 +1,495 @@
+Profile Pit No.,FAO Classification,Local Name/Series,Longitude,Latitude,Horizon,Top-Depth,Bottom Depth,Moist Color,Dry Color,Org. Carbon,Total N,CACO3,GYPSUM,PHH2O,PHKCL,PH CaCl2,ECE,Exch. Ca,Exch Mg,Exch. Na,Exch. K,Exch Al,Exch. Acid,CEC Soil,Sand,Silt,Clay,Textual Class,GRAVEL,BULKDENS
+1,Gleyic Arenosol,Wet Litongo,23.26667,-15.48333,Ah1,0,10,N2/,10YR3/1,36,2,,,,,4.2,,0.2,,,,,,12.6,83,12,5,Loamy Sand,,
+1,Gleyic Arenosol,Wet Litongo,23.26667,-15.48333,Ah2,10,28,N2/,10YR3/1,30,1.4,,,,,4.2,,0.2,0.1,,,,,10,84,11,5,Loamy Sand,,
+1,Gleyic Arenosol,Wet Litongo,23.26667,-15.48333,AC,28,46,10YR4/2,10YR6/2,7,0.1,,,,,4.4,,,0.1,,,,,0.6,83,12,5,Loamy Sand,,
+1,Gleyic Arenosol,Wet Litongo,23.26667,-15.48333,C1,46,72,10YR6/2,,7,0.1,,,,,4.5,,0.1,0.1,,,,,0.4,85,10,5,Loamy Sand,,
+1,Gleyic Arenosol,Wet Litongo,23.26667,-15.48333,C2,72,100,10YR5/3,,,,,,,,4.5,,0.3,,,,,,0.4,85,10,5,Loamy Sand,,
+1,Gleyic Arenosol,Wet Litongo,23.26667,-15.48333,C3,100,135,10YR5/2,,,,,,,,4.7,,0.2,,,,,,0.4,85,10,5,Loamy Sand,,
+2,Eutric Cambisol,,31.88333,-13.15,Ah1,0,16,10YR2/2,,23,1.1,,,,,5.8,,4,0.9,0.1,0.4,,,5.8,74,11,15,Sandy Loam,,
+2,Eutric Cambisol,,31.88333,-13.15,Ah2,16,33,10YR3/2,,12,0.6,,,,,5.5,,7.6,3.6,0.1,0.3,,,13.8,74,7,19,Sandy Loam,,
+2,Eutric Cambisol,,31.88333,-13.15,Ah3,33,54,10YR3/2,,7,0.4,,,,,5.3,,6,2.8,0.1,0.2,,,11.6,75,6,19,Sandy Loam,,
+2,Eutric Cambisol,,31.88333,-13.15,Bw1,54,88,7.5YR3/2,,,,,,,,5.4,,5.6,3.1,0.1,0.3,,,11.6,68,7,25,Sandy Clay Loam,,
+2,Eutric Cambisol,,31.88333,-13.15,Bw2,88,110,7.5YR3/4,,,,,,,,5.5,,5.3,3.9,0.1,0.3,,,11.6,68,7,25,Sandy Clay Loam,,
+3,Haplic Ferralsol,,28.43333,-13.71667,Ah,0,12,7.5YR3/2,,10,0.7,,,,,5.6,0,2,0.9,,0.3,,,3.6,9,14,77,Clay,,
+3,Haplic Ferralsol,,28.43333,-13.71667,BA,12,25,5YR5/6,,7,0.3,,,,,4.5,0,0.2,0.4,,0.2,,,2.8,11,10,79,Clay,,
+3,Haplic Ferralsol,,28.43333,-13.71667,Bws1,25,70,2.5YR5/8,,5,0.3,,,,,4.5,0,0.2,0.9,,0.2,,,2.8,27,9,64,Clay,,
+3,Haplic Ferralsol,,28.43333,-13.71667,Bws2,70,94,2.5YR5/8,,2,0.2,,,,,4.4,0,0.5,0.7,,0.2,,,3.8,39,10,51,Clay,,
+3,Haplic Ferralsol,,28.43333,-13.71667,Bws3,94,185,2.5YR5/8,,2,0.2,,,,,4.5,0,0.7,0.6,,0.1,,,3.2,37,10,53,Clay,,
+3,Haplic Ferralsol,,28.43333,-13.71667,Bws4,185,200,2.5YR5/8,,1,0.2,,,,,4.8,0,0.2,0.4,,0.1,,,4.2,30,16,54,Clay,,
+4,Haplic Ferralsol,,28.81667,-9.71667,Ah,0,8,5YR3/1,,20,1,,,,,4,0,0.6,0.2,,0.2,,,8.8,78,2,20,Sandy Loam,,
+4,Haplic Ferralsol,,28.81667,-9.71667,BA,8,20,5YR3/3,,9,,,,,,3.9,0,0.1,,,,,,4.8,75,8,17,Sandy Loam,,
+4,Haplic Ferralsol,,28.81667,-9.71667,Bws1,20,41,5YR3/4,,5,0.4,,,,,4,0,,,,,,,4,74,5,21,Sandy Clay Loam,,
+4,Haplic Ferralsol,,28.81667,-9.71667,Bws2,41,65,5YR3/4,,4,,,,,,4,0,0.1,,,,,,4,72,6,22,Sandy Clay Loam,,
+4,Haplic Ferralsol,,28.81667,-9.71667,Bws3,65,86,5YR3/4,,4,0.3,,,,,4,0,0.2,,,,,,3.4,70,6,24,Sandy Clay Loam,,
+4,Haplic Ferralsol,,28.81667,-9.71667,Bws4,86,117,5YR3/4,,4,0.2,,,,,4,0,0.2,,,,,,3,70,6,24,Sandy Clay Loam,,
+5,Rhodic Ferralsol,,31.26667,-9.81667,Ap,0,16,2.5YR3/4,,25,1,,,,,5.7,0,3.4,1.6,,0.5,,,11.8,37,30,33,Clay Loam,,
+5,Rhodic Ferralsol,,31.26667,-9.81667,Bws1,16,35,2.5YR3/6,,20,,,,,,5.4,0,0.6,1.3,,0.7,,,8.4,28,19,53,Clay,,
+5,Rhodic Ferralsol,,31.26667,-9.81667,Bws2,35,60,2.5YR3/6,,6,,,,,,,0,0.6,0.6,,0.9,,,7.8,28,19,53,Clay,,
+5,Rhodic Ferralsol,,31.26667,-9.81667,Bws3,60,90,2.5YR3/6,,3,,,,,,,0,0.4,0.3,,0.6,,,6.8,27,18,55,Clay,,
+5,Rhodic Ferralsol,,31.26667,-9.81667,Bws4,90,123,2.5YR3/6,,1,0.3,,,,,5.3,0,0.4,0.4,,0.3,,,6.8,26,27,47,Clay,,
+5,Rhodic Ferralsol,,31.26667,-9.81667,Bws5,123,142,2.5YR3/6,,3,0.9,,,,,,0,0.8,0.7,,0.5,,,8,29,17,54,Clay,,
+6,Xanthic Ferralsol,,28.43333,-13.71667,Ah,0,8,N5/,,10,0.5,,,,,4.3,0,0.3,0.2,,0.1,,,4,83,10,7,Loamy Sand,,
+6,Xanthic Ferralsol,,28.43333,-13.71667,BA,8,32,7.5YR7/4,,6,0.3,,,,,4.3,0,0.1,0.1,,0.1,,,2.4,82,8,10,Loamy Sand,,
+6,Xanthic Ferralsol,,28.43333,-13.71667,Bws1,32,65,7.5YR7/6,,4,0.2,,,,,4.3,0,0.1,0.1,,0.1,,,2.6,75,9,16,Loamy Sand,,
+6,Xanthic Ferralsol,,28.43333,-13.71667,Bws2,65,100,7.5YR7/8,,3,0.2,,,,,4.3,0,0.1,0.4,,0.1,,,2.2,73,9,18,Sandy Loam,,
+6,Xanthic Ferralsol,,28.43333,-13.71667,Bws3,100,269,7.5YR6/8,,3,0.2,,,,,4.3,0,0.2,0.4,,,,,2.4,67,8,25,Sandy Loam,,
+7,Eutric Gleysol,Bulozi series,23.1,-15.2,Ah,0,5,10YR2/1,,20,1.4,,,,,4.8,,3.4,0.9,0.2,0.2,,,9.6,65,24,11,Sandy Loam,,
+7,Eutric Gleysol,Bulozi series,23.1,-15.2,Ahg,5,12,10YR3/1,,11,0.6,,,,,4.7,,1.5,0.4,0.2,0.1,,,4.4,82,10,8,Loamy Sand,,
+7,Eutric Gleysol,Bulozi series,23.1,-15.2,E,12,32,10YR5/3,,3,0.2,,,,,4.9,,1,0.2,0.1,0.1,,,2,76,16,8,Loamy Sand,,
+7,Eutric Gleysol,Bulozi series,23.1,-15.2,Bg1,32,45,10YR4/2,,6,0.4,,,,,5.6,,9.5,1.6,1.1,0.2,,,16.7,,,,,,
+7,Eutric Gleysol,Bulozi series,23.1,-15.2,Bg2,45,70,10YR4/2,,3,0.2,,,,,6,,9,1.4,1.1,0.2,,,14.6,55,12,33,Sandy Clay Loam,,
+7,Eutric Gleysol,Bulozi series,23.1,-15.2,Bg3,70,85,10YR5/2,,3,0.2,,,,,6.5,,8.4,1.3,0.8,0.2,,,12.6,70,6,24,Sandy Loam,,
+8,Fibric Histosol,Liamundi series,23.26667,-15.48333,H1,0,10,10YR1/1,,220,9.5,,,,,4.2,,1.2,0.4,,0.4,,,46.2,,,,,,
+8,Fibric Histosol,Liamundi series,23.26667,-15.48333,H2,10,17,N2/,,380,11.7,,,,,3.7,,1.3,0.3,,0.3,,,32,,,,,,
+8,Fibric Histosol,Liamundi series,23.26667,-15.48333,H3,17,28,N2/,,350,10.9,,,,,3.8,,0.7,0.2,,0.2,,,46.4,,,,,,
+8,Fibric Histosol,Liamundi series,23.26667,-15.48333,H4,28,46,N2/,,400,12.6,,,,,,,0.6,0.2,,0.2,,,45.2,,,,,,
+8,Fibric Histosol,Liamundi series,23.26667,-15.48333,H5,46,70,7.5YR3/2,,570,9.9,,,,,,,1.2,0.2,,0.2,,,45,,,,,,
+9,Ferric Lixisol,"Choma series, shallow phase",28.4,-14.58333,Ah,0,9,10YR4/2,,9,0.6,,,,,5.3,,2.1,0.6,,0.1,,,4,74,19,7,Loamy Sand,,
+9,Ferric Lixisol,"Choma series, shallow phase",28.4,-14.58333,BA,9,21,10YR5/6,,5,,,,,,5,,0.8,0.3,,0.1,,,2,71,18,11, Sandy Loam,,
+9,Ferric Lixisol,"Choma series, shallow phase",28.4,-14.58333,Bt1,21,33,7.5YR5/6,,2,0.2,,,,,5.1,,0.7,0.1,,0.1,,,1.8,70,12,18, Sandy Loam,,
+9,Ferric Lixisol,"Choma series, shallow phase",28.4,-14.58333,Bt2,33,65,7.5YR5/8,,4,0.2,,,,,5.1,,0.5,0.2,,0.2,,,2.2,73,12,15, Sandy Loam,,
+9,Ferric Lixisol,"Choma series, shallow phase",28.4,-14.58333,Bt3,65,82,5YR4/6,,3,0.2,,,,,5.2,,1.1,0.3,,0.3,,,4.4,63,10,27,Sandy Clay Loam,,
+9,Ferric Lixisol,"Choma series, shallow phase",28.4,-14.58333,Bt4,82,95,5YR5/8,,3,,,,,,5.4,,1.4,0.4,,0.4,,,6,55,10,35,Sandy Clay Loam,,
+10,Ferric Lixisol,"Choma series, deep phase",28.4,-14.58333,Ah,0,7,10YR3/4,,20,0.9,,,,,5.7,,5.4,1.2,,0.4,,,7.8,72,10,18,Sandy Loam,,
+10,Ferric Lixisol,"Choma series, deep phase",28.4,-14.58333,BA,7,17,7.5YR4/4,,6,0.3,,,,,5.5,,1.8,0.5,,0.2,,,3.8,73,14,13,Sandy Loam,,
+10,Ferric Lixisol,"Choma series, deep phase",28.4,-14.58333,Bt1,17,29,5YR4/4,,4,0.2,,,,,5.5,,2,0.8,,0.2,,,4,67,14,19,Sandy Loam,,
+10,Ferric Lixisol,"Choma series, deep phase",28.4,-14.58333,Bt2,29,47,5YR4/6,,2,,,,,,5.4,,2.1,1.2,,0.3,,,4.8,61,14,25,Sandy Clay Loam,,
+10,Ferric Lixisol,"Choma series, deep phase",28.4,-14.58333,Bt3,47,80,5YR4/8,,3,,,,,,5.4,,2.9,1.4,,0.4,,,7.2,,,,,,
+10,Ferric Lixisol,"Choma series, deep phase",28.4,-14.58333,Bt4,80,106,5YR5/8,,3,,,,,,5.4,,2.9,1.4,,0.4,,,7.2,53,16,31,Sandy Clay Loam,,
+11,Haplic Phaeozem,"Webster's ""recent alluvium""",31.88333,-13.15,Ap,0,18,10YR2/1,,14,0.8,,,,,6.3,,8.2,3.8,0.1,0.5,,,12,62,19,19,Sandy Loam,,
+11,Haplic Phaeozem,"Webster's ""recent alluvium""",31.88333,-13.15,Ah1,18,38,10YR3/2,,7,0.4,,,,,6.5,,6.3,2.8,0.1,0.4,,,6.2,69,12,19,Sandy Loam,,
+11,Haplic Phaeozem,"Webster's ""recent alluvium""",31.88333,-13.15,Ah2,38,50,10YR3/2,,3,0.3,,,,,6.5,,5.5,2,0.1,0.2,,,8.2,81,8,11,Loamy Sand,,
+11,Haplic Phaeozem,"Webster's ""recent alluvium""",31.88333,-13.15,Ah3,50,68,10YR3/3,,2,0.2,,,,,6.5,,3.2,1.3,0.1,0.2,,,5,85,6,9,Loamy Sand,,
+11,Haplic Phaeozem,"Webster's ""recent alluvium""",31.88333,-13.15,2Bw1,68,83,10YR3/3,,6,0.3,,,,,6.5,,11.4,6.5,0.1,0.5,,,18.6,39,32,29,Clay Loam,,
+11,Haplic Phaeozem,"Webster's ""recent alluvium""",31.88333,-13.15,2Bws2,83,100,,,5,0.4,,,,,6.2,,21.3,13.5,0.1,0.7,,,28.6,54,39,7,Sandy Loam,,
+12,Haplic Phaeozem,"Webster's ""recent alluvium""",31.88333,-13.15,Ap,0,23,10YR2/1,,22,,,,,,5.7,,12.6,4.8,0.1,1,,,17.2,49,30,21,Loam,,
+12,Haplic Phaeozem,"Webster's ""recent alluvium""",31.88333,-13.15,Ah1,23,43,10YR3/2,,11,0.6,,,,,5.9,,10.2,3.7,0.1,0.4,,,16.2,52,25,23,Sandy Clay Loam,,
+12,Haplic Phaeozem,"Webster's ""recent alluvium""",31.88333,-13.15,Ah2,43,63,10YR3/2,,5,0.4,,,,,6,,8.5,3.4,0.1,0.2,,,12.8,,,,,,
+12,Haplic Phaeozem,"Webster's ""recent alluvium""",31.88333,-13.15,Bw1,63,113,10YR3/4,,5,0.4,,,,,6,,7.5,3.6,0.1,0.3,,,13,62,17,21,Sandy Clay Loam,,
+12,Haplic Phaeozem,"Webster's ""recent alluvium""",31.88333,-13.15,2Bw2,113,120,7.5YR3/1,,2,,,,,,6.2,,2.8,1.4,0.1,0.1,,,4.2,84,7,9,Loamy Sand,,
+13,Haplic Phaeozem,,31.88333,-13.15,Ap,0,18,10YR3/2,,10,0.6,,,,,7,,7,2.8,,0.9,,,10.8,71,17,12,Sandy Loam,,
+13,Haplic Phaeozem,,31.88333,-13.15,Ah,18,35,7.5YR3/2,,6,0.5,,,,,6.8,,6,1.8,0.1,0.6,,,10.8,66,18,16,Sandy Loam,,
+13,Haplic Phaeozem,,31.88333,-13.15,Bw1,35,55,5YR3/2,,4,0.4,,,,,6.8,,5.7,4.1,0.1,0.5,,,12,59,15,26,Sandy Clay Loam,,
+13,Haplic Phaeozem,,31.88333,-13.15,Bws2,55,75,5YR3/3,,7,0.3,,,,,6.5,,5.4,4.6,0.1,0.4,,,12,59,17,24,Sandy Clay Loam,,
+13,Haplic Phaeozem,,31.88333,-13.15,Bw3,75,100,5YR3/3,,4,0.2,,,,,6.8,,5.3,4.1,0.1,0.6,,,11.2,62,14,24,Sandy Clay Loam,,
+13,Haplic Phaeozem,,31.88333,-13.15,Bw4,100,118,5YR3/4,,1,0.2,,,,,6.8,,5.9,4,0.2,0.3,,,11.4,43,37,20,Loam,,
+14,Dystric Planosol,,27.21667,-15.76667,Ahg,0,7,10YR2/1,,24,1.9,,,,,4.6,,5.2,2,,0.5,,,16.8,41,30,29,Clay Loam,,
+14,Dystric Planosol,,27.21667,-15.76667,E1,7,14,10YR5/1,,3,0.2,,,,,5,,1.2,0.4,,0.1,,,2.4,60,28,12,Sandy Loam,,
+14,Dystric Planosol,,27.21667,-15.76667,E2,14,19,10YR5/1,,2,0.2,,,,,5,,1.3,0.3,,0.1,,,2.4,69,16,15,Sandy Loam,,
+14,Dystric Planosol,,27.21667,-15.76667,BE,19,32,10YR5/1,,5,0.6,,,,,6,,2.9,1.6,,0.4,,,14.8,31,26,43,Clay,,
+14,Dystric Planosol,,27.21667,-15.76667,Bt1,32,72,2.5Y3/2,,8,0.2,,,,,7.2,,4,2.4,,0.4,,,14.8,33,15,52,Clay,,
+14,Dystric Planosol,,27.21667,-15.76667,Bt2,72,98,2.5Y3/2,,2,0.3,,,,,6.6,,5.5,3.5,1.9,0.5,,,13.4,36,19,45,Clay,,
+15,Carbic Podzol,,23.26667,-15.48333,Ah1,0,17,10YR5/2,10YR6/2,20,0.7,,,,,3.4,,0.6,0.2,,,,,6.6,93,3,4,Sand,,
+15,Carbic Podzol,,23.26667,-15.48333,Ah2,17,28,10YR4/2,10YR6/3,3,0.2,,,,,3.8,,0.2,0.1,,,,,1.4,93,3,4,Sand,,
+15,Carbic Podzol,,23.26667,-15.48333,AB,28,38,10YR3/2,10YR6/3,4,0.2,,,,,4.1,,0.1,0.1,,,,,0.8,92,3,5,Sand,,
+15,Carbic Podzol,,23.26667,-15.48333,Bh1,38,66,10YR3/2,10YR5/3,2,0.2,,,,,4.2,,0.2,0.1,,,,,0.8,91,4,5,Sand,,
+15,Carbic Podzol,,23.26667,-15.48333,Bh2,66,100,10YR3/2,10YR5/3,2,0.1,,,,,4.3,,0.1,0.1,,,,,0.6,90,5,5,Sand,,
+15,Carbic Podzol,,23.26667,-15.48333,Bh3,100,132,10YR3/2,10YR5/3,2,0.1,,,,,4.4,,0.1,0.1,,,,,0.6,89,5,6,Sand,,
+16,Carbic Podzol,Kande series,23.25,-15.2,Ah1,0,10,10YR2/1,,19,1,,,,,3,,0.2,,,,,,7,92,4,4,Sand,,
+16,Carbic Podzol,Kande series,23.25,-15.2,Ah2,10,28,10YR2/1,,20,0.5,,,,,3.2,,0.1,,,,,,3.2,93,3,4,Sand,,
+16,Carbic Podzol,Kande series,23.25,-15.2,Ah3,28,44,10YR2/1,,8,0.2,,,,,3.3,,0.1,,,,,,2.8,93,3,4,Sand,,
+16,Carbic Podzol,Kande series,23.25,-15.2,E/B,44,59,10YR3/1,,3,0.2,,,,,3.3,,0.1,,,,,,2,94,2,4,Sand,,
+16,Carbic Podzol,Kande series,23.25,-15.2,Bh1,59,100,10YR2/2,,6,0.1,,,,,3.6,,0.1,,,,,,1,94,2,4,Sand,,
+16,Carbic Podzol,Kande series,23.25,-15.2,Bh2,100,115,10YR2/2,,6,0.2,,,,,3.9,,0.1,,,,,,1.6,94,2,4,Sand,,
+17,Calcic Solonetz,,24.26667,-17.45,Ahg,0,13,10YR4/2,,4,0.4,,,,,5.5,,1.5,0.5,0.1,,,,3.6,86,9,5,Sand,,
+17,Calcic Solonetz,,24.26667,-17.45,E/Bthg,13,30,5Y5/1,,3,0.3,,,,,5.6,,7.6,0.6,1.8,0.1,,,5.2,84,9,7,Sand,,
+17,Calcic Solonetz,,24.26667,-17.45,Chg1,30,47,5Y6/1,,2,0.2,,,,,6.8,,3.3,0.7,2.6,0.1,,,7.2,79,14,7,Sand,,
+17,Calcic Solonetz,,24.26667,-17.45,Chg2,47,62,5Y6/1,,2,0.2,,,,,7.1,,3.7,0.5,5.3,0.1,,,9.4,74,12,14,Sandy Loam,,
+17,Calcic Solonetz,,24.26667,-17.45,Ckg3,62,82,5Y6/1,,,,,,,,7.3,,4,0.2,,,,,10.2,72,12,16,Sandy Loam,,
+17,Calcic Solonetz,,24.26667,-17.45,Ckg4,82,100,5Y5/1,,,,,,,,7.5,,,,,,,,,65,16,19,Sandy Loam,,
+18,Mollic Solonetz,,37.88333,-13.15,Ah1,0,10,10YR3/2,,12,0.8,,,,,5.9,,7.1,7.4,3,0.4,,,17.2,56,15,29,Sandy Clay Loam,,
+18,Mollic Solonetz,,37.88333,-13.15,Btn1,10,21,10YR3/2,,,,,,,,6.3,,,,,,,,,48,13,39,Sandy Clay,,
+18,Mollic Solonetz,,37.88333,-13.15,Btn2,21,35,10YR3/2,,9,0.5,,,,,6.8,,9,8.4,,0.4,,,30,,,,,,
+18,Mollic Solonetz,,37.88333,-13.15,Btn3,35,75,10YR3/2,,6,0.3,,,,,7,,13.2,10.1,11.6,0.6,,,28.6,37,15,48,Sandy Clay,,
+18,Mollic Solonetz,,37.88333,-13.15,Btn4,75,100,10YR3/2,,4,0.3,,,,,6.9,,18.9,18,11.1,0.9,,,28.6,41,13,46,Sandy Clay Loam,,
+18,Mollic Solonetz,,37.88333,-13.15,Btn5,100,115,10YR3/2,,5,0.3,,,,,6.7,,15.3,9.5,11.1,0.6,,,28.6,41,15,44,Clay,,
+19,Eutric Vertisol,Kafue series,27.21667,-15.76667,Ahg1,0,4,10YR2/1,,114,4.2,,,,,4.9,,2.2,0.6,,0.4,,,29,35,28,37,Clay Loam,,
+19,Eutric Vertisol,Kafue series,27.21667,-15.76667,Ahg2,4,12,10YR4/6,,15,1.6,,,,,5.5,,5.5,3.7,,0.7,,,22.2,23,12,65,Clay,,
+19,Eutric Vertisol,Kafue series,27.21667,-15.76667,Bwg1,12,30,5Y4/1,,10,0.7,,,,,6.3,,7.3,5.4,,0.7,,,21.6,22,5,73,Clay,,
+19,Eutric Vertisol,Kafue series,27.21667,-15.76667,Bwg2,30,52,5Y4/1,,5,,,,,,,,,,1.9,,,,23.6,20,19,61,Clay,,
+19,Eutric Vertisol,Kafue series,27.21667,-15.76667,Cgk,52,70,5Y6/1,,4,0.3,,,,,7.3,,,,,,,,21.4,21,4,75,Clay,,
+19,Eutric Vertisol,Kafue series,27.21667,-15.76667,Cg,70,102,5Y6/1,,4,0.2,,,,,7.3,,2.8,9.8,3.2,0.6,,,29.6,20,12,68,Clay,,
+20,Eutric Vertisol,Kafue series,27.21667,-15.76667,Hg,0,10,10YR2/1,,172,6,,,,,4.6,,9.2,3.6,,,,,48.2,18,51,31,Silt Clay Loam,,
+20,Eutric Vertisol,Kafue series,27.21667,-15.76667,Ahg1,10,25,N2/,,126,4.5,,,,,4.9,,7.4,2.4,,0.7,,,41,13,50,37,Silt Clay Loam,,
+20,Eutric Vertisol,Kafue series,27.21667,-15.76667,Ahg2,25,31,N3/,,11,1.3,,,,,5.8,,9.6,5,,0.8,,,19.8,23,24,53,Clay,,
+20,Eutric Vertisol,Kafue series,27.21667,-15.76667,Ahg3,31,60,N3/,,2,0.4,,,,,6.6,,12,6.5,0.9,0.7,,,24.7,22,15,63,Clay,,
+20,Eutric Vertisol,Kafue series,27.21667,-15.76667,Cg1,60,85,5Y6/1,,2,0.4,,,,,6.8,,15.6,8,,0.5,,,24.6,21,9,70,Clay,,
+20,Eutric Vertisol,Kafue series,27.21667,-15.76667,Cg2,85,125,5Y6/1,,1,0.2,1,,,,7,,15.3,7.5,1.3,0.4,,,26.6,23,9,68,Clay,,
+21,Calcic Vertisol,Kafue series,27.21667,-15.76667,Ah1,0,6,N2/,,177,7.7,63,,,,5.1,,21.6,6,,1.2,,,53.6,18,53,29,Silt Clay Loam,,
+21,Calcic Vertisol,Kafue series,27.21667,-15.76667,Ah2,6,14,N2/,,113,3.5,,,,,5,,6.5,2.2,,0.4,,,39.4,9,45,46,Silt Clay,,
+21,Calcic Vertisol,Kafue series,27.21667,-15.76667,Ah3,14,19,N2/,,7,0.6,,,,,6,,12.9,6.9,,0.5,,,23,14,17,69,Clay,,
+21,Calcic Vertisol,Kafue series,27.21667,-15.76667,ABg,19,40,5YR4/6,,,,,,,,,,,,,,,,,,,,,,
+21,Calcic Vertisol,Kafue series,27.21667,-15.76667,Bwg,40,59,10YR5/6,,2,0.3,,,,,6.5,,10.5,5.6,1,0.3,,,31,12,19,69,Clay,,
+21,Calcic Vertisol,Kafue series,27.21667,-15.76667,Cg1,59,90,5Y5/1,,1,0.2,7,,,,7.3,,16.2,9.6,,0.4,,,32.6,15,16,69,Clay,,
+22,Rhodic Ferralsol,Mpongwe series,28.76667,-13.55,Ah,0,3,5YR3/4,,24.8,1.7,,,,,4.6,0,4.5,1.4,,0.3,,,8.5,39,36,25,Loam,,
+22,Rhodic Ferralsol,Mpongwe series,28.76667,-13.55,Bws1,3,10,2.5YR3/6,,11.5,0.9,,,,,4.6,0,2,0.7,,0.1,,,7.5,28,29,43,Clay,,
+22,Rhodic Ferralsol,Mpongwe series,28.76667,-13.55,Bws2,10,25,2.5YR3/6,,5.5,0.7,,,,,4.8,0,2,0.7,,0.1,,,6,20,21,59,Clay,,
+22,Rhodic Ferralsol,Mpongwe series,28.76667,-13.55,Bws3,25,37,2.5YR3/6,,5.2,0.6,,,,,4.6,0,1.8,0.6,,0.1,,,6,20,23,57,Clay,,
+22,Rhodic Ferralsol,Mpongwe series,28.76667,-13.55,Bws4,37,57,2.5YR3/6,,4.4,0.4,,,,,5.2,0,2.2,0.7,,0.1,,,5.7,22,19,59,Clay,,
+22,Rhodic Ferralsol,Mpongwe series,28.76667,-13.55,Bws5,57,97,2.5YR3/6,,4.1,0.5,,,,,,0,2.3,0.7,,0.1,,,5.4,21,20,59,Clay,,
+23,Umbric Gleysol,,30.26667,-12.06667,Ah1,0,7,10YR2/1,,100,3.3,,,,,5.2,,2.3,0.6,,0.2,,,18.3,40,36,24,Loam,,
+23,Umbric Gleysol,,30.26667,-12.06667,Ah2,7,15,10YR3/1,,76,2.2,,,,,5,,2,0.4,,0.1,,,12.1,40,31,29,Loam,,
+23,Umbric Gleysol,,30.26667,-12.06667,Cr1,15,23,2.5Y5/2,,15,1.2,,,,,4.9,,1.9,0.3,,0.1,,,9.4,40,44,16,Loam,,
+23,Umbric Gleysol,,30.26667,-12.06667,Cr2,23,45,2.5Y5/2,,9,0.8,,,,,4.9,,1.9,0.4,,0.1,,,9.1,35,20,45,Clay,,
+23,Umbric Gleysol,,30.26667,-12.06667,Cg1,45,64,5Y5/1,,7,0.7,,,,,4.7,,1.9,0.3,,0.1,,,11.1,28,22,50,Clay,,
+23,Umbric Gleysol,,30.26667,-12.06667,Cg2,64,90,5Y5/1,,6,0.6,,,,,4.9,,2.3,0.6,,0.1,,,12.2,19,16,65,Clay,,
+24,Umbric Gleysol,,30.26667,-12.06667,H,0,9,10YR2/1,,123,5.6,,,,,5.2,,2.1,0.7,,0.5,,,19.3,35,50,15,Loam,,
+24,Umbric Gleysol,,30.26667,-12.06667,Ah,9,33,10YR2/1,,74,3.9,,,,,5.2,,1.2,0.4,,0.3,,,20.4,38,51,11,Silt Loam,,
+24,Umbric Gleysol,,30.26667,-12.06667,Cg1,33,70,2.5YR6/2,,7,0.6,,,,,4.6,,1.9,1.4,,0.2,,,9.6,33,14,53,Clay,,
+24,Umbric Gleysol,,30.26667,-12.06667,Cg2,70,100,5Y5/3,,4,0.5,,,,,4.7,,2.9,2,,0.2,,,12.3,15,28,57,Clay,,
+25,Umbric Gleysol,,30.26667,-12.06667,Ah1,0,8,10YR3/2,,108,5.2,,,,,5.3,,1.6,0.4,,0.4,,,44.9,35,56,9,Silt Loam,,
+25,Umbric Gleysol,,30.26667,-12.06667,Ah2,8,13,10YR3/2,,103,5,,,,,5,,1.8,0.4,,0.3,,,22.8,37,52,11,Silt Loam,,
+25,Umbric Gleysol,,30.26667,-12.06667,Ah3,13,32,10YR3/2,,24,2.5,,,,,5.3,,1.1,0.4,,0.1,,,15.9,56,37,7,Sandy Loam,,
+25,Umbric Gleysol,,30.26667,-12.06667,Ahg,32,38,10YR3/3,,9,1.1,,,,,5,,0.9,0.5,,0.1,,,14.3,62,18,20,Sandy Clay Loam,,
+25,Umbric Gleysol,,30.26667,-12.06667,ACg,38,69,10YR5/2,,3,0.3,,,,,4.7,,0.6,0.4,,,,,3.4,72,9,19,Sandy Loam,,
+25,Umbric Gleysol,,30.26667,-12.06667,Cg,69,100,10YR6/2,,,,,,,,4.9,,0.9,0.5,,,,,3.2,65,12,23,Sandy Clay Loam,,
+26,Umbric Gleysol,,30.26667,-12.06667,Ah1,0,7,10YR3/1,,56,2.3,,,,,4.7,,1.7,0.5,,0.2,,,13,61,27,12,Sandy Loam,,
+26,Umbric Gleysol,,30.26667,-12.06667,Ah2,7,13,10YR2/1,,52,2.5,,,,,4.6,,1.4,0.1,,0.1,,,13.8,59,31,10,Sandy Loam,,
+26,Umbric Gleysol,,30.26667,-12.06667,Ah3,13,22,10YR3/1,,51,4,,,,,5.4,,1.1,0.4,,0.2,,,22.7,41,50,9,Loam,,
+26,Umbric Gleysol,,30.26667,-12.06667,Ah4,22,50,10YR4/1,,12,1,,,,,4.5,,1.1,0.2,,,,,7.1,69,19,12,Sandy Loam,,
+26,Umbric Gleysol,,30.26667,-12.06667,Cg,50,100,10YR6/1,,12,0.3,,,,,4.3,,0.7,0.2,,,,,5,70,10,20,Sandy Loam,,
+27,Umbric Gleysol,,30.26667,-12.06667,Ah1,0,5,10YR2/1,,85,4.2,,,,,5.4,,1.5,0.4,,0.2,,,14.4,56,39,5,Sandy Loam,,
+27,Umbric Gleysol,,30.26667,-12.06667,Ah2,5,20,10YR2/1,,50,2,,,,,5,,1.1,0.4,,0.1,,,9.2,61,23,16,Sandy Loam,,
+27,Umbric Gleysol,,30.26667,-12.06667,Cr,20,35,5Y6/1,,6,0.5,,,,,5.1,,1.1,0.6,,0.1,,,3.8,70,11,19,Sandy Loam,,
+27,Umbric Gleysol,,30.26667,-12.06667,Cg1,35,57,5Y6/1,,4,0.3,,,,,5.5,,1.4,0.8,,0.1,,,4.8,59,12,29,Sandy clay Loam,,
+27,Umbric Gleysol,,30.26667,-12.06667,Cg2,57,85,5Y6/1,,3,0.3,,,,,5.8,,2.7,1.6,,0.1,,,7.8,46,14,40,Sandy Clay,,
+27,Umbric Gleysol,,30.26667,-12.06667,Cg3,85,100,5Y6/1,,3,0.3,,,,,5.9,,3.5,1.9,,0.1,,,8.9,42,16,42,Sandy Clay,,
+28,Carbic Podzol,Kabata series,23.26667,-15.48333,Ah1,0,14,N2/,N7/,9,0.4,,,,,3.6,,,0.1,,,,,2.3,96,1,3,Sand,,
+28,Carbic Podzol,Kabata series,23.26667,-15.48333,Ah2,14,24,10YR3/2,10YR6/2,6,0.2,,,,,4,,0.1,,,,,,1,96,1,3,Sand,,
+28,Carbic Podzol,Kabata series,23.26667,-15.48333,Ah3,24,33,10YR3/2,10YR5/2,4,0.1,,,,,4.2,,,,,,,,0.9,93,4,3,Sand,,
+28,Carbic Podzol,Kabata series,23.26667,-15.48333,BA1,33,46,10YR4/2,10YR6/2,4,,,,,,4.5,,,,,,,,0.8,96,1,3,Sand,,
+28,Carbic Podzol,Kabata series,23.26667,-15.48333,BA2,46,70,10YR4/2,10YR6/2,4,,,,,,4.6,,0.1,0.1,,,,,0.7,96,1,3,Sand,,
+28,Carbic Podzol,Kabata series,23.26667,-15.48333,BA3,70,85,10YR4/2,10YR6/2,,,,,,,,,,,,,,,,96,1,3,Sand,,
+29,Haplic Acrisol,Mbala Series,31.5,-8.83333,Ap1,0,17,7.5YR4/4,,9,0.6,0,0,5.8,4.7,,0,1.2,0.6,,0.3,0.2,0.2,8.1,40,38,22,Loam,,1.22
+29,Haplic Acrisol,Mbala Series,31.5,-8.83333,Ap2,17,25,7.5YR4/4,,7.5,0.5,0,0,5.8,4.6,,0,1.2,0.5,,0.4,0.1,0.2,7.9,38,37,25,Loam,,
+29,Haplic Acrisol,Mbala Series,31.5,-8.83333,AB,25,45,5YR4/4,,4.9,0.1,0,0,6,4.6,,0,0.4,0.6,,0.5,0.1,0.2,8.4,27,32,41,Clay,,1.41
+29,Haplic Acrisol,Mbala Series,31.5,-8.83333,Bt11,45,60,5YR4/8,,3.2,,0,0,6,4.7,,0,0.8,0.8,,0.5,1,0.2,9.2,25,30,45,Clay,,
+29,Haplic Acrisol,Mbala Series,31.5,-8.83333,Bt12,60,80,5YR4/8,,2.3,,0,0,5.8,4.8,,0,,0.8,,0.4,,0.1,8.6,25,32,43,Clay,,
+29,Haplic Acrisol,Mbala Series,31.5,-8.83333,Bt21,80,120,5YR4/8,,1.5,,0,0,6.1,5,,0,0.2,0.7,,0.3,,,6.8,25,36,39,Clay,,1.24
+29,Haplic Acrisol,Mbala Series,31.5,-8.83333,,120,140,,,,,,,,,,0,,,,,,,,,,,,,
+30,Haplic Acrisol,Mufilira sandy loam,31.13333,-10.16667,Ah,0,10,7.5YR3/3,,17.2,1.3,0,0,4.8,4,,0,0.2,0.7,0.1,,0.5,1.1,6.5,73,6,21,Sandy Clay Loam,,
+30,Haplic Acrisol,Mufilira sandy loam,31.13333,-10.16667,AB,10,36,7.5YR5/4,,5.6,0.1,0,0,4.8,4.2,,0,,0.3,0.1,,0.9,1.3,3.6,58,6,36,Sandy Clay ,,
+30,Haplic Acrisol,Mufilira sandy loam,31.13333,-10.16667,Bt1,36,72,7.5YR5/6,,3.5,0.1,0,0,4.7,4.1,,0,,0.3,,,1,1.3,2.8,48,6,46,clay,,
+30,Haplic Acrisol,Mufilira sandy loam,31.13333,-10.16667,Bt21,72,100,5YR5/7,,2,,0,0,4.9,4.2,,0,,0.3,,,1.9,1.2,3.2,49,6,45,clay,,
+30,Haplic Acrisol,Mufilira sandy loam,31.13333,-10.16667,Bt22,100,130,5YR5/7,,1.3,0.3,0,0,5.1,4.2,,0,,,,,1,1.2,3,48,7,45,clay,,
+31,Ferralic Cambisol,Mwiemba Series,31.16667,-10.16667,Ah1,0,10,7.5YR3/2,,15.4,0.8,0,0,5.9,4.8,,0.100000001,1.3,0.8,0.1,0.2,,0.2,6,84,6,10,Loam,,1.19
+31,Ferralic Cambisol,Mwiemba Series,31.16667,-10.16667,Ah2,10,20,7.5YR3/2,,5.9,0.8,0,0,6.2,4.7,,0.039999999,1.3,0.8,0.1,0.2,,,6,85,5,10,Loam,,
+31,Ferralic Cambisol,Mwiemba Series,31.16667,-10.16667,BA,20,43,5YR4/6,,2.5,0.4,0,0,6.1,4.5,,0.029999999,0.5,0.5,0.1,0.2,,,2.8,82,6,12,Loamy Sand,,1.33
+31,Ferralic Cambisol,Mwiemba Series,31.16667,-10.16667,Bw1,43,70,2.5YR4/6,,1.5,,0,0,6,4.5,,0.02,0.4,0.6,0.1,0.1,,0.2,2.4,81,6,13,Loamy Sand,,1.35
+31,Ferralic Cambisol,Mwiemba Series,31.16667,-10.16667,Bw21,70,120,2.5YR4/8,,0.9,,0,0,5.5,4.3,,0.02,0.2,0.5,0.1,0.1,0.4,0.6,2.6,77,4,19,Sandy loam,,
+31,Ferralic Cambisol,Mwiemba Series,31.16667,-10.16667,Bw22,120,150,2.5YR4/8,,0.7,,0,0,5.3,4.2,,0.02,0.2,0.5,,0.1,0.6,0.8,3,78,2,20,Sandy loam,,
+32,Haplic Ferralsol,Malashi Series,31.28333,-8.91667,Ap1,0,6,5YR4/4,,21,1.2,0,0,5.5,4.4,,0,1.8,0.8,0.3,,0.5,0.7,14.8,30,19,51,Clay,,
+32,Haplic Ferralsol,Malashi Series,31.28333,-8.91667,Ap2,6,12,5YR4/4,,13,0.8,0,0,5.9,4.6,,0,1.2,1.1,0.3,,0.2,0.3,13.5,28,12,60,Clay,,1.2
+32,Haplic Ferralsol,Malashi Series,31.28333,-8.91667,BA,12,30,5YR4/8,,7,0.3,0,0,6.3,5,,0,1,0.9,0.2,,,,11.1,26,14,60,Clay,,1.17
+32,Haplic Ferralsol,Malashi Series,31.28333,-8.91667,Bt1,30,54,2.5YR3/6,,5,0.4,0,0,5.7,5.3,,0,0.6,1,0.2,,,0.1,9.5,24,13,63,Clay,,
+32,Haplic Ferralsol,Malashi Series,31.28333,-8.91667,Bt2,54,80,2.5YR3/6,,3,,0,0,5.8,5.5,,0,0.6,0.9,0.2,,,,9.4,26,16,58,Clay,,1.03
+32,Haplic Ferralsol,Malashi Series,31.28333,-8.91667,Bt3,80,110,2.5YR4/6,,3,,0,0,6,5.6,,0,0.1,1,0.3,,,0.1,9.5,25,14,61,Clay,,
+32,Haplic Ferralsol,Malashi Series,31.28333,-8.91667,Bt4,110,130,2.5YR4/6,,4,,0,0,5.5,5.2,,0,1.6,0.8,0.2,,0.1,0.1,10,24,16,60,Clay,,1.1
+32,Haplic Ferralsol,Malashi Series,31.28333,-8.91667,C,130,145,,,,,,,,,,0,,,,,,,,60,18,22,Sandy Clay Loam,,
+33,Rhodic Ferralsol,Malashi clay,28.18333,-13.51667,Ah,0,6,2.5YR3/4,2.5YR4/4,18.1,1.1,0,0,5.2,4.2,,0,0.8,0.7,0.2,,0.8,1.2,9.3,34,19,47,Clay,,
+33,Rhodic Ferralsol,Malashi clay,28.18333,-13.51667,BA,6,25,10R4/6,10R4/8,8.1,0.7,0,0,5,4.1,,0,0.2,0.7,0.1,,1.2,1.5,8.6,23,15,62,Clay,,
+33,Rhodic Ferralsol,Malashi clay,28.18333,-13.51667,Bt1,25,68,10R4/6,10R5/6,4.2,0.4,0,0,5.1,4.2,,0,0.4,0.3,,,0.3,1.1,6.7,19,12,69,Clay,,
+33,Rhodic Ferralsol,Malashi clay,28.18333,-13.51667,Bt21,68,100,10R4/6,10R5/6,2.9,0.4,0,0,5.3,4.6,,0,0.6,0.7,,,,0.4,6.7,19,14,67,Clay,,
+33,Rhodic Ferralsol,Malashi clay,28.18333,-13.51667,Bt22,100,250,10R4/6,10R5/6,2,0.3,0,0,5.4,4.8,,0,0.8,0.7,0.1,,,0.2,5.4,19,13,68,Clay,,
+33,Rhodic Ferralsol,Malashi clay,28.18333,-13.51667,C1,250,300,,,2.2,0.3,0,0,5.5,5,,0,1,0.7,,,,0.2,5.8,17,15,68,Clay,,
+33,Rhodic Ferralsol,Malashi clay,28.18333,-13.51667,C2,300,315,,,,,,,,,,0,,,,,,,,90,9,1,Sand,,
+34,Rhodic Ferralsol,Mangango Series,31.16667,-10.16667,Ah,0,7,5YR3/3,,27,,0,0,5,4.3,,0,1.6,0.3,0.2,,0.5,0.8,7.1,70,9,21,Sandy clay Loam,,
+34,Rhodic Ferralsol,Mangango Series,31.16667,-10.16667,BA,7,24,2.5YR3/5,,12,,0,0,5,4.1,,0,0.6,0.1,0.1,,1,1.3,5.2,70,9,21,Sandy clay Loam,,
+34,Rhodic Ferralsol,Mangango Series,31.16667,-10.16667,Bt1,24,40,2.5YR3/6,,4,,0,0,5.1,4.2,,0,0.1,,0.1,,0.8,1,2.6,67,7,26,Sandy clay Loam,,
+34,Rhodic Ferralsol,Mangango Series,31.16667,-10.16667,Bt2,40,70,2.5YR3/6,,2,,0,0,5.2,4.3,,0,0.4,0.1,0.1,,0.8,0.7,2.4,67,6,27,Sandy clay Loam,,
+34,Rhodic Ferralsol,Mangango Series,31.16667,-10.16667,Bt3,70,100,2.5YR3/6,,1,,0,0,5,4.3,,0,,0.1,,,0.6,0.8,1.9,65,7,28,Sandy clay Loam,,
+34,Rhodic Ferralsol,Mangango Series,31.16667,-10.16667,Bt4,100,130,2.5YR4/6,,2,,0,0,4.9,4.2,,0,0.1,,,,0.6,0.9,1.7,65,8,27,Sandy clay Loam,,
+34,Rhodic Ferralsol,Mangango Series,31.16667,-10.16667,C,130,155,2.5YR4/6,,1,,0,0,5.1,4.2,,0,0.1,,,,0.7,0.8,1.7,65,8,27,Sandy clay Loam,,
+35,Xanthic Ferralsol,Misamfu Series,31.16667,-10.16667,Ah,0,12,10YR3/4,,9.1,0.3,0,0,5.5,4.3,,0,0.4,0.3,0.5,,0.5,0.7,3.5,80,4,16,Sandy Loam,,1.28
+35,Xanthic Ferralsol,Misamfu Series,31.16667,-10.16667,AB,12,32,7.5YR4/4,,3.8,0.3,0,0,5.1,4.3,,0,,0.3,,,0.7,0.8,3.5,76,5,19,Sandy  Loam,,1.28
+35,Xanthic Ferralsol,Misamfu Series,31.16667,-10.16667,Bw1,32,50,7.5YR5/6,,2.6,0.4,0,0,5.2,4.3,,0,0.2,0.3,,,0.4,0.5,2.3,70,5,25,Sandy Clay Loam,,
+35,Xanthic Ferralsol,Misamfu Series,31.16667,-10.16667,Bw12,50,72,7.5YR5/6,,2,,0,0,5.1,4.2,,0,,0.3,,,0.5,0.8,2.2,68,5,27,Sandy Clay Loam,,
+35,Xanthic Ferralsol,Misamfu Series,31.16667,-10.16667,Bw2,72,106,7.5YR5/6,,1.4,0.3,0,0,5,4.2,,0,,,,,0.7,0.8,2.8,67,6,27,Sandy Clay Loam,,1.28
+35,Xanthic Ferralsol,Misamfu Series,31.16667,-10.16667,Bw31,106,130,7.5YR5/6,,1.4,0.3,0,0,5,4.2,,0,,,,,0.7,0.8,1.9,67,8,25,Sandy Clay Loam,,
+35,Xanthic Ferralsol,Misamfu Series,31.16667,-10.16667,Bw32,130,160,7.5YR5/6,,0.6,0.4,0,0,5,4.2,,0,,,,,0.6,0.8,2,66,8,26,Sandy Clay Loam,,
+36,Xanthic Ferralsol,Misamfu sandy loam,31.16667,-10.16667,Ah,0,14,10YR3/2,,7.1,0.399999976,0,0,5.7,4.2,,0,0.6,0.3,0.1,,0.4,0.7,6.8,78,5,17,Sandy loam,,
+36,Xanthic Ferralsol,Misamfu sandy loam,31.16667,-10.16667,AB,14,40,10YR4/4,,3.9,0.299999982,0,0,5.8,4.1,,0,0.4,0.2,0.1,,0.6,0.8,6,68,4,28,Sandy Clay Loam,,
+36,Xanthic Ferralsol,Misamfu sandy loam,31.16667,-10.16667,Bw1,40,60,10YR5/6,,1.9,0.199999988,0,0,5.9,4.3,,0,0.3,0.2,0.1,,0.2,0.5,4.9,64,7,29,Sandy Clay Loam,,
+36,Xanthic Ferralsol,Misamfu sandy loam,31.16667,-10.16667,Bw2,60,110,10YR5/6,,1.6,,0,0,5.4,4.1,,0,,0.2,0.1,,0.6,0.9,4.8,65,1,34,Sandy Clay Loam,,
+37,Carbic Podzol,Kaande Series,23.26667,-15.22917,Ah1,0,3,10YR2/1,,19,1.5,0,0,4.4,3.5,,0.07,1.9,0.5,,0.1,0.3,0.8,9,97,2,1,Sand,,
+37,Carbic Podzol,Kaande Series,23.26667,-15.22917,Ah2,3,10,10YR2/1,,16.7,1,0,0,4.2,3.1,,0.029999999,0.2,,,,0.4,1.3,7,98,1,1,Sand,,
+37,Carbic Podzol,Kaande Series,23.26667,-15.22917,Ah3,10,28,10YR2/1,,8.6,0.5,0,0,4.3,3.2,,0.02,0.1,,,,1,1.5,3.2,98,1,1,Sand,,
+37,Carbic Podzol,Kaande Series,23.26667,-15.22917,E1,28,47,,10YR3/1,5.2,0.2,0,0,4.6,3.7,,0.02,0.1,,,,0.6,1,2.8,98,1,1,Sand,,
+37,Carbic Podzol,Kaande Series,23.26667,-15.22917,E2,47,59,,10YR3/1,3.7,0.2,0,0,4.7,3.9,,0.02,0.1,,,,0.4,0.7,2,98,1,1,Sand,,
+37,Carbic Podzol,Kaande Series,23.26667,-15.22917,EB,59,74,,10YR3/1,3.6,0.1,0,0,5,4.3,,0.02,0.1,,,,0.3,0.6,1,98,1,1,Sand,,
+37,Carbic Podzol,Kaande Series,23.26667,-15.22917,Bh11,74,88,,10YR2/2,5.6,0.2,0,0,5,4.4,,0.01,0.1,,,,0.4,0.7,1.6,98,1,1,Sand,,
+37,Carbic Podzol,Kaande Series,23.26667,-15.22917,Bh12,88,104,,10YR2/2,5.1,0.2,0,0,5.1,4.6,,0.01,0.1,,,,0.3,0.5,2.2,98,1,1,Sand,,
+37,Carbic Podzol,Kaande Series,23.26667,-15.22917,Bh2,104,120,,10YR3/4,4.2,0.2,0,0,5.3,4.7,,0.01,0.1,,,,0.3,0.4,1,97,1,2,Sand,,
+37,Carbic Podzol,Kaande Series,23.26667,-15.22917,,120,140,,,3.600000143,0.099999994,0,0,5.199999809,4.699999809,,0.01,0.100000001,0,,0,0.200000003,0.300000012,1.799999952,98,1,1,Sand,,
+38,Dystric Regosol,unnamed,31.16667,-10.16667,Ah,0,16,10YR3/2,10YR4/3,9,0.6,0,0,5.5,4.3,,0.109999999,1.1,0.4,0.1,0.2,0.1,0.3,4.8,83,8,9,Loamy Sand,,
+38,Dystric Regosol,unnamed,31.16667,-10.16667,AC,16,30,7.5YR4/4,7.5YR5/4,4.5,0.3,0,0,6,4.4,,0.039999999,0.4,0.4,0.1,0.1,0.2,0.3,2.7,83,7,10,Loamy Sand,,
+38,Dystric Regosol,unnamed,31.16667,-10.16667,C1,30,50,5YR5/6,7.5YR6/6,1.5,0.2,0,0,6,4.3,,0.02,0.4,0.4,0.1,0.1,0.1,0.3,2.2,79,7,14,Loamy Sand,,1.5
+38,Dystric Regosol,unnamed,31.16667,-10.16667,C2,50,63,5YR5/6,7.5YR6/6,0.9,,0,0,6.1,4.3,,0.02,0.4,0.4,0.1,0.1,,,2.2,84,7,9,Loamy Sand,,
+38,Dystric Regosol,unnamed,31.16667,-10.16667,2Btb1,63,94,2.5YR4/6,2.5YR6/8,1.7,,0,0,5.6,3.9,,0.01,0.4,0.6,0.1,0.2,1.5,2,4.8,64,7,29,Sandy Clay loam,,1.51
+38,Dystric Regosol,unnamed,31.16667,-10.16667,2Btb2,94,120,2.5YR4/6,2.5YR6/8,1.3,,0,0,5.5,3.9,,0.01,0.4,0.4,0.1,0.3,1.7,2,5.2,58,5,37,Sandy Clay,,
+39,Ferric Acrisol,Ipafu series,25.23333,-13.76667,Ah,0,9,10YR4/2,10YR6/2,7.8,,,,6.7,,5.9,0,2.2,0.8,,0.3,0.1,0.1,5.3,64,26,10,Sandy Loam,,
+39,Ferric Acrisol,Ipafu series,25.23333,-13.76667,AB,9,17,10YR5/3,10YR7/2,3.2,,0,0,5.3,,4.4,0,0.5,0.7,,0.2,,,3.7,52,30,18,Sandy Loam,,
+39,Ferric Acrisol,Ipafu series,25.23333,-13.76667,BA,17,31,10YR6/4,10YR7/3,2.4,,0,0,5.2,,4.2,0,0.3,0.7,,0.3,,,3.1,40,24,36,Clay Loam,,
+39,Ferric Acrisol,Ipafu series,25.23333,-13.76667,Bt1,31,100,10YR6/4,10YR7/3,1.7,,0,0,5.4,,4.3,0,0.7,0.8,,0.4,,,6.5,37,23,40,Clay Loam,1,
+39,Ferric Acrisol,Ipafu series,25.23333,-13.76667,Bt2,100,155,10YR7/3,10YR7/4,,,0,0,5.5,,4.4,0,0.9,0.9,,0.3,,,6.1,40,24,36,Clay Loam,5,
+40,Ferric Acrisol,"Mahare sereis, Kasempe variant",25.41667,-13.86667,Ah,0,10,10YR4/2,10YR6/2,9.8,,,,6.6,,5.5,0,2.7,0.8,,0.1,0.1,0.1,6.2,61,20,19,Sandy loam,4,
+40,Ferric Acrisol,"Mahare sereis, Kasempe variant",25.41667,-13.86667,BA,10,30,10YR4/4,10YR6/3,2.2,,0,0,5.9,,5.2,0,0.6,0.5,,0.1,,,2.6,66,20,14,Sandy Loam,,
+40,Ferric Acrisol,"Mahare sereis, Kasempe variant",25.41667,-13.86667,Bt1,30,60,10YR6/5,,2.1,,0,0,6,,5.1,0,0.6,0.8,,0.1,,,3.6,69,13,18,Sandy loam,,
+40,Ferric Acrisol,"Mahare sereis, Kasempe variant",25.41667,-13.86667,Bt2,60,85,10YR6/6,,1.4,,0,0,5.5,,4.4,0,0.4,0.9,,0.1,,,4.5,53,19,28,Sandy Clay Loam,,
+40,Ferric Acrisol,"Mahare sereis, Kasempe variant",25.41667,-13.86667,Cg1,85,115,10YR6/4,,1.8,,0,0,5.4,,4.4,0,0.1,1,,,,,4.1,56,17,27,Sandy Clay Loam,2,
+40,Ferric Acrisol,"Mahare sereis, Kasempe variant",25.41667,-13.86667,Cg2,115,165,10YR6/4,,,,0,0,5.6,,4.4,0,,0.8,,,,,3.3,54,20,26,Sandy Clay,2,
+41,Ferric Acrisol,"Kahere series, Kasempa variant",25.53333,-13.63333,Ah,0,6,10YR3/3,10YR4/2,11.6,,,,6.6,,5.8,0,2.5,0.9,,0.4,0.1,0.1,8.2,48,22,30,Clay Loam,,
+41,Ferric Acrisol,"Kahere series, Kasempa variant",25.53333,-13.63333,BA,6,20,7.5YR4/4,7.5YR5/4,3.1,,0,0,5.7,,4.7,0,0.4,0.6,,0.2,,,4.5,52,24,24,Sandy clay loam,,
+41,Ferric Acrisol,"Kahere series, Kasempa variant",25.53333,-13.63333,Bt1,20,60,10YR5/6,,0.8,,0,0,5.3,,4.3,0,0.3,0.4,,0.3,,,4.4,47,17,36,Clay Loam,1,
+41,Ferric Acrisol,"Kahere series, Kasempa variant",25.53333,-13.63333,Bt2,60,110,10YR5/6,,1.5,,0,0,5.7,,4.6,0,0.1,0.5,,0.2,,,4.5,45,23,32,Sandy Clay Loam,,
+41,Ferric Acrisol,"Kahere series, Kasempa variant",25.53333,-13.63333,Bw,110,160,10YR6/6,,,,0,0,5.8,,4.9,0,0.7,0.6,,0.1,,,4.4,49,18,33,Sandy Clay Loam,,
+41,Ferric Acrisol,"Kahere series, Kasempa variant",25.53333,-13.63333,Bg,160,220,5YR8/1,,,,0,0,5.9,,5.3,0,0.6,0.8,,0.1,,,4.2,46,19,35,Sandy clay Loam,,
+42,Haplic Acrisol,Mayando series,26.18333,-12.4,Ah,0,6,10YR3/2,10YR5/1,21.7,,0,0,5.8,,5,0,2,0.7,,0.2,,,7.4,44,23,33,Clay Loam,,
+42,Haplic Acrisol,Mayando series,26.18333,-12.4,AB,6,12,10YR5/3,10YR6/2,7.8,,0,0,5.7,,4.6,0,0.9,0.4,,0.1,,,5.1,29,21,50,Clay,,
+42,Haplic Acrisol,Mayando series,26.18333,-12.4,BA,12,20,10YR5/6,10YR7/3,3.2,,0,0,5.8,,4.4,0,0.3,0.2,,0.1,,,4.1,32,18,50,Clay,,
+42,Haplic Acrisol,Mayando series,26.18333,-12.4,Bu1,20,62,10YR5/3,10YR7/6,3.2,,0,0,6.1,,4.5,0,0.1,0.2,,0.1,,,4,30,21,49,Clay,,
+42,Haplic Acrisol,Mayando series,26.18333,-12.4,Bu2,62,160,7.5YR5/6,7.5YR7/6,,,0,0,6.2,,4.5,0,0.1,0.2,,0.1,,,3.4,33,20,47,Clay,13,
+42,Haplic Acrisol,Mayando series,26.18333,-12.4,Bg,160,200,2.5Y6/6,5YR5/6,,,0,0,6.1,,4.4,0,0.1,0.1,,0.1,,,3.4,41,18,41,Clay,19,
+43,Ferralic Arenosol,"Chinsali, Kalahari phase",24.2,-12.05,Ah,0,5,5YR3/2,5YR3/3,8,,0,0,5.1,,4.1,0.1,0.4,0.2,,0.1,,,3.7,76,19,5,Loamy Sand,,
+43,Ferralic Arenosol,"Chinsali, Kalahari phase",24.2,-12.05,BA,5,18,5YR4/6,,5.4,,0,0,4.6,,3.8,0.1,,,,,,,3.2,76,18,6,Loamy Sand,,
+43,Ferralic Arenosol,"Chinsali, Kalahari phase",24.2,-12.05,Bw1,18,32,5YR3/6,,5.1,,0,0,4.8,,4,0.1,0.1,,,,,,2.5,72,14,14,Sandy loam,,
+43,Ferralic Arenosol,"Chinsali, Kalahari phase",24.2,-12.05,Bw2,32,53,5YR3/6,,3.5,,0,0,5,,4.1,0.1,0.1,,,,,,2,74,14,12,Sandy loam,,
+43,Ferralic Arenosol,"Chinsali, Kalahari phase",24.2,-12.05,Bw3,53,100,2.5YR4/6,,,,0,0,5,,4.2,0.1,0.1,,,,,,1.6,74,14,12,Sandy loam,,
+43,Ferralic Arenosol,"Chinsali, Kalahari phase",24.2,-12.05,Bw3,100,160,2.5YR4/6,,,,0,0,5,,4.1,0.1,,,,,,,1.4,66,18,16,Sandy loam,,
+44,Geric Ferralsol,Munama series,26.36667,-13.1,Ah,0,6,2.5YR3/4,2.5YR4/6,17.3,,0,0,5.2,,4.4,0,0.4,0.8,,0.4,,,11.5,28,25,47,Clay,,
+44,Geric Ferralsol,Munama series,26.36667,-13.1,AB,6,30,2.5YR3/4,2.5YR4/6,5.2,,0,0,5.3,,4.4,0,0.1,0.5,,0.2,,,7.7,23,21,56,Clay,,
+44,Geric Ferralsol,Munama series,26.36667,-13.1,Bws1,30,69,10YR3/5,,1.8,,0,0,5.7,,4.5,0,0.1,0.6,,0.2,,,7.5,25,17,58,Clay,1,
+44,Geric Ferralsol,Munama series,26.36667,-13.1,Bws2,69,130,10YR3/6,,1.9,,0,0,5.9,,4.5,0,0.1,0.6,,0.1,,,6.4,24,21,55,Clay,,
+44,Geric Ferralsol,Munama series,26.36667,-13.1,Bws2,130,190,1OYR3/6,,,,0,0,5.9,,4.5,0,0.1,0.6,,0.1,,,6.8,19,22,59,Clay,,
+45,Geric Ferralsol,"Meheba series, acric phase",26.2,-12.38333,Ah,0,10,5YR3/6,5YR4/6,17.6,,0,0,4.9,,4,0,0.1,0.1,,0.2,,,8.3,12,22,66,Clay,,
+45,Geric Ferralsol,"Meheba series, acric phase",26.2,-12.38333,BAu1,10,25,5YR3/6,5YR4/6,13,,0,0,4.9,,4,0,0.1,0.2,,0.2,,,6.8,21,20,59,Clay,,
+45,Geric Ferralsol,"Meheba series, acric phase",26.2,-12.38333,BAu2,25,40,2.5YR3/6,2.5YR4/6,8.2,,0,0,5.1,,4.1,0,,0.1,,,,,5.2,26,15,59,Clay,,
+45,Geric Ferralsol,"Meheba series, acric phase",26.2,-12.38333,Bws,40,100,2.5YR3/6,2.5YR4/8,4.6,,0,0,5.8,,4.2,0,,,,,,,4.5,27,18,55,Clay,,
+45,Geric Ferralsol,"Meheba series, acric phase",26.2,-12.38333,Bws,100,150,2.5YR3/6,2.5YR4/8,,,0,0,6.1,,4.4,0,0.1,0.1,,,,,3.7,25,16,59,Clay,,
+45,Geric Ferralsol,"Meheba series, acric phase",26.2,-12.38333,Bws,150,200,2.5YR3/6,2.5YR4/8,,,0,0,6.2,,4.4,0,,,,,,,3.1,26,14,60,Clay,,
+46,Haplic Ferralsol,"Misamfa series, Kalahari phase",24.21667,-11.71667,Ah,0,15,7.5YR2/3,7.5YR3/2,17.6,,0,0,4.6,,3.7,0,0.2,0.1,,0.1,,,10.7,62,22,16,Sandy Loam,,
+46,Haplic Ferralsol,"Misamfa series, Kalahari phase",24.21667,-11.71667,BA,15,35,5YR4/4,5YR4/6,8,,0,0,4.8,,3.9,0,0.1,,,,,,3.9,56,30,14,Sandy Loam,,
+46,Haplic Ferralsol,"Misamfa series, Kalahari phase",24.21667,-11.71667,Bws1,35,70,5YR4/6,,3.5,,0,0,4.8,,4,0,0.1,,,,,,3.3,58,18,24,Sandy Clay loam,,
+46,Haplic Ferralsol,"Misamfa series, Kalahari phase",24.21667,-11.71667,Bws2,70,125,5YR4/8,5YR6/8,,,0,0,4.8,,4,0,0.1,,,,,,2.2,54,21,25,Sandy Clay loam,,
+46,Haplic Ferralsol,"Misamfa series, Kalahari phase",24.21667,-11.71667,Bws2,125,180,2.5YR4/8,,,,0,0,5.2,,4.2,0,0.1,,,,,,2.1,58,16,26,Sandy Clay loam,,
+47,Haplic Ferralsol,Misamfu series,24.4,-11.76667,Ah,0,7,7.5YR3/3,7.5YR4/3,16.8,,0,0,4.9,,4,0,0.5,0.3,,0.2,,,9.2,64,15,21,Sandy Clay loam,,
+47,Haplic Ferralsol,Misamfu series,24.4,-11.76667,AB,7,15,5YR4/4,5YR5/6,9.2,,0,0,4.7,,3.9,0,0.1,0.1,,0.1,,,6.1,71,10,19,Sandy Loam,,
+47,Haplic Ferralsol,Misamfu series,24.4,-11.76667,BA,15,58,5YR4/6,,5.3,,0,0,4.8,,4,0,0.1,0.1,,,,,5,60,11,29,Sandy Clay Loam,,
+47,Haplic Ferralsol,Misamfu series,24.4,-11.76667,Bws1,58,78,5YR3/6,5YR4/6,3.9,,0,0,5,,4.1,0,0.7,1.5,,,,,4.3,59,9,32,Sandy Clay Loam,,
+47,Haplic Ferralsol,Misamfu series,24.4,-11.76667,Bws2,78,130,2.5YR4/8,,,,0,0,5.2,,4.1,0,0.1,,,,,,3.7,47,21,32,Sandy Clay Loam,,
+48,Haplic Ferralsol,Kasempe series,25.85,-13.21667,Ah,0,11,7.5YR5/4,7.5YR4/4,12.4,,0,0,5,,4.1,0,0.3,0.5,,0.7,,,11,12,34,54,Clay,1,
+48,Haplic Ferralsol,Kasempe series,25.85,-13.21667,Bws,11,26,5YR4/8,5YR5/6,7.8,,0,0,5,,4.1,0,0.1,0.2,,0.3,,,10.2,11,27,62,Clay,2,
+48,Haplic Ferralsol,Kasempe series,25.85,-13.21667,Bws2,26,82,5YR6/6,5YR4/8,3,,0,0,5.4,,4.2,0,0.1,0.3,,0.3,,,8.5,14,33,53,Clay,3,
+48,Haplic Ferralsol,Kasempe series,25.85,-13.21667,BWs3,82,123,5YR5/8,5YR5/8,1.2,,0,0,5.7,,4.4,0,0.1,0.1,,0.2,,,6.9,14,36,50,Clay,4,
+48,Haplic Ferralsol,Kasempe series,25.85,-13.21667,BCs,123,190,5YR4/6,5YR6/6,,,0,0,5.6,,4.3,0,0.1,0.1,,0.2,,,7.8,11,32,57,Clay,66,
+49,Haplic Ferralsol,"Kasempe serise, gravelly phase",25.88333,-13.48333,Ap,0,15,5YR3/4,5YR5/6,10.9,,0,0,5.1,,4.3,0,1,0.4,,0.4,,,8.5,29,29,42,Clay,2,
+49,Haplic Ferralsol,"Kasempe serise, gravelly phase",25.88333,-13.48333,BA,15,30,5YR3/6,5YR5/6,7.9,,0,0,5,,4.2,0,1,0.4,,0.2,,,8.2,25,31,44,Clay,2,
+49,Haplic Ferralsol,"Kasempe serise, gravelly phase",25.88333,-13.48333,Bws,30,100,5YR3/6,5YR5/8,3,,0,0,5.1,,4.4,0,0.9,0.5,,0.2,,,7,33,27,40,Clay Loam ,3,
+49,Haplic Ferralsol,"Kasempe serise, gravelly phase",25.88333,-13.48333,Cu1,100,130,,,2,,0,0,5.6,,4.9,0,1.1,0.7,,0.1,,,6.2,32,25,43,Clay,26,
+49,Haplic Ferralsol,"Kasempe serise, gravelly phase",25.88333,-13.48333,Cu2,130,190,,,,,0,0,5.7,,5.1,0,1.2,0.8,,0.1,,,6.3,35,28,37,Clay Loam,55,
+50,Haplic Ferralsol,Kasempe series,25.95,-13.05,Ah,0,5,10YR4/4,10YR6/4,13.9,,0,0,5.5,,4.7,0,0.7,0.9,,0.5,,,8.9,37,33,30,Clay Loam,1,
+50,Haplic Ferralsol,Kasempe series,25.95,-13.05,BA,5,25,7.5YR46,7.5YR6/6,3.7,,0,0,5.3,,4.2,0,0.1,0.4,,0.3,,,8.5,22,40,38,Clay Loam,2,
+50,Haplic Ferralsol,Kasempe series,25.95,-13.05,Bws1,25,55,7.5YR5/8,7.5YR6/8,1.5,,0,0,5.5,,4.2,0,0.6,0.7,,0.3,,,8.5,19,33,48,Clay,4,
+50,Haplic Ferralsol,Kasempe series,25.95,-13.05,Bws2,55,100,7.5YR5/8,7.5YR6/8,0.7,,0,0,5.7,,4.2,0,,0.1,,0.3,,,8.1,26,31,43,Clay,3,
+50,Haplic Ferralsol,Kasempe series,25.95,-13.05,Bws2,100,150,7.5YR5/8,7.5YR6/8,,,0,0,5.2,,4.1,0,,0.1,,0.1,,,8.7,13,37,50,Clay,13,
+50,Haplic Ferralsol,Kasempe series,25.95,-13.05,Bws3,150,170,5YR5/8,5YR6/8,,,0,0,5.4,,4.2,0,,0.2,,0.1,,,8.2,22,36,42,Clay,3,
+51,Haplic Ferralsol,"Kasempa series, gravelly phase",26.48333,-13.18333,Ah,0,10,5YR5/6,5YR6/6,13.7,,0,0,5,,4.2,0,0.3,0.6,,0.5,,,8.8,18,32,50,Clay,,
+51,Haplic Ferralsol,"Kasempa series, gravelly phase",26.48333,-13.18333,Bws,10,37,5YR5/8,5YR6/6,3.8,,0,0,5,,4.1,0,0.1,0.2,,0.2,,,7.4,11,39,50,Clay,,
+51,Haplic Ferralsol,"Kasempa series, gravelly phase",26.48333,-13.18333,Bcs,37,76,5YR5/8,,3.3,,0,0,4.9,,4.1,0,0.1,0.1,,0.1,,,6.8,14,32,54,Clay,,
+51,Haplic Ferralsol,"Kasempa series, gravelly phase",26.48333,-13.18333,BCcs,76,106,2.5YR5/8,,1.3,,0,0,5.2,,4,0,0.1,0.1,,0.1,,,7.1,22,36,42,Clay,,
+51,Haplic Ferralsol,"Kasempa series, gravelly phase",26.48333,-13.18333,C,106,190,2.5YR5/8,,,,0,0,5,,4.1,0,0.1,0.1,,0.1,,,8,16,37,47,Clay,,
+52,Rhodic Ferralsol,Mulonga series,25.65,-13.36667,Ah,0,6,5YR3/4,5YR4/8,20.1,,0,0,6.3,,5.1,0,2.4,1.9,,0.5,,,9.1,46,18,36,Clay Loam,,
+52,Rhodic Ferralsol,Mulonga series,25.65,-13.36667,BA,6,24,2.5YR3/5,2.5YR4/6,10.1,,0,0,5,,4.1,0,0.2,0.5,,0.2,,,6.5,42,14,44,Clay,,
+52,Rhodic Ferralsol,Mulonga series,25.65,-13.36667,Bws1,24,90,2.5YR3/6,,3,,0,0,5.3,,4.2,0,0.1,0.6,,0.2,,,5.6,28,16,56,Clay,,
+52,Rhodic Ferralsol,Mulonga series,25.65,-13.36667,Bws2,90,150,2.5YR3/6,,0.6,,0,0,5.6,,4.2,0,0.1,0.6,,0.1,,,5.6,22,15,63,Clay,,
+52,Rhodic Ferralsol,Mulonga series,25.65,-13.36667,Bws3,150,250,2.5YR3/6,,,,0,0,5.8,,4.2,0,0.1,0.6,,0.1,,,5.5,19,19,62,Clay,,
+52,Rhodic Ferralsol,Mulonga series,25.65,-13.36667,Bws4,250,285,2.5YR3/6,,,,0,0,5.8,,4.2,0,0.1,0.6,,0.2,,,6,13,15,72,Clay,,
+53,Rhodic Ferralsol,Mulonga series,25.8,-13.38333,Ah,0,5,5YR3/4,5YR5/6,11.2,,0,0,5.3,,4.4,0,0.5,0.7,,0.3,,,10.4,32,26,42,Clay,,
+53,Rhodic Ferralsol,Mulonga series,25.8,-13.38333,BA,5,25,2.5YR3/4,2.5YR4/6,4.4,,0,0,5.2,,4.2,0,0.1,0.4,,0.2,,,8.4,11,27,62,Clay,,
+53,Rhodic Ferralsol,Mulonga series,25.8,-13.38333,Bws1,25,60,2.5YR3/6,,2.3,,0,0,5.4,,4.2,0,0.2,0.5,,0.2,,,9.2,14,16,70,Clay,,
+53,Rhodic Ferralsol,Mulonga series,25.8,-13.38333,Bws1,60,90,2.5YR3/6,,1.3,,0,0,5.7,,4.4,0,0.2,0.8,,0.2,,,8.5,11,22,67,Clay,,
+53,Rhodic Ferralsol,Mulonga series,25.8,-13.38333,Bws2,90,135,2.5YR3/6,,0.5,,0,0,5.6,,4.2,0,0.2,0.7,,0.1,,,8.4,14,24,62,Clay,,
+53,Rhodic Ferralsol,Mulonga series,25.8,-13.38333,Bws2,135,180,2.5YR3/6,,,,0,0,5.7,,4.2,0,0.2,0.5,,0.1,,,8.1,19,19,62,Clay,,
+54,Rhodic Ferralsol,Makeba series,24.28333,-12.1,Ah,0,8,5YR3/6,5YR4/6,17,,0,0,5.1,,4.2,0,0.3,0.8,0.6,0.4,,,11.2,13,35,52,Clay,,
+54,Rhodic Ferralsol,Makeba series,24.28333,-12.1,BA,8,22,2.5YR3/4,,6.4,,0,0,5,,4.1,0,0.1,0.4,,0.2,,,11,4,33,63,Clay,,
+54,Rhodic Ferralsol,Makeba series,24.28333,-12.1,Bws,22,50,2.5YR3/6,,3.4,,0,0,5.6,,4.2,0,0.2,0.3,,0.2,,,9.8,8,24,68,Clay,,
+54,Rhodic Ferralsol,Makeba series,24.28333,-12.1,Bws,50,100,2.5YR3/6,,4.6,,0,0,5.5,,4.2,0,0.1,0.2,,0.3,,,9.8,8,24,68,Clay,,
+54,Rhodic Ferralsol,Makeba series,24.28333,-12.1,Bws,100,150,2.5YR3/6,,,,0,0,5.4,,4,0,0.1,,,,,,9.7,25,19,56,Clay,,
+55,Umbric Gleysol,Mwinilunga series,24.75,-11.73333,Ah,0,24,10YR3/2,10YR5/2,10.2,,0,0,5.4,,4.2,0.1,0.2,0.1,,,,,2.6,86,12,2,Loamy Sand,,
+55,Umbric Gleysol,Mwinilunga series,24.75,-11.73333,AC,24,37,10YR3/3,,6.4,,0,0,5.4,,4.5,0.1,0.1,,,,,,1.2,88,10,2,Loamy Sand,,
+55,Umbric Gleysol,Mwinilunga series,24.75,-11.73333,Cg1,37,85,10YR5/3,,4.5,,0,0,5.6,,4.7,0.1,0.2,,,,,,1.2,74,20,6,Loamy Sand,,
+55,Umbric Gleysol,Mwinilunga series,24.75,-11.73333,Cg2,85,100,10YR5/6,,2.7,,0,0,5.7,,4.8,0.1,0.2,,,,,,0.8,78,17,5,Loamy Sand,,
+55,Umbric Gleysol,Mwinilunga series,24.75,-11.73333,Cg3,100,130,10YR6/6,,,,0,0,5.8,,5.2,0.1,0.1,,,,,,0.6,73,15,12,Sandy Loam,,
+56,Ferric Luvisol,Mazabuka sereis,24.23333,-12.23333,Ah,0,11,10YR3/3,10YR5/3,19.1,,0,0,5.9,,5.2,0.1,5.3,3.3,0,0.5,,,13.7,35,43,22,Loam,,
+56,Ferric Luvisol,Mazabuka sereis,24.23333,-12.23333,Bt1,11,73,10YR4.6,,4,,0,0,5.1,,4.4,0.1,5,4,0,0.4,,,18.4,13,29,58,Clay,,
+56,Ferric Luvisol,Mazabuka sereis,24.23333,-12.23333,Bt2,73,105,5YR4/6,,2.8,,0,0,5.5,,4.9,0.1,8,4.4,0,0.3,,,19,14,30,56,Clay,,
+56,Ferric Luvisol,Mazabuka sereis,24.23333,-12.23333,Bt3,105,128,7.5YR4/4,,,,0,0,5.5,,5,0.1,8.9,4.8,0.01,0.2,,,20.4,13,31,56,Clay,,
+56,Ferric Luvisol,Mazabuka sereis,24.23333,-12.23333,Bt4,128,155,7.5YR4/4,,,,0,0,5.6,,5,0.1,9.8,5.2,0,0.2,,,20.9,13,31,56,Clay,,
+57,Ferric Lixisol,Liteta series,28.06667,-14.71667,Ap,0,8,10YR3/3,,20.1,,0,0,5.7,,4.9,0.1,5.3,3.8,0.1,0.3,,,17,30,21,49,Clay,,
+57,Ferric Lixisol,Liteta series,28.06667,-14.71667,AB,8,20,10YR3/3,,19.2,,0,0,5.8,,5,0.1,5.5,3.9,0.1,0.1,,,18,37,19,44,Clay,,
+57,Ferric Lixisol,Liteta series,28.06667,-14.71667,Bg,20,39,10YR4/6,,15.5,,0,0,5.7,,4.9,0.1,5.3,3.5,0.1,0.1,,,18,19,16,65,Clay,,
+57,Ferric Lixisol,Liteta series,28.06667,-14.71667,Bug1,39,82,10YR4/4,,11.7,,0,0,5.7,,5.1,0.1,5.4,3.4,0.1,0.1,,,17,9,10,81,Clay,,
+57,Ferric Lixisol,Liteta series,28.06667,-14.71667,Bug2,82,142,10YR5/8,,4.5,,0,0,6,,5.6,0.1,5.1,3.6,0.1,0.1,,,15,15,12,73,Clay,,
+57,Ferric Lixisol,Liteta series,28.06667,-14.71667,Bcs,142,200,10YR5/6,,3.9,,0,0,6.2,,5.8,0.1,4.4,3.6,0.1,0.1,,,13,9,9,82,Clay,,
+58,Ferric Lixisol,Mwani series,28.06667,-14.71667,Ahg,0,12,10YR3/4,,18,,0,0,6.4,,5.5,0.1,4.9,3,0.1,0.1,,,13,39,16,45,Clay,,
+58,Ferric Lixisol,Mwani series,28.06667,-14.71667,ABg,12,27,10YR4/4,,16.8,,,,6.8,,6.1,,4.8,2.4,0.1,0.1,0.1,0.1,12,31,10,59,Clay,,
+58,Ferric Lixisol,Mwani series,28.06667,-14.71667,Btg1,27,48,10YR5/4,,7.4,,,,7.3,,6.6,,4.8,2.3,0.1,,0,0,10,35,11,54,Clay,,
+58,Ferric Lixisol,Mwani series,28.06667,-14.71667,Btg2,48,88,10YR6/6,,6.3,,,,7.8,,7.2,,5.2,2.2,0.1,,0,0,9,34,15,51,Clay,,
+58,Ferric Lixisol,Mwani series,28.06667,-14.71667,Btg3,88,102,10YR6/6,,6.6,,,,7.7,,7.2,,5.1,2.2,0.1,,0,0,10,37,12,51,Clay,,
+59,Haplic Acrisol,,31.38333,-11.86667,Ap,0,8,2.5YR3/5,2.5YR4/6,18.4,1,0,0,6.4,,5.6,0,4.6,1.5,,0.5,,,10,29,24,47,Clay,,1.33
+59,Haplic Acrisol,,31.38333,-11.86667,Bt1,8,23,2.5YR3/5,2.5YR4/6,10.4,0.6,0,0,6,,5.1,0,1.9,0.8,,0.2,,,8.3,22,19,59,Clay,,1.41
+59,Haplic Acrisol,,31.38333,-11.86667,Bt2,23,61,2.5YR3/6,2.5YR4/8,4.6,0.3,0,0,6,,5.2,0,0.9,0.5,,0.2,,,12.6,43,23,34,Clay Loam,,1.3
+59,Haplic Acrisol,,31.38333,-11.86667,Bt3,61,94,2.5YR3/6,2.5YR4/8,2.8,,0,0,6,,5.6,0,1.6,0.6,,0.2,,,4.9,23,31,46,Clay,,1.23
+59,Haplic Acrisol,,31.38333,-11.86667,Bt4,94,154,2.5YR3/6,2.5YR4/6,2.3,,0,0,6.1,,6,0,1.5,0.7,,0.2,,,4.2,24,33,43,Clay,,1.23
+60,Gleyic Cambisol,Chimbwi series,26.65,-12.91667,Ah,0,30,10YR3/1,10YR5/2,22.2,,0,0,6,,5,0.1,3.9,0.8,,,,,9.8,39,31,30,Clay Loam,,
+60,Gleyic Cambisol,Chimbwi series,26.65,-12.91667,Au,30,60,10YR3/1,10YR6/2,5.1,,0,0,6.4,,5.5,0.1,2.4,0.7,,,,,5.6,34,34,32,Clay Loam,,
+60,Gleyic Cambisol,Chimbwi series,26.65,-12.91667,2Cg1,60,80,10YR6/2,,4,,1,1,6.5,,5.7,0.1,4,1.7,,,0.1,0.1,9.3,19,31,50,Clay,,
+60,Gleyic Cambisol,Chimbwi series,26.65,-12.91667,2Cg2,80,120,10YR6/3,,3.1,,1,1,6.5,,5.9,0.1,4,1.7,,,0.1,0.1,12.6,22,27,51,Clay,,
+61,Haplic Ferralsol,,28.06667,-13.6,A,0,7,2.5YR3/2,2.5YR3/4,30,1.9,0,0,6.4,,6,0,8,4.6,,0.6,,,14.8,41,24,35,Clay Loam,,0.96
+61,Haplic Ferralsol,,28.06667,-13.6,AB,7,24,10YR3/4,2.5YR3/6,14.8,0.9,0,0,5.5,,4.7,0,1.8,1.4,,0.1,,,9.7,32,16,52,Clay,,1.17
+61,Haplic Ferralsol,,28.06667,-13.6,Bw1,24,42,10YR3/6,2.5YR4/6,7.4,0.5,0,0,5.9,,5,0,1.8,1.3,,,,,7.7,30,14,56,Clay,,1.24
+61,Haplic Ferralsol,,28.06667,-13.6,Bw2,42,74,10YR3/6,2.5YR4/6,3.7,,0,0,5.6,,5.1,0,1.4,1,,0.1,,,6,30,13,57,Clay,,1.26
+61,Haplic Ferralsol,,28.06667,-13.6,Bw3,74,144,10YR3/6,2.5YR4/6,1.7,,0,0,5.9,,5.1,0,1.1,1,,,,,5.2,29,14,57,Clay,,1.24
+62,Rhodic Ferralsol,,31.45,-8.95,A,0,10,5YR3/5,5YR5/6,12,0.7,0,0,5.1,,4.5,0,,0.3,,0.2,,,4.4,59,5,36,Sandy Clay,,1.32
+62,Rhodic Ferralsol,,31.45,-8.95,A2,10,20,5YR4/6,5YR5/8,9.5,0.5,0,0,5.1,,4.4,0,,0.2,,0.1,,,4.1,56,5,39,Sandy Clay,,1.33
+62,Rhodic Ferralsol,,31.45,-8.95,BA,20,46,2.5YR4/8,2.5YR5/8,6.6,0.4,0,0,5.1,,4.3,0,,0.2,,0.1,,,3.9,49,5,46,Clay,,1.38
+62,Rhodic Ferralsol,,31.45,-8.95,Bt1,46,77,2.5YR3/6,2.5YR4/8,4.4,,0,0,5.2,,4.4,0,,0.3,,,,,3.1,47,4,49,Clay,,1.36
+62,Rhodic Ferralsol,,31.45,-8.95,Bt2,77,123,2.5YR3/6,2.5YR4/8,2.8,,0,0,5.4,,4.4,0,,0.2,,0.2,,,2.8,45,5,50,Clay,,1.24
+62,Rhodic Ferralsol,,31.45,-8.95,Bt3,123,143,2.5YR3/6,2.5YR4/8,2.2,,0,0,5.4,,4.4,0,,,,0.1,,,3.1,43,4,53,Clay,,1.2
+63,Ferric Lixisol,,28.51667,-14.3,A,0,8,10YR3/2,10YR5/3,10.1,0.6,0,0,5.9,,5.1,0.1,1.9,0.5,,0.2,,,3.5,81,7,12,Loamy Sand,,1.37
+63,Ferric Lixisol,,28.51667,-14.3,AB,8,27,7.5YR5/4,10YR6/4,3.1,0.3,0,0,5.5,,4.8,0.1,0.6,0.3,,,,,2.5,79,7,14,Sandy Loam,,1.5
+63,Ferric Lixisol,,28.51667,-14.3,BA,27,45,7.5YR5/6,7.5YR6/6,2.5,0.2,0,0,5.4,,4.9,0.1,0.9,0.4,0.01,0.1,,,2.5,64,7,29,Sandy Clay Loam,,1.56
+63,Ferric Lixisol,,28.51667,-14.3,Bt1,45,83,7.5YR5/6,7.5YR6/6,2,,0,0,5.6,,5.2,0.1,1.4,0.8,,0.2,,,3.7,48,6,46,Clay,,1.48
+63,Ferric Lixisol,,28.51667,-14.3,Bt2,83,124,7.5YR5/6,7.5YR6/6,1.5,,0,0,6.1,,5.8,0.1,1.1,0.8,,0.2,,,2.9,48,11,41,Clay,,1.36
+63,Ferric Lixisol,,28.51667,-14.3,Btc,124,158,7.5YR5/6,7.5YR6/6,1.2,,0,0,6,,5.9,0.1,0.9,0.7,,0.4,,,2.8,49,14,37,Sandy Clay,,1.3
+64,Haplic Lixisol,,28.46667,-15.38333,Ap1,0,24,5YR3/4,5YR4/4,6.3,0.5,,,6.7,,6.3,,4,1.2,0.1,0.2,0.1,0.1,4.8,61,17,22,Sandy Clay Loam,,1.73
+64,Haplic Lixisol,,28.46667,-15.38333,Ap2,24,38,2.5YR3/4,2.5YR3/4,5.5,0.4,,,6.8,,6.2,,3.3,1.1,,0.2,0.1,0.1,4.6,55,17,28,Sandy Clay Loam,,1.86
+64,Haplic Lixisol,,28.46667,-15.38333,Bt1,38,66,2.5YR3/4,,4.9,0.4,0,0,6,,5.5,0.1,2.1,1.1,,0.2,,,4.9,50,15,35,Sandy Clay,,1.62
+64,Haplic Lixisol,,28.46667,-15.38333,Bt2,66,109,2.5YR3/6,,3.9,,0,0,5.6,,5,0.1,1.8,1.1,,0.2,,,4.8,44,14,42,Clay,,1.55
+64,Haplic Lixisol,,28.46667,-15.38333,Bt3,109,157,2.5YR4/6,,2.4,,0,0,5.8,,5.5,0.1,1.8,1.2,,0.1,,,4.2,42,14,44,Clay,,1.43
+64,Haplic Lixisol,,28.46667,-15.38333,Bt4,157,195,2.5YR4/6,,1.8,,0,0,6.2,,5.9,0.1,1.7,1.3,,0.1,,,3.8,42,16,42,Clay,,1.47
+65,Luvic Phaeozem,,28.06667,-14.71667,Ap,0,21,10YR3/2,10YR4/3,20.3,1.4,0,0,5.8,,4.8,0.1,5.8,3.9,,0.2,,,15.1,41,22,37,Clay Loam,,1.25
+65,Luvic Phaeozem,,28.06667,-14.71667,AB,21,39,7.5YR3/4,7.5YR4/4,14.1,1.1,0,0,5.9,,5,0.1,6.1,3.8,0.1,0.2,,,15.7,31,19,50,Clay,,1.37
+65,Luvic Phaeozem,,28.06667,-14.71667,Bt1,39,70,7.5YR4/6,7.5YR5/6,11.1,0.9,0,0,6,,5,0.1,6.1,3.6,,0.1,,,15.8,26,17,57,Clay,,1.34
+65,Luvic Phaeozem,,28.06667,-14.71667,Bt2,70,103,7.5YR4/5,7.5YR5/6,7.9,,0,0,5.7,,5.2,0.1,6,3.7,,0.1,,,14.8,23,17,60,Clay,,1.23
+65,Luvic Phaeozem,,28.06667,-14.71667,Bt3,103,144,10YR4/6,10YR5/6,6.2,,0,0,5.9,,5.4,0.1,5.5,3.8,,,,,13.9,25,18,57,Clay,,1.24
+65,Luvic Phaeozem,,28.06667,-14.71667,Btco,144,179,10YR4/6,10YR5/6,3.7,,0,0,6.2,,5.8,0.1,4.6,3.7,,,,,11.9,25,19,56,Clay,,1.26
+66,Eutric Vertisol,Kafue clay,27.91667,-15.76667,A,0,8,2.5Y3/2,2.5Y4/2,18.8,1.9,7,,7.3,5.8,,0.19,7.3,11.3,0.9,0.4,0,0,34.2,29,22,49,Clay,,1.4
+66,Eutric Vertisol,Kafue clay,27.91667,-15.76667,Bw,8,24,5Y3/2,5Y4/3,6.3,0.7,8,,7.9,6.5,,0.16,7.4,10.8,0.8,0.2,0,0,33.8,24,20,56,Clay,,1.55
+66,Eutric Vertisol,Kafue clay,27.91667,-15.76667,Bk1,24,74,5Y3/2,5Y4/2,4.4,0.5,17,,8.8,7.2,,0.22,8.3,12.8,2.3,0.2,0,0,32.5,23,19,58,Clay,,1.57
+66,Eutric Vertisol,Kafue clay,27.91667,-15.76667,Bk21,74,105,5Y3/2,5Y4/2,4.8,,40,,8.8,7.5,,0.42,6.8,14.1,4.3,0.2,0,0,33,24,19,57,Clay,,1.57
+66,Eutric Vertisol,Kafue clay,27.91667,-15.76667,Bk22,105,133,5Y3/2,5Y4/2,4.6,,40,,8.6,7.5,,0.96,7.8,15.6,3.9,0.1,0,0,33.8,22,20,58,Clay,,1.53
+66,Eutric Vertisol,Kafue clay,27.91667,-15.76667,BCk,133,154,5Y4/3,,3.5,,40,,8,7.4,,2.66,28.2,15.3,3.9,0.1,0,0,32,22,20,58,Clay,,1.53
+67,Ferric Acrisol,[USDA-code: OUSHAAA],31.16667,-10.16667,A,0,16,5YR3/3,5YR4/4,12.2,0.7,0,0,5.7,4.6,4.9,0,1.5,0.8,,0.1,,4.2,4.5,77,6,17,Sandy Loam,,1.36
+67,Ferric Acrisol,[USDA-code: OUSHAAA],31.16667,-10.16667,BA,16,37,2.5YR4/6,2.5YR4/8,4.8,0.3,0,0,5.4,4.7,4.8,0,0.5,0.5,,,0.3,2.8,2.6,67,6,27,Sandy Loam,,1.45
+67,Ferric Acrisol,[USDA-code: OUSHAAA],31.16667,-10.16667,Bw1,37,63,2.5YR3/6,2.5YR4/8,3,0.2,0,0,5.7,4.7,4.9,0,,0.6,,0.1,,2.7,2.3,62,6,32,Sandy Loam,,1.42
+67,Ferric Acrisol,[USDA-code: OUSHAAA],31.16667,-10.16667,Bw2,63,124,2.5YR3/6,2.5YR4/8,1.9,,0,0,5.6,4.4,4.6,0,,0.3,,,,3.2,2.3,61,6,33,Sandy Loam,,1.37
+67,Ferric Acrisol,[USDA-code: OUSHAAA],31.16667,-10.16667,Bw3,124,148,2.5YR3/6,2.5YR5/8,1.5,,0,0,5.7,4.3,4.5,0,,0.2,,,,2.6,1.7,65,6,29,Sandy Loam,,1.36
+68,Ferric Acrisol,[USDA-code: UUSPAOX],31.45,-8.95,A,0,10,5YR3/4,5YR5/6,12,0.7,0,0,5.1,4.2,4.5,0,,0.3,,0.2,1.1,6.9,4.4,59,5,36,Sandy Clay,,1.4
+68,Ferric Acrisol,[USDA-code: UUSPAOX],31.45,-8.95,A2,10,20,5YR4/6,5YR5/8,9.5,0.5,0,0,5.1,4.2,4.4,0,,0.2,,0.1,1.2,6.1,4.1,56,5,39,Sandy Loam,,1.39
+68,Ferric Acrisol,[USDA-code: UUSPAOX],31.45,-8.95,BA,20,46,2.5YR4/8,2.5YR5/8,6.6,0.4,0,0,5.1,4.2,4.3,0,,0.2,,0.1,1,5.5,3.9,48,5,47,Clay,,1.41
+68,Ferric Acrisol,[USDA-code: UUSPAOX],31.45,-8.95,Bt1,46,77,2.5YR3/6,2.5YR4/8,4.4,,0,0,5.2,4.2,4.4,0,,0.3,,,0.8,5,3.1,47,4,49,Clay,,1.39
+68,Ferric Acrisol,[USDA-code: UUSPAOX],31.45,-8.95,Bt2,77,123,2.5YR3/6,2.5YR4/8,2.8,,0,0,5.4,4.4,4.4,0,,0.2,,0.2,0.6,3.9,2.8,45,5,50,Clay,,1.27
+68,Ferric Acrisol,[USDA-code: UUSPAOX],31.45,-8.95,Bt3,123,143,2.5YR3/6,2.5YR4/8,2.2,,0,0,5.4,4.2,4.4,0,,,,0.1,0.7,4.5,3.1,43,5,52,Clay,,1.23
+69,Haplic Acrisol,[USDA-code: UUSPAOX],31.38333,-11.86667,Ap,0,8,2.5YR3/5,2.5YR4/6,18.4,1,0,0,6.4,5.6,5.6,0,4.6,1.5,,0.5,,6.8,10,29,24,47,Clay,,1.43
+69,Haplic Acrisol,[USDA-code: UUSPAOX],31.38333,-11.86667,Bt1,8,23,2.5YR3/6,2.5YR4/8,10.4,0.6,0,0,6,5.2,5.1,0,1.9,0.8,,0.2,,6.6,8.3,22,19,59,Clay,,1.41
+69,Haplic Acrisol,[USDA-code: UUSPAOX],31.38333,-11.86667,Bt2,23,61,2.5YR3/6,2.5YR4/8,4.6,0.3,0,0,6,5.2,5.2,0,0.9,0.5,,0.2,,12.3,12.6,42,23,35,Clay Loam,,1.34
+69,Haplic Acrisol,[USDA-code: UUSPAOX],31.38333,-11.86667,Bt3,61,94,2.5YR3/6,2.5YR4/8,2.8,,0,0,6,5.7,5.6,0,1.6,0.6,,0.2,,4.6,4.9,23,31,46,Clay,1,1.26
+69,Haplic Acrisol,[USDA-code: UUSPAOX],31.38333,-11.86667,Bt4,94,154,2.5YR3/6,2.5YR4/6,2.7,,0,0,6,5.9,5.9,0,1.6,0.7,,0.2,,4.2,4.3,24,33,43,Clay,1,1.26
+70,Haplic Acrisol,[USDA-code: UUSPAOX],25.86667,-12.31667,A,0,12,10YR4/2,,11.4,0.6,0,0,4.6,3.8,4,0,0.1,0.4,,0.2,0.9,5.2,4.1,80,8,12,Sandy Loam,,1.44
+70,Haplic Acrisol,[USDA-code: UUSPAOX],25.86667,-12.31667,EA,12,37,10YR5/4,,4.4,0.3,0,0,4.9,4,4.2,0,,0.2,,0.2,0.6,3,2.2,79,8,13,Sandy Loam,,1.5
+70,Haplic Acrisol,[USDA-code: UUSPAOX],25.86667,-12.31667,Bt1,37,53,7.5YR5/6,,2.8,0.2,0,0,4.7,3.9,4.1,0,,0.1,,0.2,1,3.6,2.9,63,9,28,Sandy Clay Loam,,1.56
+70,Haplic Acrisol,[USDA-code: UUSPAOX],25.86667,-12.31667,Bt2,53,68,7.5YR6/6,,2.8,,0,0,4.7,3.9,4.1,0,,0.1,,0.2,1.3,4.6,3.9,54,9,37,Sandy Clay,,1.56
+70,Haplic Acrisol,[USDA-code: UUSPAOX],25.86667,-12.31667,Bt3,68,118,7.5YR6/8,,1.9,,0,0,5,4,4.2,0,0.1,0.2,,0.2,1.1,4.7,4.6,50,8,42,Clay,,1.39
+70,Haplic Acrisol,[USDA-code: UUSPAOX],25.86667,-12.31667,Bt4,118,149,7.5YR7/2,,1.2,,0,0,5.2,4.1,4.3,0,,0.1,,0.2,1,3.9,3.4,50,9,41,Clay,,1.38
+70,Haplic Acrisol,[USDA-code: UUSPAOX],25.86667,-12.31667,BC,149,182,10YR7/6,,1,,0,0,5.3,4.1,4.3,0,,0.1,,0.2,0.8,5.2,3.7,50,10,40,Sandy Clay,,1.4
+71,Haplic Acrisol,[USDA-code: OUSHAAA],28.15,-12.6125,Ap,0,12,5YR4/4,7.5YR5/4,18.4,1.1,0,0,5.1,4.2,4.4,0,0.8,0.3,,0.1,1.1,8.2,6.5,66,19,15,Sandy Loam,,1.31
+71,Haplic Acrisol,[USDA-code: OUSHAAA],28.15,-12.6125,BA,12,32,5YR4/6,5YR6/6,4.7,0.3,0,0,4.9,4.1,4.3,0,0.2,0.1,,0.1,0.5,3.2,2.4,61,19,20,Sandy Loam,,1.51
+71,Haplic Acrisol,[USDA-code: OUSHAAA],28.15,-12.6125,Bw1,32,84,2.5YR4/8,5YR6/8,2.4,0.2,0,0,4.8,4.1,4.3,0,,0.1,,0.1,0.5,3.7,1.8,56,21,23,Sandy Clay Loam,,1.43
+71,Haplic Acrisol,[USDA-code: OUSHAAA],28.15,-12.6125,Bw2,84,170,2.5YR4/8,2.5YR6/8,2.1,,0,0,5.1,4.2,4.5,0,,0.2,,0.2,0.3,3.2,2.1,53,21,26,Sandy Clay Loam,,1.41
+72,Haplic Acrisol,[USDA-code: UUSPAOX],23.15,-15.21667,A,0,11,2.5YR3/4,,12.3,,0,0,5.9,5.4,5.4,0,,,,,,5,5.2,65,14,21,Sandy Clay Loam,,1.51
+72,Haplic Acrisol,[USDA-code: UUSPAOX],23.15,-15.21667,Bt1,11,45,10R3/6,,4.1,,0,0,5.2,4.6,4.5,0,0.4,0.9,,0.2,0.2,6.2,4.2,49,12,39,Clay Loam,,1.47
+72,Haplic Acrisol,[USDA-code: UUSPAOX],23.15,-15.21667,Bt2,45,111,10R3/6,,2.6,,0,0,5.2,4.6,4.5,0,0.3,0.6,,0.1,0.3,6.1,4.3,43,13,44,Clay,,1.35
+72,Haplic Acrisol,[USDA-code: UUSPAOX],23.15,-15.21667,Bt3,111,145,10R3/6,,2.1,,0,0,5.5,4.9,4.7,0,0.5,0.8,,,,5.6,4.2,43,15,42,Clay,,1.32
+72,Haplic Acrisol,[USDA-code: UUSPAOX],23.15,-15.21667,Bt4,145,162,2.5YR3/6,,2.1,,0,0,5.6,5.4,5,0,0.8,1,,,,4.9,4,42,13,45,Clay,,1.32
+72,Haplic Acrisol,[USDA-code: UUSPAOX],23.15,-15.21667,Btc,162,173,10R3/6,,2.4,,0,0,5.8,5.7,5.4,0,1,1.3,,0.1,,4.8,4.2,39,16,45,Clay,50,1.39
+73,Haplic Acrisol,[USDA-code: AUSPAAA],27.75,-15.81667,A,0,8,5YR3/3,5YR5/3,8.8,0.7,0,0,5.8,5,5,0,1.4,1.4,,0.6,,2.7,4.1,75,13,12,Sandy Loam,,1.46
+73,Haplic Acrisol,[USDA-code: AUSPAAA],27.75,-15.81667,EA,8,21,5YR3/4,5YR5/6,7.4,0.6,0,0,5.8,4.8,4.9,0,1.1,1.3,,0.4,,3.5,4.4,71,12,17,Sandy Loam,,1.5
+73,Haplic Acrisol,[USDA-code: AUSPAAA],27.75,-15.81667,Bt,21,43,2.5YR3/6,5YR4/6,5.7,0.2,0,0,4.9,4,4.3,0,0.9,1.4,0.5,0.2,0.8,5.8,5.7,62,12,26,Sandy Clay Loam,,1.52
+73,Haplic Acrisol,[USDA-code: AUSPAAA],27.75,-15.81667,Bt2,43,112,2.5YR4/6,2.5YR4/6,5.2,,0,0,5.4,4.1,4.3,0,1.2,2.1,0.1,0.3,1.1,7.9,7.8,51,11,38,Sandy Clay,,1.53
+73,Haplic Acrisol,[USDA-code: AUSPAAA],27.75,-15.81667,Bt3,112,157,2.5YR4/6,2.5YR5/8,4.4,,0,0,5.4,4.2,4.4,0,1.4,2.6,,0.3,0.9,7.7,8.4,47,10,43,Clay,,1.53
+73,Haplic Acrisol,[USDA-code: AUSPAAA],27.75,-15.81667,Bt4,157,186,2.5YR4/8,2.5YR5/8,2.7,,0,0,5.5,4.5,4.8,0,1.6,2.9,0.1,0.4,0.1,5.8,7.8,48,11,41,Clay,,1.43
+74,Haplic Acrisol,[USDA-code: OUSHAAA],31.16667,-10.16667,A,0,10,7.5YR3/2,7.5YR4/2,15,,0,0,5.9,4.8,4.9,0,1.3,1.3,,0.2,,5.1,5.5,78,4,18,Sandy Loam,,1.44
+74,Haplic Acrisol,[USDA-code: OUSHAAA],31.16667,-10.16667,AB,10,21,7.5YR4/6,7.5YR5/4,8.1,,0,0,5.2,4.2,4.2,0,,0.2,,0.1,1.1,4.6,3.1,77,4,19,Sandy Loam,,1.41
+74,Haplic Acrisol,[USDA-code: OUSHAAA],31.16667,-10.16667,Bw1,21,48,5YR5/6,7.5YR6/6,3.9,,0,0,5,4,4.3,0,,0.2,,,0.7,3.2,1.9,72,3,25,Sandy Loam,,1.44
+74,Haplic Acrisol,[USDA-code: OUSHAAA],31.16667,-10.16667,Bw2,48,80,5YR5/6,7.5YR6/6,2.6,,0,0,5.1,4.2,4.3,0,,0.2,,,0.6,2.6,1.8,67,3,30,Sandy Loam,,1.41
+74,Haplic Acrisol,[USDA-code: OUSHAAA],31.16667,-10.16667,Bw3,80,119,5YR5/6,7.5YR6/6,1.8,,0,0,5.4,4.2,4.4,0,,0.1,,,0.6,2.6,1.4,67,3,30,Sandy Loam,,1.39
+74,Haplic Acrisol,[USDA-code: OUSHAAA],31.16667,-10.16667,Bw4,119,146,5YR5/8,7.5YR6/6,1.5,,0,0,5.5,4.5,4.6,0,,0.1,,,0.6,2.8,1.7,63,4,33,Sandy Loam,,1.36
+75,Haplic Acrisol,[USDA-code: UUSPAOX],31.16667,-10.16667,A,0,10,10YR3/4,10YR4/4,8.5,0.5,0,0,5.1,4.1,4.3,0,0.2,0.4,,0.2,0.8,4.1,3.7,73,10,17,Sandy Loam,,1.54
+75,Haplic Acrisol,[USDA-code: UUSPAOX],31.16667,-10.16667,AB,10,20,7.5YR4/6,7.5YR6/6,5.7,0.4,0,0,5.1,4,4.2,0,,0.3,,0.3,1.1,4.5,4.3,60,11,29,Sandy Clay Loam,,1.55
+75,Haplic Acrisol,[USDA-code: UUSPAOX],31.16667,-10.16667,Bt1,20,43,7.5YR4/6,7.5YR6/6,3.7,0.3,0,0,4.9,4,4.2,0,,0.3,,0.2,1.7,5.7,5.1,46,9,45,Clay,,1.52
+75,Haplic Acrisol,[USDA-code: UUSPAOX],31.16667,-10.16667,Bt2,43,71,7.5YR5/6,7.5YR6/6,2.8,,0,0,5.1,4,4.2,0,,0.2,,0.2,1.6,5.4,4.8,43,9,48,Clay,,1.5
+75,Haplic Acrisol,[USDA-code: UUSPAOX],31.16667,-10.16667,Bt3,71,132,5YR5/8,7.5YR6/6,2,,0,0,5,4,4.3,0,,0.2,,0.2,1.8,5.9,5.3,39,8,53,Clay,,1.37
+75,Haplic Acrisol,[USDA-code: UUSPAOX],31.16667,-10.16667,Bt4,132,153,5YR5/6,5YR7/8,1.8,,0,0,5.4,4,4.3,0,,0.1,,0.1,2.5,5.4,4.6,42,9,49,Clay,,1.32
+76,Ferralic Arenosol,[USDA-code: EPSUSAA],25.38333,-17.83333,A,0,17,5YR2/2,5YR4/2,2.7,0.1,0,0,5.9,5,5.1,0.1,0.8,0.3,,0.1,,1.1,1.5,93,2,5,Sand,,1.75
+76,Ferralic Arenosol,[USDA-code: EPSUSAA],25.38333,-17.83333,E,17,32,5YR3/4,5YR5/4,0.9,0.1,0,0,5.5,4.4,4.8,0.1,0.4,0.2,,,,1,0.9,92,2,6,Sand,,1.72
+76,Ferralic Arenosol,[USDA-code: EPSUSAA],25.38333,-17.83333,Bw1,32,54,2.5YR3/6,5YR5/6,0.9,,0,0,5.5,4.4,4.7,0.1,0.4,0.3,,0.1,,1.1,1,89,2,9,Loamy Sand,,1.69
+76,Ferralic Arenosol,[USDA-code: EPSUSAA],25.38333,-17.83333,Bw2,54,94,2.5YR3/6,2.5YR5/6,1.2,,0,0,5.6,4.7,5.1,0.1,0.6,0.4,,0.2,,1.1,1.2,88,1,11,Loamy Sand,,1.72
+76,Ferralic Arenosol,[USDA-code: EPSUSAA],25.38333,-17.83333,Bw3,94,167,2.5YR3/6,2.5YR5/6,0.9,,0,0,5.9,4.8,5.2,0.1,0.6,0.4,,0.1,,1.3,1.2,87,1,12,Loamy Sand,,1.7
+77,Ferralic Cambisol,[USDA-code: OUSHAAA],26.23333,-12.41667,A,0,7,2.5YR3/4,2.5YR3/6,19,,0,0,5,4.1,4.2,0.1,,0.2,,0.3,1.4,9.7,6.9,38,17,45,Clay,,
+77,Ferralic Cambisol,[USDA-code: OUSHAAA],26.23333,-12.41667,BA,7,21,2.5YR3/6,2.5YR4/6,11.8,,0,0,4.9,4.2,4.2,0.1,,0.1,,0.1,1.5,9.2,6.1,37,16,47,Clay,,1.37
+77,Ferralic Cambisol,[USDA-code: OUSHAAA],26.23333,-12.41667,Bw1,21,43,10R3/6,2.5YR4/8,7.1,,0,0,5.2,4.2,4.3,0.1,,0.1,,0.1,0.9,6.8,4.5,31,16,53,Clay,,1.33
+77,Ferralic Cambisol,[USDA-code: OUSHAAA],26.23333,-12.41667,Bw2,43,99,10R3/6,2.5YR4/8,3.4,,0,0,5,4.4,4.5,0.1,,,,0.1,0.2,5.1,3.7,30,17,53,Clay,,1.2
+77,Ferralic Cambisol,[USDA-code: OUSHAAA],26.23333,-12.41667,Bw3,99,187,10R3/6,2.5YR4/8,2.3,,0,0,5.4,4.6,5,0.1,0.1,,,,,4.1,3.2,31,22,47,Clay,,1.21
+78,Rhodic Ferralsol,[USDA-code: OUSEUAA],28.06667,-13.6,A,0,7,2.5YR3/2,2.5YR3/4,30,1.9,0,0,6.4,6,6,0,8,4.6,,0.6,,8,14.8,41,24,35,Clay Loam,,1.05
+78,Rhodic Ferralsol,[USDA-code: OUSEUAA],28.06667,-13.6,AB,7,24,10R3/4,2.5YR3/6,14.8,0.9,0,0,5.5,4.6,4.7,0,1.8,1.4,,0.1,0.8,9.9,9.7,32,16,52,Clay,,1.23
+78,Rhodic Ferralsol,[USDA-code: OUSEUAA],28.06667,-13.6,Bw1,24,42,10R3/6,2.5YR4/6,7.4,0.5,0,0,5.9,4.7,5,0,1.8,1.3,,,,8.2,7.7,30,14,56,Clay,,1.3
+78,Rhodic Ferralsol,[USDA-code: OUSEUAA],28.06667,-13.6,Bw2,42,74,10R3/6,2.5YR4/6,3.7,,0,0,5.6,5,5.1,0,1.4,1,,0.1,,5.7,6,30,14,56,Clay,,1.3
+78,Rhodic Ferralsol,[USDA-code: OUSEUAA],28.06667,-13.6,Bw3,74,144,10R3/6,2.5YR4/6,2,,0,0,5.8,5,5,0,1.1,0.9,,,,5.8,5.6,29,14,57,Clay,,1.27
+79,Ferric Lixisol,[USDA-code: AUSPAOX],28.51667,-14.3,A,0,8,10YR3/2,10YR5/3,10.1,0.6,0,0,5.9,4.9,5.1,0.1,1.9,0.5,,0.2,,1.9,3.5,81,7,12,Loamy Sand,,1.43
+79,Ferric Lixisol,[USDA-code: AUSPAOX],28.51667,-14.3,AB,8,27,7.5YR5/4,10YR6/4,3.1,0.3,0,0,5.5,4.4,4.8,0.1,0.6,0.3,,,0.2,2.4,2.5,79,7,14,Sandy Loam,,1.54
+79,Ferric Lixisol,[USDA-code: AUSPAOX],28.51667,-14.3,BA,27,45,7.5YR5/6,7.5YR6/6,2.5,0.2,0,0,5.4,4.5,4.9,0.1,0.9,0.4,,0.1,0.2,1.4,2.5,64,7,29,Sandy Clay Loam,,1.6
+79,Ferric Lixisol,[USDA-code: AUSPAOX],28.51667,-14.3,Bt1,45,83,7.5YR5/6,7.5YR6/6,2,,0,0,5.6,4.9,5.2,0.1,1.4,0.8,,0.2,,2.3,3.7,47,6,47,Clay,,1.5
+79,Ferric Lixisol,[USDA-code: AUSPAOX],28.51667,-14.3,Bt2,83,124,7.5YR5/6,7.5YR6/6,1.5,,0,0,6.1,5.6,5.8,0.1,1.1,0.8,0.01,0.2,,1.5,2.9,48,11,41,Clay,,1.4
+79,Ferric Lixisol,[USDA-code: AUSPAOX],28.51667,-14.3,Btc,124,158,7.5YR5/6,7.5YR6/6,1.2,,0,0,6,5.8,5.9,0.1,0.9,0.7,,0.4,,1.6,2.8,49,14,37,Clay Loam,,1.32
+80,Ferric Lixisol,[USDA-code: AUSPAOX],28.46667,-15.38333,Ap1,0,24,5YR3/4,5YR4/4,6.3,0.5,,,6.7,6,6.3,,4,1.2,0.1,0.2,0.1,0.1,4.8,60,18,22,Sandy Clay Loam,,1.76
+80,Ferric Lixisol,[USDA-code: AUSPAOX],28.46667,-15.38333,Ap2,24,38,2.5YR3/4,2.5YR3/4,5.5,0.4,,,6.8,5.8,6.2,,3.3,1.1,,0.2,0.1,0.1,4.6,54,17,29,Sandy Clay Loam,,1.92
+80,Ferric Lixisol,[USDA-code: AUSPAOX],28.46667,-15.38333,Bt1,38,66,2.5YR3/4,,4.9,0.4,0,0,6,5.1,5.5,0.1,2.1,1.1,,0.2,,3.9,4.9,50,15,35,Sandy Clay,,1.68
+80,Ferric Lixisol,[USDA-code: AUSPAOX],28.46667,-15.38333,Bt2,66,109,2.5YR3/6,,3.9,,0,0,5.6,4.8,5,0.1,1.8,1.1,,0.2,,4.6,4.8,44,14,42,Clay,,1.61
+80,Ferric Lixisol,[USDA-code: AUSPAOX],28.46667,-15.38333,Bt3,109,157,2.5YR4/6,,2.4,,0,0,5.8,5.1,5.5,0.1,1.8,1.2,,0.1,,3.8,4.2,41,14,45,Clay,,1.49
+80,Ferric Lixisol,[USDA-code: AUSPAOX],28.46667,-15.38333,Bt4,157,195,2.5YR4/6,,1.8,,0,0,6.2,5.6,5.9,0.1,1.7,1.3,,0.1,,2.7,3.8,42,16,42,Clay,,1.54
+81,Ferric Lixisol,[USDA-code: UUSPAOX],28.5,-14.41667,Ap,0,14,10YR3/2,10YR5/2,6,0.3,0,0,5.8,5.1,5.1,0.1,1.5,0.8,,0.1,,0.7,2.5,84,9,7,Sand,,1.46
+81,Ferric Lixisol,[USDA-code: UUSPAOX],28.5,-14.41667,E/A,14,48,10YR5/4,10YR6/4,2.4,0.2,0,0,5.7,4.7,5,0.1,0.8,0.3,,0.1,,0.3,1.5,81,11,8,Sand,,1.55
+81,Ferric Lixisol,[USDA-code: UUSPAOX],28.5,-14.41667,Bt1,48,61,7.5YR5/6,7.5YR7/6,2.4,0.2,0,0,5.4,4.3,4.7,0.1,1.4,0.8,,0.1,0.2,1.2,3.2,67,8,25,Sandy Clay Loam,,1.68
+81,Ferric Lixisol,[USDA-code: UUSPAOX],28.5,-14.41667,Bt2,61,94,7.5YR5/6,7.5YR7/6,2.4,,0,0,5.8,4.8,5.1,0.1,2,1.8,0.01,0.2,,2.4,5.4,48,6,46,Clay,,1.63
+81,Ferric Lixisol,[USDA-code: UUSPAOX],28.5,-14.41667,Bt3,94,137,7.5YR5/6,7.5YR6/6,1.2,,0,0,5.9,5.4,5.7,0.1,1.4,1.3,,0.2,,1.6,3.7,52,9,39,Sandy Clay,,1.62
+81,Ferric Lixisol,[USDA-code: UUSPAOX],28.5,-14.41667,Bt4,137,169,7.5YR6/6,10YR7/6,1.5,,0,0,6.1,5.5,5.7,0.1,1.7,1.9,,0.2,,1.6,5.4,47,6,47,Sandy Clay,,1.48
+82,Ferric Lixisol,[USDA-code: OUSHAUL],29.48333,-13.66667,A,0,11,10YR3/2,10YR5/2,16,0.8,,,6.6,5.7,5.7,,4,0.7,,0.5,0.1,0.1,5.1,86,7,7,Loamy Sand,,1.57
+82,Ferric Lixisol,[USDA-code: OUSHAUL],29.48333,-13.66667,EA,11,34,10YR4/3,10YR7/3,2.6,0.2,0,0,6.3,5.2,5.4,0.1,0.6,0.2,,0.2,,,0.9,87,7,6,Loamy Sand,,1.56
+82,Ferric Lixisol,[USDA-code: OUSHAUL],29.48333,-13.66667,EB,34,61,7.5YR5/4,7.5YR7/4,2.3,0.2,0,0,6.2,5.2,5.6,0.1,0.5,0.6,,0.5,,0.6,1.6,73,7,20,Sandy Loam,,1.61
+82,Ferric Lixisol,[USDA-code: OUSHAUL],29.48333,-13.66667,Bw1,61,99,7.5YR5/6,7.5YR/7,1.3,,0,0,5.2,4.4,4.8,0.1,0.6,0.7,0.01,0.3,0.3,1.9,2.7,58,5,37,Sandy Loam,,1.64
+82,Ferric Lixisol,[USDA-code: OUSHAUL],29.48333,-13.66667,Bw2,99,151,7.5YR5/6,7.5YR7/6,1,,0,0,5.6,4.4,4.7,0.1,0.5,0.5,,0.3,,1.9,2.5,58,6,36,Sandy Loam,,1.54
+82,Ferric Lixisol,[USDA-code: OUSHAUL],29.48333,-13.66667,BW3,151,174,5YR5/6,7.5YR7/6,0.9,,0,0,5.8,4.7,4.9,0.1,0.7,0.6,,0.2,,1.9,2.9,56,7,37,Sandy Loam,,1.47
+83,Haplic Lixisol,[USDA-code: UUSPAOX],25.38333,-17.83333,Ap1,0,19,7.5YR4/4,,4.6,0.4,0,0,4.8,4.3,4.4,0.1,0.7,0.3,,0.2,,1.2,1.2,87,8,5,Loamy Sand,,1.66
+83,Haplic Lixisol,[USDA-code: UUSPAOX],25.38333,-17.83333,Ap2,19,31,7.5YR4/4,,2.4,0.2,0,0,4.7,4.2,4.3,0.1,0.2,0.1,,0.2,0.2,1.5,0.9,86,8,6,Loamy Sand,,1.65
+83,Haplic Lixisol,[USDA-code: UUSPAOX],25.38333,-17.83333,Bt1,31,72,5YR4/6,5YR5/8,1.5,0.1,0,0,5.7,4.7,5,0.1,1.3,0.2,0.2,0.2,,2.4,2.1,75,7,18,Sandy Loam,,1.71
+83,Haplic Lixisol,[USDA-code: UUSPAOX],25.38333,-17.83333,Bt2,72,125,5YR5/8,5YR6/8,1.4,,0,0,5.8,5,5.3,0.1,1.2,0.5,,0.2,,1.7,2.4,69,6,25,Sandy Clay Loam,,1.59
+83,Haplic Lixisol,[USDA-code: UUSPAOX],25.38333,-17.83333,Bt3,125,185,5YR5/8,5YR6/8,0.9,,0,0,5.8,4.8,5,0.1,0.7,0.7,,0.1,,2.4,2.7,61,10,29,Sandy Clay Loam,,1.69
+83,Haplic Lixisol,[USDA-code: UUSPAOX],25.38333,-17.83333,BC,185,198,5YR5/6,5YR5/6,0.8,,0,0,5.6,5,4.7,0.1,0.7,0.9,,0.2,,3.4,3.9,60,16,24,Sandy Clay Loam,25,1.59
+84,Haplic Nitisol,[USDA-code: MUSPAUD],28.06667,-14.71667,Ap,0,21,10YR3/2,10YR4/3,20.3,1.4,0,0,5.8,4.6,4.8,0.1,5.8,3.9,,0.2,,10.3,15.1,41,22,37,Clay Loam,,1.36
+84,Haplic Nitisol,[USDA-code: MUSPAUD],28.06667,-14.71667,AB,21,39,7.5YR3/4,7.5YR4/4,14.1,1.1,0,0,5.9,4.5,5,0.1,6.1,3.8,0.1,0.1,,10.7,15.7,31,19,50,Clay,,1.53
+84,Haplic Nitisol,[USDA-code: MUSPAUD],28.06667,-14.71667,Bt1,39,70,7.5YR4/6,7.5YR5/6,11.1,0.9,0,0,6,4.8,5,0.1,6.1,3.6,,0.1,,9.8,15.8,26,18,56,Clay,,1.47
+84,Haplic Nitisol,[USDA-code: MUSPAUD],28.06667,-14.71667,Bt2,70,103,7.5YR4/6,7.5YR5/6,7.9,,0,0,5.7,5.2,5.2,0.1,6,3.7,,0.1,,9,14.8,23,17,60,Clay,,1.35
+84,Haplic Nitisol,[USDA-code: MUSPAUD],28.06667,-14.71667,Bt3,103,144,10YR4/6,10YR5/6,6.2,,0,0,5.9,5.3,5.4,0.1,5.5,3.8,,,,7.6,13.9,25,18,57,Clay,,1.34
+84,Haplic Nitisol,[USDA-code: MUSPAUD],28.06667,-14.71667,Btco,144,179,10YR4/6,10YR5/6,3.7,,0,0,6.2,5.7,5.8,0.1,4.6,3.7,,,,6.8,11.9,25,19,56,Clay,50,1.36
+85,Carbic Podzol,[USDA-code: SHUTRAR],23.15,-15.21667,A1,0,9,N2/0,,19.8,,0,0,3.9,2.8,3,0.1,0.4,,,,1,10.2,6.6,97,1,2,Sand,,1.54
+85,Carbic Podzol,[USDA-code: SHUTRAR],23.15,-15.21667,A2,9,41,N3/0,,9.3,,0,0,3.6,3.3,3.2,0.1,0.2,,,,1.3,5.9,3.4,98,1,1,Sand,,1.62
+85,Carbic Podzol,[USDA-code: SHUTRAR],23.15,-15.21667,A3,41,76,N3/0,,5.1,,0,0,4.4,3.6,3.6,0.1,0.2,,,,1.1,3.5,2.2,,,,,,
+85,Carbic Podzol,[USDA-code: SHUTRAR],23.15,-15.21667,E,76,101,10YR4/1,10YR6/1,2.8,,0,0,4.5,3.9,3.9,0.1,0.1,,,,0.7,2.6,1.5,,,,,,
+85,Carbic Podzol,[USDA-code: SHUTRAR],23.15,-15.21667,Bh1,101,150,7.5YR3/2,7.5YR3/4,7.2,,0,0,5.1,4.4,4.5,0.1,0.1,,,,0.7,6.6,2.1,96,3,1,Sand,,1.62
+85,Carbic Podzol,[USDA-code: SHUTRAR],23.15,-15.21667,Bh2,150,200,7.5YR4/2,7.5YR4/4,2.6,,0,0,5.4,4.7,4.9,0.1,0.2,,,,0.2,1.9,0.4,96,3,1,Sand,,1.74
+86,Eutric Vertisol,[USDA-code: VUSCHUD],27.91667,-15.76667,A,0,8,2.5Y3/2,2.5Y4/2,24.5,1.9,,,6.7,5.7,6.2,0.51,18.1,11,0.2,0.7,0.1,0.1,30.9,30,19,51,Clay,,1.73
+86,Eutric Vertisol,[USDA-code: VUSCHUD],27.91667,-15.76667,Bw,8,24,5Y3/2,5Y4/3,8.1,0.7,,,7.4,6.6,6.8,0.27,17.7,10,0.6,0.2,0,0,29.3,26,21,53,Clay,,1.93
+86,Eutric Vertisol,[USDA-code: VUSCHUD],27.91667,-15.76667,Bk1,24,74,5Y3/2,5Y4/2,5.7,0.4,4,,8.4,7.1,7.7,0.47,19.2,12.1,2.5,0.2,0,0,28.6,27,21,52,Clay,,2.1
+86,Eutric Vertisol,[USDA-code: VUSCHUD],27.91667,-15.76667,Bk2,74,133,5Y3/2,5Y4/2,5.6,,15,,8.5,7.7,8,1.67,23.2,15.7,6,0.2,0,0,28.7,25,21,54,Clay,,2.03
+86,Eutric Vertisol,[USDA-code: VUSCHUD],27.91667,-15.76667,BCk,133,154,5Y4/3,,4.7,,7,8,8.1,7.2,7.9,6.19,51.3,16,7.6,0.2,0,0,27.9,25,19,56,Clay,,1.99
