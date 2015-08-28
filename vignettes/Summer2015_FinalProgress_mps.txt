@@ -1,0 +1,18 @@
+End of Summer agroEcoTradeoff Progress Report
+
+Contributions:
+-Model grids at 1 sq km resolution
+-AgroKnapsack algorithm for optimal allocation of pixels to crops
+-Script and function to approximate and plot the Pareto Front given multiple objectives
+-Approach to a new biodiversity metric using a model from Newbold et al. (2015)
+-Mapping of soil profiles to shapefile polygons
+
+Unfinished Tasks:
+-Implement double cropping into the model for crops such as winter wheat
+-Create grids of anthropogenic data from online sources and ZARI to implement the new biodiversity metric
+
+Future Priorities:
+-Incorporate yield variability into the model based upon historical yields
+-Use a land cover grid to define what percentage of each pixel is available for conversion to farmland
+-Consider different scenarios based upon type of agriculture (smallholder, commercial) and calorie/nutrition demands 
+-Plan 2016 field work to improve input grids and motivate future work on targeting areas for investment/infrastructure development
