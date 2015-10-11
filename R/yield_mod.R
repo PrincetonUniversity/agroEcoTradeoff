@@ -268,8 +268,8 @@ yield_mod_dt <- function(inlist, ybetas, code, cropnames, silent = TRUE) {
     names(outlist) <- names(inlist)
   }
  
-  # Standardize potential yields
-  y_std <- outlist[["p_yield"]][, lapply(.SD, standardize)]
+  # Standardize potential yields (by area/production)
+  y_std <- 1-standardize(1/outlist$p_yield) # Standardize over all values, not by crop
   outlistf <- list(y_std, outlist[[1]], outlist[[2]])
   names(outlistf) <- c("y_std", names(inlist))
   return(outlistf)

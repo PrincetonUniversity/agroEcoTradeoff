@@ -75,10 +75,9 @@ ybeta_rast_to_dt <- function(ybetas, cropnames, base) {
 #' @export
 input_handler <- function(input_key = "ZA", ybetas, input = "D", code, 
                           ybeta_update, exist_list = NULL, silent = TRUE) {
-  lnms <- c("currprod", "pp_curr", "p_yield", "cropfrac", "carbon", "mask", 
-            "cons_p", "cost", "carbon_p", "richness", "pas", "cropnames")
+  lnms <- c("currprod", "pp_curr", "p_yield", "cropfrac", "carbon", "mask",
+            "cost", "richness", "pas", "cropnames")
   #ha <- res(il$currprod)[2]^2 / 10000
-  impnames <- c("carbon", "richness", "pas")
   if(!is.null(exist_list) & any(!lnms %in% names(exist_list))) {
     stop("Input list must have all variables", call. = FALSE) 
   }
@@ -125,6 +124,30 @@ input_handler <- function(input_key = "ZA", ybetas, input = "D", code,
   if(input == "R" & !is.null(exist_list) & ybeta_update == 0) {
     outlist <- exist_list
   }
+  
+  # Calculate conversion probabilities so they are done by impact/production
+  yield <- outlist$p_yield
+  
+  carbonperyield <- 1/yield #for division
+  carbon <- outlist$carbon$veg + outlist$carbon$soil * 0.25
+  for(j in outlist$cropnames) set(carbonperyield, i = NULL, j = j, carbonperyield[[j]] * 
+                               carbon)
+  outlist$carbon_p <- 1 - (carbonperyield - min(carbonperyield))/diff(range(carbonperyield))
+  
+  bdperyield <- 1/yield
+  bd <- outlist$pas
+  bd[(is.na(bd))] <- 0
+  for(j in outlist$cropnames) set(bdperyield, i = NULL, j = j, bdperyield[[j]] * 
+                               bd)
+  outlist$cons_p <- 1 - (bdperyield - min(bdperyield))/diff(range(bdperyield))
+  
+  costperyield <- 1/yield
+  cost <- outlist$cost
+  for(j in outlist$cropnames) set(costperyield, i = NULL, j = j, costperyield[[j]] * 
+                                    cost)
+  outlist$cost_p <- 1 - (costperyield - min(costperyield))/diff(range(costperyield))
+  
+  
   return(outlist)
 }
 

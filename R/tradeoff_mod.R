@@ -76,14 +76,14 @@ tradeoff_mod <- function(prod_targ, ybetas, cbetas, input_key = "ZA",
   # constraints module 
   if(input == "D") {
     c_prob <- constraints_dt(inlist = list("y_std" = il$y_std, "C" = il$carbon_p, 
-                                           "bd" = il$cons_p, "cost" = il$cost), 
-                             cbetas = cbetas, code = rc, 
-                             cropnames = il$cropnames, ctype = ctype, 
-                             silent = silent)
+                                            "bd" = il$cons_p, "cost" = il$cost_p), 
+                              cbetas = cbetas, code = rc, 
+                              cropnames = il$cropnames, ctype = ctype, 
+                              silent = silent)
   } else if(input == "R") {
     rasterOptions(tmpdir = "external/output/temp")  # set tempfile directory
     c_prob <- constraints_r(inlist = list("y_std" = il$y_std, "C" = il$carbon_p, 
-                                          "bd" = il$cons_p, "cost" = il$cost), 
+                                          "bd" = il$cons_p, "cost" = il$cost_p), 
                             cbetas = cbetas, code = rc, cropnames = il$cropnames, 
                             silent = silent)
   }
@@ -105,7 +105,8 @@ tradeoff_mod <- function(prod_targ, ybetas, cbetas, input_key = "ZA",
     impacts <- impact_dt(conv = converted, 
                          carbon = il$carbon[, c("veg", "soil"), with = FALSE], 
                          pot_yield = il$p_yield, 
-                         div_list = il[c("richness", "pas")], 
+                         div_list = il[c("richness", "pas")],
+                         cost = il$cost,
                          crop_frac = il$cropfrac, 
                          cropnames = il$cropnames, ha = ha)
   } else if(input == "R") {

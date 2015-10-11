@@ -64,6 +64,12 @@ targets_r <- function(prod_targ, currprod, potprod, cropnames) {#, code) {
 #' identical(t_dt, t_r)
 #' @export
 targets_dt <- function(prod_targ, currprod, potprod) {#, cropnames)
+  # For disaggregation of the input grids, we need to similarly downsize the production of each pixel
+  original_length <- 8783
+  scale_factor <- nrow(currprod) / original_length
+  currprod <- currprod / scale_factor
+  potprod <- potprod / scale_factor
+  
   prod_diff <- potprod - currprod
   mysum <- function(x) round(sum(x, na.rm = TRUE))
   for(i in seq_along(prod_diff)) set(prod_diff, i = which(prod_diff[[i]] < 0), j = i, value = 0)
