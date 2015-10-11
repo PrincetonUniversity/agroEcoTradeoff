@@ -15,7 +15,7 @@ yblist <- list(yb1 <- c(1, 1))
 # Target multiplier
 targ <- 3
 # Refine the step interval over which to search for optimal solutions
-step <- 0.025
+step <- 0.25
 # Pick the constraints to optimize over
 cnames <- c("Ag", "C")
 
@@ -30,7 +30,7 @@ yblist <- list(yb1 <- c(1, 1))
 # Target multiplier
 targ <- 3
 # Refine the step interval over which to search for optimal solutions
-step <- 0.1
+step <- 0.25
 # Pick the constraints to optimize over
 cnames <- c("Ag", "C", "bd")
 

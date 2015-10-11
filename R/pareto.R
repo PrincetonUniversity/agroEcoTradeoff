@@ -111,6 +111,12 @@ pareto <- function(cnames, step = 0.1, yblist, targ) {
     }))
   }))
   
+  #Prepare for writing output table 
+  bcode <- run_code("ZA")
+  dnm <- paste0(full_path(set_base_path(), "external/output/batch/dt/"), bcode)
+  dir.create(dnm)
+  out_list <- list()
+  
   input_key = "ZA"
   silent = TRUE
   
@@ -125,7 +131,7 @@ pareto <- function(cnames, step = 0.1, yblist, targ) {
       } else {
         ctype <- parms[i, "ctype"]
       }
-      to <- tradeoff_mod2(prod_targ = parms[i, tnames], 
+      to <- tradeoff_mod(prod_targ = parms[i, tnames], 
                           ybetas = list(parms[i, "y1"], parms[i, "y2"]), 
                           cbetas = parms[i, compnames], input_key = input_key, 
                           ybeta_update = 1, ctype = ctype,  silent = silent)
@@ -138,12 +144,26 @@ pareto <- function(cnames, step = 0.1, yblist, targ) {
       } else {
         ctype <- parms[i, "ctype"]
       }
-      to <- tradeoff_mod2(prod_targ = parms[i, tnames], 
+      to <- tradeoff_mod(prod_targ = parms[i, tnames], 
                           ybetas = list(parms[i, "y1"], parms[i, "y2"]), 
                           cbetas = parms[i, compnames], ybeta_update = ybup, 
                           input_key = input_key, exist_list = to$inputs,
                           ctype = ctype, silent = silent)
     }
+    #Write table
+    fnm <- full_path(set_base_path(), 
+                     paste0("external/output/batch/dt/", bcode, "/", 
+                            to$runcode, ".csv"))
+    write.table(to$conv, file = fnm, sep = ",", col.names = TRUE, 
+                row.names = FALSE)
+    out_list[[i]] <- to[[c("impacts")]]
+    names(out_list)[i] <- to$runcode
+    dnm <- dir("external/output/batch/dt")
+    save(out_list, file = paste0("external/output/batch/dt/", dnm, 
+                                   "/out_tables.rda"))
+    save(parms, file = paste0("external/output/batch/dt/", dnm, "/parms.rda"))
+    
+    
     
     if ("Ag" %in% cnames)
       outputtable$land[count] <- sum(to$impacts$conv_area, na.rm = TRUE)

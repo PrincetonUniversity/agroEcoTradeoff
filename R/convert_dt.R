@@ -79,20 +79,49 @@ convert_dt <- function(conv_prob, target, crop_frac, pot_yield, cropnames, base,
   setkey(base, ind)
   #prod_dt <- pot_yield[valind, ] * crop_frac[valind, ] * ha
   #prod_dt <- pot_yield * crop_frac * ha
-  prod_dt <- data.table::as.data.table(as.matrix(pot_yield) * 
-                                       as.matrix(crop_frac) * ha)  
+  prod_dt <- data.table::as.data.table(as.matrix(pot_yield) * ha) #temporarily removed crop_frac
   prod_dt[, ind := base$ind]
   if(any(is.na(prod_dt)) | any(is.na(conv_prob))) {
     stop("NAs are not allowed", call. = FALSE)
   }
   conv_dt <- data.table(ind = base$ind, key = "ind")
-  inds <- sapply(conv_prob[, cropnames, with = FALSE], function(x) {
-    order(x, decreasing = TRUE)
-  })
-  for(i in colnames(inds)) {
-    targ <- target[i, "target_newland"]
-    conv_dt[inds[, i], c(i) := ifelse(cumsum(prod_dt[inds[, i], i, with = FALSE]) < targ, 1, 0)]
+  
+  conv_prob$ind <- 1:nrow(conv_prob) #use inds to keep track of unallocated pixels
+  sequence = c(1:length(cropnames)) #sequence by which crops are considered
+  T <- rep(-1, nrow(conv_prob)) #vector representing allocation of pixels to crops
+  targ_rem <- NULL
+  
+  for (k in 1:length(cropnames)) {
+    for (i in 1:length(cropnames))
+      targ_rem[i] <- target$target_newland[i] - sum(prod_dt[[i]][T == i]) #remaining production to be met
+    #only use unallocated pixels
+    conv_prob_u <- conv_prob[T == -1]   
+    prod_dt_u <- prod_dt[T == -1] 
+    alloc_rp <- rep(0, nrow(conv_prob_u)) #vector of residual profit for each pixel in its current allocation
+    for(i in sequence) {
+      targ <- targ_rem[i]
+      if (targ > 0) {
+        conv_prob_u[[i]] <- conv_prob_u[[i]] - alloc_rp #subtract the residual profit of pixels already allocated
+        inds <- order(conv_prob_u[, i, with = FALSE], decreasing = TRUE) #sort the probabilities in descending order
+        inds_map <- conv_prob_u$ind[inds] #map the index for unallocated pixels to their original indices
+        for (j in 0:(sum(ifelse(cumsum(prod_dt_u[inds, i, with = FALSE]) < targ, 1, 0))+1)) #pixels to exceed targ
+          T[inds_map[j]] <- i
+        #Here's where we could alter the algorithm. Instead of using just the one highest probability pixel that wasn't
+        #selected, maybe it makes sense to take a mean of the next % pixels if we assume that a lot of pixels are going
+        #to be allocated elsewhere
+        nextp = conv_prob_u[[i]][inds[j + 1]] #the highest probability pixel that wasn't selected
+        alloc_rp[inds[1:j]] = alloc_rp[inds[1:j]] + (conv_prob_u[[i]][inds[1:j]] - nextp) #update resid profit vector
+      }
+    }
+    #Eliminate the last crop considered from the sequence. Its target has been met.
+    sequence <- sequence[1:(length(sequence)-1)]
   }
+  
+  for (i in 1:length(cropnames)) {
+    conv_dt[, cropnames[i]] = 0 #initialize a column for each crop filled with zeroes
+    conv_dt[T == i, cropnames[i]] = 1 #for a crop, put a 1 in all the rows where T indicates that crop
+  }
+  
   out_dt <- merge(base, conv_dt, all = TRUE)
   if(keep_index == FALSE) out_dt[, ind := NULL]
   return(out_dt)

@@ -3,7 +3,8 @@
 #' being converted for a crop as a function of that crop's yield, as well as any 
 #' constraints related to carbon, biodiversity, and travel costs, factoring in 
 #' any prior yield modifications made (e.g. due to climate change or added 
-#' irrigation). This version uses data.tables rather than raster
+#' irrigation). This version uses data.tables rather than raster and reframes the
+#' constraints as per yield potential. 
 #' @param inlist A list of data.tables for the four constraints 
 #' @param cbetas 4 element vector (values 0-1) containing land use weights
 #' @param code Unique simulation code resulting from run_code function
@@ -128,38 +129,18 @@ constraints_dt <- function(inlist, cbetas, code, cropnames, ctype = "X",
   names(rlist_mod) <- names(rlist)
   
   # create output
-  cnames <- names(rlist_mod)[which(!names(rlist_mod) %in% "y_std")]  
-  yname <- names(rlist_mod)[which(names(rlist_mod) == "y_std")]  # pp a constraint?
-  p_y <- data.table(ind = 1:nrow(inlist$y_std))  # set-up output data.table
-  if(length(cnames) > 0) {  # if constraints are in result,
-    shhh(paste("processing constraints", paste(cnames, collapse = ", ")), 
-         silent = silent)
+  shhh(paste("processing constraints", paste(cnames, collapse = ", ")), 
+       silent = silent)
+  # modified to account for unique constraint values for each crop
+  i <- 1
+  p_y <- rlist_mod[[i]]
+  while (i < length(rlist_mod)) {
+    i <- i + 1
     if(ctype == "X") {
-      cp <- data.table(c_p = Reduce(`*`, do.call(cbind, rlist_mod[cnames])))
+      p_y <- p_y + rlist_mod[[i]]
     } else if(ctype == "+") {
-      cp <- data.table(c_p = Reduce(`+`, do.call(cbind, rlist_mod[cnames])))
+      p_y <- p_y + rlist_mod[[i]]
     }
-  }
-  if(length(yname) == 1) {
-    shhh("yield is...", silent = silent)
-    p_y[, c(cropnames) := rlist_mod[[yname]]]  # add y_dt into out_df
-    if(exists("cp")) {  # multiply by constraints, if exist
-      shhh("...constrained", silent = silent)
-      if(ctype == "X") {
-        for(j in cropnames) set(p_y, i = NULL, j = j, p_y[[j]] * cp)
-      } else if(ctype == "+") {
-        for(j in cropnames) set(p_y, i = NULL, j = j, p_y[[j]] + cp)
-      }
-      rm(cp)  # free up memory
-      p_y[, ind := NULL]  # drop index
-    } else {
-      shhh("...unconstrained", silent = silent)
-    }
-  } else if(length(yname) == 0) {  # if y_std is not factor, then p_y becomes c_p
-    shhh("p_y for each crop is equal to product of constraints", 
-         silent = silent) 
-    p_y[, c(cropnames) := do.call(cbind, lapply(1:9, function(x) cp))]
-    p_y[, ind := NULL]  # drop index
   }
   return(p_y)
 }
