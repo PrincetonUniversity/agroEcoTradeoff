@@ -7,23 +7,20 @@
 #' @param step The step interval over which to search for optimal solutions
 #' @param yblist A two element list giving yield modifications 
 #' @param targ The target multiplier for production
-#' 
+#' @export
 
 pareto <- function(cnames, step = 0.1, yblist, targ) {
   
-  
   compnames <- c("Ag", "C", "bd", "cost")
-  if (length(cnames) == 0)
-    stop("select at least one constraint")
+  if (length(cnames) == 0) stop("select at least one constraint")
   
-  if (1 %% step != 0)
-    stop("step must divide evenly into 1")
+  if (1 %% step != 0) stop("step must divide evenly into 1")
   
-  incl <- compnames%in%cnames
+  incl <- compnames %in% cnames
   
-  if (sum(incl) != length(cnames))
-    stop("Constraint choices are Ag, C, bd, and cost.")
-  
+  if (sum(incl) != length(cnames)) {
+   stop("Constraint choices are Ag, C, bd, and cost.")
+  } 
   
   if (length(cnames) > 0) {
     colone <- min(which(incl == TRUE))
@@ -32,7 +29,7 @@ pareto <- function(cnames, step = 0.1, yblist, targ) {
     cblist[[1]][colone] = 1
   }
   
-  steps <- 1/step
+  steps <- 1 / step
   
   if (length(cnames) > 1) {
     coltwo <- min(which(incl == TRUE))
@@ -97,6 +94,7 @@ pareto <- function(cnames, step = 0.1, yblist, targ) {
   }
   
   # prod_targ space
+  # LDE: this needs to changed so that crop names can be passed in as variable
   tnames <- c("maize", "cassava", "ground", "cotton", "soy", "pulse", "sunflower",
               "sugarcane", "wheat")
   targlist <- list(targ1 <- rep(targ, length(tnames)))
@@ -111,19 +109,21 @@ pareto <- function(cnames, step = 0.1, yblist, targ) {
     }))
   }))
   
-  #Prepare for writing output table 
+  # Prepare for writing output table 
+  # LDE: this needs to be passed in as variable also
   bcode <- run_code("ZA")
   dnm <- paste0(full_path(set_base_path(), "external/output/batch/dt/"), bcode)
   dir.create(dnm)
   out_list <- list()
   
-  input_key = "ZA"
+  input_key = "ZA"   # variabilize
   silent = TRUE
   
-  outputtable = NULL
+  impact_list = NULL
   count = 1
   
   for(i in 1:nrow(parms)) {
+    # i <- 1; i <- 2
     print(paste("running batch", i))
     if(i == 1) {
       if(!"ctype" %in% colnames(parms)) { 
@@ -145,12 +145,12 @@ pareto <- function(cnames, step = 0.1, yblist, targ) {
         ctype <- parms[i, "ctype"]
       }
       to <- tradeoff_mod(prod_targ = parms[i, tnames], 
-                          ybetas = list(parms[i, "y1"], parms[i, "y2"]), 
-                          cbetas = parms[i, compnames], ybeta_update = ybup, 
-                          input_key = input_key, exist_list = to$inputs,
-                          ctype = ctype, silent = silent)
+                         ybetas = list(parms[i, "y1"], parms[i, "y2"]), 
+                         cbetas = parms[i, compnames], ybeta_update = ybup, 
+                         input_key = input_key, exist_list = to$inputs,
+                         ctype = ctype, silent = silent)
     }
-    #Write table
+    # Write table
     fnm <- full_path(set_base_path(), 
                      paste0("external/output/batch/dt/", bcode, "/", 
                             to$runcode, ".csv"))
@@ -158,24 +158,27 @@ pareto <- function(cnames, step = 0.1, yblist, targ) {
                 row.names = FALSE)
     out_list[[i]] <- to[[c("impacts")]]
     names(out_list)[i] <- to$runcode
-    dnm <- dir("external/output/batch/dt")
-    save(out_list, file = paste0("external/output/batch/dt/", dnm, 
-                                   "/out_tables.rda"))
-    save(parms, file = paste0("external/output/batch/dt/", dnm, "/parms.rda"))
+    # dnm <- dir("external/output/batch/dt")
     
-    
-    
-    if ("Ag" %in% cnames)
-      outputtable$land[count] <- sum(to$impacts$conv_area, na.rm = TRUE)
-    if ("C" %in% cnames)
-      outputtable$carbon[count] <- sum(to$impacts$C_tot, na.rm = TRUE)
-    if ("bd" %in% cnames)
-      outputtable$biodiversity[count] <- sum(to$impacts$pa_loss, na.rm = TRUE)
-    if ("cost" %in% cnames)
-      outputtable$cost[count] <- sum(to$impacts$cost_tot, na.rm = TRUE)
-    count <- count + 1
+    if ("Ag" %in% cnames) {
+      impact_list$land[i] <- sum(to$impacts$conv_area, na.rm = TRUE)
+    }
+    if ("C" %in% cnames) {
+      impact_list$carbon[i] <- sum(to$impacts$C_tot, na.rm = TRUE)
+    }
+    if ("bd" %in% cnames) {
+      impact_list$biodiversity[i] <- sum(to$impacts$pa_loss, na.rm = TRUE)
+    }
+    if ("cost" %in% cnames) { 
+      impact_list$cost[i] <- sum(to$impacts$cost_tot, na.rm = TRUE)
+    }
+    #count <- count + 1
   }
-  
+  save(out_list, file = paste0("external/output/batch/dt/", bcode, 
+                               "/out_tables.rda"))
+  save(parms, file = paste0("external/output/batch/dt/", bcode, "/parms.rda"))
+
+  outputtable <- as.data.table(do.call(cbind.data.frame, impact_list))
   outputtable <- as.data.table(outputtable)
   otnames <- names(outputtable)
   setorderv(outputtable, otnames)
@@ -200,7 +203,7 @@ pareto <- function(cnames, step = 0.1, yblist, targ) {
       }
     }
   }
-  outputtable <- outputtable[!(ind %in% dom)]
+  outputtable <- list("bcode" = bcode, "table" = outputtable[!(ind %in% dom)])
 }
   
   

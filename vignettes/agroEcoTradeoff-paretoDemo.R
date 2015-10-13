@@ -1,13 +1,13 @@
 library(agroEcoTradeoff)
-source("R/tradeoff_mod.R")
-source("R/constraints_dt.R")
-source("R/convert_dt.R")
-source("R/pareto.R")
-source("R/targets.R")
-source("R/impact_dt.R")
-source("R/input_handler.R")
-source("R/fetch_inputs.R")
-source("R/yield_mod.R")
+# source("R/tradeoff_mod.R")
+# source("R/constraints_dt.R")
+# source("R/convert_dt.R")
+# source("R/pareto.R")
+# source("R/targets.R")
+# source("R/impact_dt.R")
+# source("R/input_handler.R")
+# source("R/fetch_inputs.R")
+# source("R/yield_mod.R")
 
 # 2 Constraints
 # Yield modification
@@ -21,13 +21,14 @@ cnames <- c("Ag", "C")
 
 ot <- pareto(cnames = cnames, step = step, yblist = yblist, targ = targ)
 # Plot the Pareto front
-plot(ot$land, ot$carbon, xlab = "Total Area Converted (ha)", ylab = "Total Carbon Lost (t)")
+plot(ot$table$land, ot$table$carbon, xlab = "Total Area Converted (ha)", 
+     ylab = "Total Carbon Lost (t)")
 
 # Load the output tables
-setwd(full_path(proj_root("agroEcoTradeoff"), "agroEcoTradeoff"))
-dnm <- dir("external/output/batch/dt")
-load(paste0("external/output/batch/dt/", dnm, "/out_tables.rda"))
-load(paste0("external/output/batch/dt/", dnm, "/parms.rda"))
+# setwd(full_path(proj_root("agroEcoTradeoff"), "agroEcoTradeoff"))
+dnm <- full_path("external/output/batch/dt", ot$bcode)
+load(paste0(dnm, "/out_tables.rda"))
+load(paste0(dnm, "/parms.rda"))
 
 # Set projection
 il <- fetch_inputs(input_key = "ZA", input = "R")
@@ -49,8 +50,7 @@ cropland <- raster("external/ext_data/ZA-crop-areas.tif")
 fblock <- raster("external/ext_data/farm-blocks.tif")
 
 dtrs <- lapply(1:5, function(x) {
-  dt <- fread(paste0("external/output/batch/dt/", dnm, "/", 
-                     names(out_list)[x], ".csv"))
+  dt <- fread(full_path(dnm, paste0(names(out_list)[x], ".csv")))
   dto <- cbind(dt[, c("x", "y"), with = FALSE], 
                do.call(cbind, lapply(colnames(dt)[-c(1:2)], function(i) {
                  dt[, c(i), with = FALSE]
@@ -71,9 +71,8 @@ tdim = c(0.58, 0.18)
 # Plot the cropland, farmblocks, and converted land under the chosen scenario
 
 # Select the scenario based upon ranking of total area converted (1 is scenario with least area converted)
-scen = ot$ind[1] #least area converted
+scen = ot$table$ind[1] #least area converted
 conv_plot(scen = scen)
-
 
 # Plotted values of the 5 scenarios, aggregated across all crops
 scenRange <- 1:5
