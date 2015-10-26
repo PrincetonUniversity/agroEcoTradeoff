@@ -67,7 +67,7 @@ conv_plot <- function(scen, ldim = c(0.4, 0.75), sdim = c(0.03, 0.12, 0.25),
     image(r1, breaks = brks2, col = gr, legend = FALSE, add = TRUE)
     image(r2, breaks = brks2, col = gr, legend = FALSE, add = TRUE)
   }
- leg_fun(ldim, sdim, tdim, legdim, brks, brks2, cx, yor, gr, bp, ladj)
+  leg_fun(ldim, sdim, tdim, legdim, brks, brks2, cx, yor, gr, bp, ladj)
 } 
 
 #' Plots single map of cropland conversions

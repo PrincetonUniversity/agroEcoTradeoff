@@ -13,7 +13,7 @@ library(agroEcoTradeoff)
 # Yield modification
 yblist <- list(yb1 <- c(1, 1))
 # Target multiplier
-targ <- 2
+targ <- 4
 # Refine the step interval (divisible evenly into 1) over which to search for optimal solutions
 step <- 0.25
 # Pick the constraints to optimize over
@@ -45,9 +45,15 @@ knitr::kable(target[, -4])
 
 # Load up some background data
 library(RColorBrewer)
-zam <- raster("external/ext_data/ZA-mask.tif")
-cropland <- raster("external/ext_data/ZA-crop-areas.tif")
-fblock <- raster("external/ext_data/farm-blocks.tif")
+# zam <- raster("external/ext_data/ZA-mask.tif")
+# cropland <- raster("external/ext_data/ZA-crop-areas.tif")
+# fblock <- raster("external/ext_data/farm-blocks.tif")
+
+aggf <- 4
+zam <- aggregate(raster("external/ext_data/ZA-mask.tif"), fact = aggf)
+cropland <- aggregate(raster("external/ext_data/ZA-crop-areas.tif"), 
+                      fact = aggf)
+fblock <- aggregate(raster("external/ext_data/farm-blocks.tif"), fact = aggf)
 
 dtrs <- lapply(1:5, function(x) {
   dt <- fread(full_path(dnm, paste0(names(out_list)[x], ".csv")))
@@ -57,6 +63,8 @@ dtrs <- lapply(1:5, function(x) {
                })))
   dtr <- dt_to_raster(dto, CRSobj = CRSobj)
 })
+
+dtrs <- lapply(dtrs, function(x) aggregate(x, fact = 4))
 
 brks <- c(0, 0.01, 0.05, 0.1, 0.15, 0.2)
 brks2 <- c(0, seq(0.001, 0.601, 0.15))
@@ -72,7 +80,9 @@ tdim = c(0.58, 0.18)
 
 # Select the scenario based upon ranking of total area converted (1 is scenario with least area converted)
 scen = ot$table$ind[1] #least area converted
+conv_plot_1(r = dtrs[[1]][[1]], ldim, sdim, tdim, legdim)
 conv_plot(scen = scen)
+plot(dtrs[[1]][[1]])
 
 # Plotted values of the 5 scenarios, aggregated across all crops
 scenRange <- 1:5
