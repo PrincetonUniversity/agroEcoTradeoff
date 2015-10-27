@@ -4,7 +4,7 @@
 \alias{fetch_inputs}
 \title{Fetches inputs from file structure for trademod}
 \usage{
-fetch_inputs(path = "external/data", input_key = "ZA")
+fetch_inputs(path = "external/data/dt", input_key = "ZA")
 }
 \arguments{
 \item{path}{Base path to data}

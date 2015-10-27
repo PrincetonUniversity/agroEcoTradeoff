@@ -90,15 +90,15 @@ convert_dt <- function(conv_prob, target, crop_frac, pot_yield, cropnames, base,
   conv_prob$ind <- 1:nrow(conv_prob) #use inds to keep track of unallocated pixels
   sequence = c(1:length(cropnames)) #sequence by which crops are considered
   
-  # 26/10/2015 - To-fix: bad practice to use T as object name. This is variable
-  # (shorthand) for TRUE in R.
-  TT <- rep(-1, nrow(conv_prob)) #vector representing allocation of pixels to crops
+  # vector representing allocation of pixels to crops
+  TT <- rep(-1, nrow(conv_prob)) 
   targ_rem <- NULL
   
-  for (k in 1:length(cropnames)) {
-    for (i in 1:length(cropnames))
-      # remaining production to be met only use unallocated pixels
-      targ_rem[i] <- target$target_newland[i] - sum(prod_dt[[i]][TT == i]) 
+  for(k in 1:length(cropnames)) {
+    # remaining production to be met - only use unallocated pixels
+    for(i in 1:length(cropnames)) {
+      targ_rem[i] <- target$target_newland[i] - sum(prod_dt[[i]][TT == i])
+    }
     conv_prob_u <- conv_prob[TT == -1]   
     prod_dt_u <- prod_dt[TT == -1] 
     # vector of residual profit for each pixel in its current allocation
@@ -112,8 +112,10 @@ convert_dt <- function(conv_prob, target, crop_frac, pot_yield, cropnames, base,
         inds <- order(conv_prob_u[, i, with = FALSE], decreasing = TRUE)
         # map the index for unallocated pixels to their original indices
         inds_map <- conv_prob_u$ind[inds] 
-        for (j in 0:(sum(ifelse(cumsum(prod_dt_u[inds, i, with = FALSE]) < targ, 1, 0))+1)) #pixels to exceed targ
+        for(j in 0:(sum(ifelse(cumsum(prod_dt_u[inds, i, with = FALSE]) < 
+                               targ, 1, 0))+1)) { #pixels to exceed targ
           TT[inds_map[j]] <- i
+        }
         # Here's where we could alter the algorithm. Instead of using just the 
         # one with the highest probability pixel that wasn't
         # selected, maybe it makes sense to take a mean of the next % pixels 

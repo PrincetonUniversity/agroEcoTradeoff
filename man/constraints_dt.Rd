@@ -42,12 +42,8 @@ il_dt <- raster_list_to_dt(inlist = il[c("p_yield", "pp_curr", "carbon_p",
 ybetas <- list(1, 1)
 ybeta <- yield_mod_dt(inlist = il_dt[[2]][c("p_yield", "pp_curr")],
                       ybetas = ybetas, code = rc, cropnames = il$cropnames)
-ybetar <- yield_mod_r(inlist = il[c("p_yield", "pp_curr")], ybetas = ybetas,
-                      code = rc, cropnames = il$cropnames)
 clist <- list("y_std" = ybeta$y_std, "C" = il_dt[[2]]$carbon_p,
               "bd" = il_dt[[2]]$cons_p, "cost" = il_dt[[2]]$cost)
-clistr <- list("y_std" = ybetar$y_std, "C" = il$carbon_p, "bd" = il$cons_p,
-               "cost" = il$cost)
 prj <- projection(il$pp_curr)
 base <- il_dt[[1]][, c("x", "y"), with = FALSE]
 
@@ -56,12 +52,6 @@ cbetas <- c("y_std" = 0, "C" = 1, "bd" = 1, "cost" = 1)
 con1 <- constraints_dt(inlist = clist, cbetas = cbetas, code = rc,
                        cropnames = il$cropnames)
 #con1[, lapply(.SD, max, na.rm = TRUE)]
-con1r <- dt_list_to_raster(base = base, inlist = list(con1),
-                           CRSobj = prj)[[1]]
-plot(con1r - (il$carbon_p * il$cons_p * il$cost))  #' check against rast math
-con1b <- constraints_r(inlist = clistr, cbetas = cbetas, code = rc,
-                       cropnames = il$cropnames)
-plot(con1r - con1b)  # equivalent to constraints_r
 
 # all four constraints
 cbetas <- c("y_std" = 1, "C" = 1, "bd" = 1, "cost" = 1)

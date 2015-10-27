@@ -117,28 +117,27 @@ set_base_path <- function() {
 #' @param input_key A unique file identifier for simulation-specific inputs
 #' @keywords internal
 #' @export
-fetch_inputs <- function(path = "external/data", input_key = "ZA") {
-  path <- full_path(set_base_path(), "external/data/dt") 
+fetch_inputs <- function(path = "external/data/dt", input_key = "ZA") {
+  path <- full_path(set_base_path(), path) 
 
   # Don't read in conversion probability tables. Derive them instead from 
   # constraints.
   fp <- full_path(set_base_path(), 
                   c("data/cropnames.rda", "data/carbon-names.rda"))
   for (i in fp) load(i)
-  lnms <- c("currprod", "pp_curr", "p_yield", "cropfrac", "carbon", 
-            "mask", "cost", "richness", "pas")
+  lnms <- c("currprod", "pp_curr", "p_yield", "carbon", 
+            "mask", "cost", "richness", "pas", "cons")
   bnms <- c("current-production", "production-current", "potential-yields\\.", 
-            "crop-convert-fractions", "carbon\\.")
-  rnms <- c("mask", "cost", "-div", "pas")
-  nmupnms <- c(rep("cropnames", 4), "carbon_names")
+            "carbon\\.")
+  rnms <- c("mask", "cost", "-div", "pas", "cons")
   innms <- c(bnms, rnms)
   in_files <- list.files(path, pattern = input_key, full.names = TRUE)
   in_files <- unlist(lapply(innms, function(x) in_files[grep(x, in_files)]))
   disksize <- sum(file.info(in_files)$size) * 0.00098^2
   if (disksize > 2048) {
-   stop(paste0("The data.table version of tradeoff_mod must still", 
-               "needs to have an intelligent system for dealing with", 
-               "very large file sizes", call. = FALSE))
+    stop(paste0("The data.table version of tradeoff_mod must still", 
+                "needs to have an intelligent system for dealing with", 
+                "very large file sizes", call. = FALSE))
   }
   l <- lapply(in_files, function(x) fread(x))
   names(l) <- lnms

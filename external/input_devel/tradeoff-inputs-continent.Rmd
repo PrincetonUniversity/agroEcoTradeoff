@@ -22,21 +22,22 @@ library(rgeos)
 library(SAcropland)
 # library(GSIF)  # doesn't work at the moment
 p_proj <- set_base_path()
-p_dat <- full_path(p_proj, "external/ext_data")
+p_dat <- full_path(p_proj, "external/base_data")
 ```
 
 #### Define the study areas first. Makes grids covering Africa, the GS, and Zambia.
 ```{r, eval = FALSE}
 # Africa
 setwd(p_proj)
-af <- readOGR(dsn = "external/ext_data/africa_countries_alb.sqlite", 
+af <- readOGR(dsn = "external/base_data/africa_countries_alb.sqlite", 
               layer = "africa_countries_alb")
-afgcs <- readOGR(dsn = "external/ext_data/africa_noislands.sqlite", 
+afgcs <- readOGR(dsn = "external/base_data/africa_noislands.sqlite", 
                  layer = "africa_noislands")
-afr <- raster("external/ext_data/africa_grid.tif")
+afr <- raster("external/base_data/africa_grid.tif")
+plot(afr)
 
 # GS
-gs <- raster("external/ext_data/gs.tif")
+gs <- raster("external/base_data/gs.tif")
 r <- raster(extent(afr))
 res(r) <- res(gs)
 projection(r) <- projection(gs)
@@ -46,22 +47,22 @@ r[] <- 1
 afr10 <- aggregate(afr, fact = 9)  # 9-10 km af mask
 afr10 <- resample(afr10, r, method = "ngb")
 afr10[which(!is.na(values(afr10)))] <- 1:length(which(!is.na(values(afr10))))
-writeRaster(afr10, filename = "external/ext_data/africa-grid-10km.tif", 
+writeRaster(afr10, filename = "external/base_data/africa-grid-10km.tif", 
             datatype = "INT4S", overwrite = TRUE)  # 10 km grid #s
-afr10 <- raster("external/ext_data/africa-grid-10km.tif")
+afr10 <- raster("external/base_data/africa-grid-10km.tif")
 afrmask10 <- !is.na(afr10)
 afrmask10[which(values(afrmask10) == 0)] <- NA
-writeRaster(afrmask10, filename = "external/ext_data/africa-mask-10km.tif", 
+writeRaster(afrmask10, filename = "external/base_data/africa-mask-10km.tif", 
             datatype = "INT4S", overwrite = TRUE)
-afrmask10 <- raster("external/ext_data/africa-mask-10km.tif") # 10 km Afr mask
+afrmask10 <- raster("external/base_data/africa-mask-10km.tif") # 10 km Afr mask
 
 gspoly <- rasterToPolygons(gs, dissolve = TRUE)
 gscnt <- af[which(!is.na(af %over% gspoly)), ]
 gscnt@data <- gscnt@data[, c(4, 6)]
 gscnt$id <- 1:nrow(gscnt)
 rasterize(gscnt, afr10, field = "id", 
-          filename = "external/ext_data/gs-countries.tif")
-gs_cnt_r <- raster("external/ext_data/africa-grid-10km.tif")
+          filename = "external/base_data/gs-countries.tif")
+gs_cnt_r <- raster("external/base_data/africa-grid-10km.tif")
 
 # Country rasters
 cnames <- "ZA"  ####################
@@ -69,12 +70,13 @@ lapply(cnames, function(x) {
   cnt <- af[af$fips_cntry == x,  ]
   print(x)
   cntr <- crop(afr, cnt)
-  cntr2 <- mask(cntr, mask = cnt, filename = paste0("external/ext_data/", x, "-grid.tif"), 
-               datatype = "INT4S", overwrite = TRUE) 
+  cntr2 <- mask(cntr, mask = cnt, 
+                filename = paste0("external/base_data/", x, "-grid.tif"), 
+                datatype = "INT4S", overwrite = TRUE) 
 })
 names(cntr_l) <- cnames
 cntr_l <- lapply(cnames, function(x) {
-  fnm <- full_path("external/ext_data/", paste0(x, "-grid.tif"))
+  fnm <- full_path("external/base_data/", paste0(x, "-grid.tif"))
   brick(fnm)
 })
 
@@ -168,14 +170,14 @@ load("data/cropnames.rda")
 
 # And project to Albers for larger area work
 projectRaster(from = cropylds_af, to = afr10, progress = "text", 
-              filename = "external/ext_data/crop-yields.tif")
+              filename = "external/base_data/crop-yields.tif")
 projectRaster(from = cropareas_af, to = afr10, progress = "text", 
-              filename = "external/ext_data/crop-areas.tif")
+              filename = "external/base_data/crop-areas.tif")
 projectRaster(from = potylds_af, to = afr10, progress = "text", 
-              filename = "external/ext_data/potential-yields.tif")
-cropylds_af_p <- brick("external/ext_data/crop-yields.tif")
-cropsareas_af_p <- brick("external/ext_data/crop-areas.tif")
-potylds_af_p <- brick("external/ext_data/potential-yields.tif")
+              filename = "external/base_data/potential-yields.tif")
+cropylds_af_p <- brick("external/base_data/crop-yields.tif")
+cropsareas_af_p <- brick("external/base_data/crop-areas.tif")
+potylds_af_p <- brick("external/base_data/potential-yields.tif")
 ```
 
 3. Set up some masks of current cropland/non-cropland and urban areas
@@ -201,9 +203,9 @@ nofarm[nofarm == 2] <- 0
 nofarm[nofarm == 0] <- 1
 unfarmed <- nocropland * nofarm  # Mask applied to non farm fractions
 unfarmed[unfarmed < 0] <- 1
-projectRaster(unfarmed, to = afr10, filename = "external/ext_data/unfarmed.tif", 
+projectRaster(unfarmed, to = afr10, filename = "external/base_data/unfarmed.tif", 
               overwrite = TRUE)
-# unfarmed <- raster("external/ext_data/africa-unfarmed.tif")
+# unfarmed <- raster("external/base_data/africa-unfarmed.tif")
 ```
 And use that to figure out total current and potential production at 10 km resolution
 ```{r, eval = FALSE}
@@ -217,9 +219,9 @@ curprod <- sapply(1:nlayers(cropsareas_af_p), function(x) {
   rha <-  r * afha
   prod <- (rha * y) * afrmask10
 })
-brick(stack(curprod), filename = "external/ext_data/current-production.tif", 
+brick(stack(curprod), filename = "external/base_data/current-production.tif", 
       overwrite = TRUE)
-curprod <- brick("external/ext_data/current-production.tif")
+curprod <- brick("external/base_data/current-production.tif")
 
 potprod_curarea <- sapply(1:nlayers(cropsareas_af_p), function(x) {
   r <- cropsareas_af_p[[x]]
@@ -229,15 +231,15 @@ potprod_curarea <- sapply(1:nlayers(cropsareas_af_p), function(x) {
   prod
 })
 brick(stack(potprod_curarea), 
-      filename = "external/ext_data/potential-production-current-area.tif")
-potprod_curarea <- brick("external/ext_data/potential-production-current-area.tif")
+      filename = "external/base_data/potential-production-current-area.tif")
+potprod_curarea <- brick("external/base_data/potential-production-current-area.tif")
  
 # unfarmed_ha <-  unfarmed * afha
 # potprod <- sapply(1:nlayers(potylds_af_p), function(x) {
 #   prod <- unfarmed_ha * potylds_af_p[[x]]
 # })
-# brick(stack(potprod), filename = "external/ext_data/potential-production.tif")
-# potprod <- brick("external/ext_data/potential-production.tif")
+# brick(stack(potprod), filename = "external/base_data/potential-production.tif")
+# potprod <- brick("external/base_data/potential-production.tif")
 
 ```
 4. Carbon datasets. I am reusing most of the carbon data used in the Searchinger et al, (in revision) analysis to get an Africa wide dataset that I can downsample. I adapted some codde from `wet.savannas_Carbon.R`, but could not use the full approach that augments IGBP soil C with HWSD soils to account for wetlands and histosols.
@@ -261,8 +263,8 @@ carbon_names <- c("veg", "soil", "total")
 #carbon <- lapply(cpool, function(x) (x * afha) / 1000) 
 carbon <- lapply(cpool, function(x) x)  # I converted to total--should keep t 
 carbon$tot <- calc(stack(carbon), sum)
-brick(stack(carbon), filename = "external/ext_data/carbon.tif", overwrite = TRUE)
-carbon <- brick("external/ext_data/carbon.tif")
+brick(stack(carbon), filename = "external/base_data/carbon.tif", overwrite = TRUE)
+carbon <- brick("external/base_data/carbon.tif")
 save(carbon_names, file = "data/carbon-names.rda")  # save names for layers
 plot(carbon)
 ```
@@ -333,19 +335,19 @@ af_pas_alb <- spTransform(af_pas_r3, CRSobj = gspoly@proj4string)
 over_gs <- over(af_pas_alb, gBuffer(gscnt, width = 0))
 gs_pas <- af_pas_r3[which(over_gs == 1), ]
 rasterize(af_pas_alb, afr10, field = "ConvProb", progress = "text", 
-          filename = "external/ext_data/af-pas-10km.tif")
-af_pas_r <- raster("external/ext_data/af-pas-10km.tif")
+          filename = "external/base_data/af-pas-10km.tif")
+af_pas_r <- raster("external/base_data/af-pas-10km.tif")
 #plot(pas.r, col = bpy.colors(5))
 
 # Mammal diversity
-load("external/ext_data/mamdiv.rda")
+load("external/base_data/mamdiv.rda")
 mamdiv <- disaggregate(m.r, fact = 3)
 af_mamdiv <- projectRaster(mamdiv, afr10, progress = "text")  # 10 km mamdiv
 gs_mamdiv <- af_mamdiv * !is.na(gs_cnt_r)  # GS range country mammal diversity
-writeRaster(af_mamdiv, filename = "external/ext_data/af_mammal_div.tif")
-af_mamdiv <- raster("external/ext_data/af_mammal_div.tif")
-writeRaster(gs_mamdiv, filename = "external/ext_data/gs_mammal_div.tif")
-gs_mamdiv <- raster("external/ext_data/gs_mammal_div.tif")
+writeRaster(af_mamdiv, filename = "external/base_data/af_mammal_div.tif")
+af_mamdiv <- raster("external/base_data/af_mammal_div.tif")
+writeRaster(gs_mamdiv, filename = "external/base_data/gs_mammal_div.tif")
+gs_mamdiv <- raster("external/base_data/gs_mammal_div.tif")
 ```
 
 + Second, I am adding a new approach, which is to use the [GLC-Share](http://www.glcn.org/databases/lc_glcshare_en.jsp) landcover dataset to define natural vegetation cover, and then pass a moving window over that to calculate how natural the vegetation is in each neighborhood--this will allow areas that are fairly undisturbed to be favored. 
@@ -365,23 +367,23 @@ projection(glc) <- projection(afgcsr)
 af_glc <- crop(glc, y = afgcs, file = full_path(glc_dir, "glc-africa.tif"), 
                overwrite = TRUE)  # crop to Af
 gdalwarp(srcfile = af_glc@file@name, 
-         dstfile = "external/ext_data/glc-africa-alb.tif", 
+         dstfile = "external/base_data/glc-africa-alb.tif", 
          t_srs = af@proj4string@projargs, te = bbox(afr)[1:4], 
          tr = c(1000, 1000), r = "near")
-af_lc <- raster("external/ext_data/glc-africa-alb.tif")
+af_lc <- raster("external/base_data/glc-africa-alb.tif")
 af_nat_cov <- af_lc %in% c(3:11)  # include all classes but artificial and cropland
 af_nat_cov <- mask(af_nat_cov, mask = afr)
 w <- matrix(1, nrow = 21, ncol = 21)
 af_nat_areas <- focal(af_nat_cov, w = w, fun = mean, na.rm = TRUE, 
-                      filename = "external/ext_data/af-natural-cover.gri", 
+                      filename = "external/base_data/af-natural-cover.gri", 
                       progress = "text")
-writeRaster(af_nat_areas, filename = "external/ext_data/af-natural-cover.tif")
-#file.remove(dir("external/ext_data/", pattern = "af-natural-cover.gr"))
-af_nat_areas <- raster("external/ext_data/af-natural-cover.tif")  # 1 km version
+writeRaster(af_nat_areas, filename = "external/base_data/af-natural-cover.tif")
+#file.remove(dir("external/base_data/", pattern = "af-natural-cover.gr"))
+af_nat_areas <- raster("external/base_data/af-natural-cover.tif")  # 1 km version
 af_nat_areas10 <- aggregate(af_nat_areas, fact = 9)
 resample(af_nat_areas10, y = afr10, 
-         filename = "external/ext_data/af-natural-cover-10km.tif")
-af_nat_areas10 <- raster("external/ext_data/af-natural-cover-10km.tif")
+         filename = "external/base_data/af-natural-cover-10km.tif")
+af_nat_areas10 <- raster("external/base_data/af-natural-cover-10km.tif")
 ```
 
 + Third, merge the biodiversity data into a biodiversity value grid
@@ -397,9 +399,9 @@ af_nat_p <- 1 - (af_nat_areas10 - cellStats(af_nat_areas10, min)) /
  diff(cellStats(af_nat_areas10, range))
 pas_p[is.na(pas_p)] <- 0  # NAs to 0
 natbd <- (af_nat_p + bd_p) / 2 * bdmask + pas_p
-writeRaster(natbd, filename = "external/ext_data/af-cons-priorities-10km.tif", 
+writeRaster(natbd, filename = "external/base_data/af-cons-priorities-10km.tif", 
             overwrite = TRUE)
-cons_p <- raster("external/ext_data/af-cons-priorities-10km.tif")
+cons_p <- raster("external/base_data/af-cons-priorities-10km.tif")
 
 # Do this for GS region as well
 
