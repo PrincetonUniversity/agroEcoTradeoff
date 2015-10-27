@@ -9,7 +9,7 @@ Installation is in several steps. First, you should have installed already the f
   + R
   + Rstudio
   + gdal (mac users should get the frameworks from [kyngchaos](http://www.kyngchaos.com/software/frameworks), get the gdal complete framework)
-
+  
 ```
 require(devtools)
 install_github("PrincetonUniversity/agroEcoTradeoff", auth_token = "your_github_token")

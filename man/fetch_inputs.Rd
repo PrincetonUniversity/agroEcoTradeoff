@@ -4,14 +4,12 @@
 \alias{fetch_inputs}
 \title{Fetches inputs from file structure for trademod}
 \usage{
-fetch_inputs(path = "external/ext_data", input_key = "ZA", input = "D")
+fetch_inputs(path = "external/data", input_key = "ZA")
 }
 \arguments{
 \item{path}{Base path to data}
 
 \item{input_key}{A unique file identifier for simulation-specific inputs}
-
-\item{input}{"D" for data.table, "R" for raster (moving towards deprecation)}
 }
 \description{
 Fetches inputs from file structure for trademod

@@ -6,7 +6,6 @@
 #' @param cbetas Vector of constraints to apply to land use. See examples. 
 #' @param ybeta_update 1 (default) or 0 - determines whether yield_mod_* is run.
 #' @param input_key Country/location code indicating input data to load.  
-#' @param input "D" or "R" for data.table or raster version of the model.
 #' @param ctype Specific multiplicative ("X") or additive ("+") constraints 
 #' @param silent Silent or verbose mode (TRUE [default] or FALSE) 
 #' @details Much of the detail of running the model, and examples that help to 
@@ -49,73 +48,47 @@
 #' @export 
 #input_key = "ZA"; input = "D"; ybeta_update = 1; exist_list = NULL
 tradeoff_mod <- function(prod_targ, ybetas, cbetas, input_key = "ZA", 
-                         input = "D", ybeta_update = 1, exist_list = NULL, 
+                         ybeta_update = 1, exist_list = NULL, 
                          ctype = "X", silent = TRUE) {
   names(cbetas) <- c("Ag", "C", "bd", "cost")
   
   # set up 
-  rnm <- full_path(set_base_path(), paste0("external/data/", input_key, 
-                                           "-mask.tif"))
-  ha <- res(raster(rnm))[1]^2 / 10000  # nasty, hard-coded
+  #rnm <- full_path(set_base_path(), paste0("external/data/", input_key, 
+  #                                         "-mask.tif"))
+  #ha <- res(raster(rnm))[1]^2 / 10000  # nasty, hard-coded
+  ha <- spatial_meta(input_key)$ha
   rc <- run_code(input_key)  # creates a once off code for any outputs
   #il <- input_handler(input_key = input_key, ybetas = ybetas, input = input, code = rc)
-  il <- input_handler(input_key = input_key, ybetas = ybetas, input = input, 
+  il <- input_handler(input_key = input_key, ybetas = ybetas, 
                       code = rc, ybeta_update = ybeta_update, 
                       exist_list = exist_list, silent = silent)
   
   # target module
-  if(input == "D") {
-    target <- targets_dt(prod_targ = prod_targ, currprod = il$currprod, 
-                         potprod = il$pp_curr)
-  } else if(input == "R") {
-    target <- targets_r(prod_targ = prod_targ, currprod = il$currprod, 
-                        potprod = il$pp_curr, cropnames = il$cropnames)
-  }
-  
+  target <- targets_dt(prod_targ = prod_targ, currprod = il$currprod, 
+                       potprod = il$pp_curr)
+
   # constraints module 
-  if(input == "D") {
-    c_prob <- constraints_dt(inlist = list("y_std" = il$y_std, "C" = il$carbon_p, 
-                                            "bd" = il$cons_p, "cost" = il$cost_p), 
-                              cbetas = cbetas, code = rc, 
-                              cropnames = il$cropnames, ctype = ctype, 
-                              silent = silent)
-  } else if(input == "R") {
-    rasterOptions(tmpdir = "external/output/temp")  # set tempfile directory
-    c_prob <- constraints_r(inlist = list("y_std" = il$y_std, "C" = il$carbon_p, 
-                                          "bd" = il$cons_p, "cost" = il$cost_p), 
-                            cbetas = cbetas, code = rc, cropnames = il$cropnames, 
-                            silent = silent)
-  }
+  c_prob <- constraints_dt(inlist = list("y_std" = il$y_std, "C"=il$carbon_p, 
+                                         "bd" = il$cons_p, "cost"=il$cost_p), 
+                           cbetas = cbetas, code = rc, 
+                           cropnames = il$cropnames, ctype = ctype, 
+                           silent = silent)
   
   # convert module
-  if(input == "D") {
-    converted <- convert_dt(conv_prob = c_prob, target = target, 
-                            crop_frac = il$cropfrac, pot_yield = il$p_yield, 
-                            cropnames = il$cropnames, base = il$mask, ha = ha, 
-                            keep_index = FALSE)
-  } else if(input == "R") {
-    converted <- convert_r(conv_prob = c_prob, target = target, 
-                           crop_frac = il$cropfrac, pot_yield = il$p_yield, 
-                           cropnames = il$cropnames, code = rc) 
-  }
-  
+  converted <- convert_dt(conv_prob = c_prob, target = target, 
+                          crop_frac = il$cropfrac, pot_yield = il$p_yield, 
+                          cropnames = il$cropnames, base = il$mask, ha = ha, 
+                          keep_index = FALSE)
+
   # impacts
-  if(input == "D") {
-    impacts <- impact_dt(conv = converted, 
-                         carbon = il$carbon[, c("veg", "soil"), with = FALSE], 
-                         pot_yield = il$p_yield, 
-                         div_list = il[c("richness", "pas")],
-                         cost = il$cost,
-                         crop_frac = il$cropfrac, 
-                         cropnames = il$cropnames, ha = ha)
-  } else if(input == "R") {
-    impacts <- impact_r(conv = converted, 
-                        carbon = il$carbon[[c("veg", "soil")]], 
-                        pot_yield = il$p_yield, 
-                        div_list = il[c("richness", "pas")], 
-                        crop_frac = il$cropfrac, cropnames = il$cropnames, 
-                        ha = ha)
-  }
+  impacts <- impact_dt(conv = converted, 
+                       carbon = il$carbon[, c("veg", "soil"), with = FALSE], 
+                       pot_yield = il$p_yield, 
+                       div_list = il[c("richness", "pas")],
+                       cost = il$cost,
+                       crop_frac = il$cropfrac, 
+                       cropnames = il$cropnames, ha = ha)
+  
   out <- list("conv" = converted, "impacts" = impacts, "inputs" = il, 
               "runcode" = rc)
 }

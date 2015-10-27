@@ -51,29 +51,19 @@ ybeta_rast_to_dt <- function(ybetas, cropnames, base) {
 #'   nm_up(mask(r, m, maskvalue = 0), cropnames)
 #' })
 #' 
-#' input_handler(input_key = "ZA", ybetas = ybetas, input = "D", code = rc, 
-#'               ybeta_update = 1)
-#' input_handler(input_key = "ZA", ybetas = ybetas, input = "R", code = rc, 
+#' input_handler(input_key = "ZA", ybetas = ybetas, code = rc, 
 #'               ybeta_update = 1)
 #' il <- fetch_inputs(input_key = "ZA")  #' fetch all necessary inputs 
-#' input_handler(input_key = "ZA", ybetas = ybetas, input = "D", code = rc, 
+#' input_handler(input_key = "ZA", ybetas = ybetas, code = rc, 
 #'               ybeta_update = 0, exist_list = il)
-#' input_handler(input_key = "ZA", ybetas = ybetas, input = "D", code = rc, 
+#' input_handler(input_key = "ZA", ybetas = ybetas, code = rc, 
 #'               ybeta_update = 0, exist_list = il[-1])
-#' input_handler(input_key = "ZA", ybetas = ybetas, input = "D", code = rc, 
+#' input_handler(input_key = "ZA", ybetas = ybetas, code = rc, 
 #'               ybeta_update = 1, exist_list = il)
-#' input_handler(input_key = "ZA", ybetas = list(1, 1), input = "D", code = rc, 
-#'               ybeta_update = 1, exist_list = il)
-#' 
-#' il <- fetch_inputs(input_key = "ZA", input = "R") 
-#' input_handler(input_key = "ZA", ybetas = ybetas, input = "R", code = rc, 
-#'               ybeta_update = 0, exist_list = il)
-#' input_handler(input_key = "ZA", ybetas = ybetas, input = "R", code = rc, 
-#'               ybeta_update = 0, exist_list = il[-1])
-#' input_handler(input_key = "ZA", ybetas = ybetas, input = "R", code = rc, 
+#' input_handler(input_key = "ZA", ybetas = list(1, 1), code = rc, 
 #'               ybeta_update = 1, exist_list = il)
 #' @export
-input_handler <- function(input_key = "ZA", ybetas, input = "D", code, 
+input_handler <- function(input_key = "ZA", ybetas, code, 
                           ybeta_update, exist_list = NULL, silent = TRUE) {
   lnms <- c("currprod", "pp_curr", "p_yield", "cropfrac", "carbon", "mask",
             "cost", "richness", "pas", "cropnames")
@@ -82,49 +72,30 @@ input_handler <- function(input_key = "ZA", ybetas, input = "D", code,
     stop("Input list must have all variables", call. = FALSE) 
   }
   # no existing data list provided 
-  if(input == "D" & is.null(exist_list)) {  # il_y
+  if(is.null(exist_list)) {  # il_y
     il <- fetch_inputs(input_key = input_key)  # fetch all necessary inputs 
     ybetas <- ybeta_rast_to_dt(ybetas, cropnames = il$cropnames, base = il$mask)
     ybeta <- yield_mod_dt(inlist = il[c("p_yield", "pp_curr")], ybetas = ybetas, 
-                          code = code, cropnames = il$cropnames, silent = silent)
+                          code = code, cropnames = il$cropnames, 
+                          silent = silent)
     outlist <- il
     outlist$y_std <- ybeta$y_std
     outlist[c("p_yield", "pp_curr")] <- ybeta[c("p_yield", "pp_curr")]
   }
   # if existing list is provided but ybeta needs adjustment
-  if(input == "D" & !is.null(exist_list) & ybeta_update == 1) {
+  if(!is.null(exist_list) & ybeta_update == 1) {
     ybetas <- ybeta_rast_to_dt(ybetas, cropnames = il$cropnames, base = il$mask)
     ybeta <- yield_mod_dt(inlist = exist_list[c("p_yield", "pp_curr")], 
-                          ybetas = ybetas, code = code, cropnames = il$cropnames)
+                          ybetas = ybetas, code = code, 
+                          cropnames = il$cropnames)
     outlist <- exist_list
     outlist$y_std <- ybeta$y_std
     outlist[c("p_yield", "pp_curr")] <- ybeta[c("p_yield", "pp_curr")]
   }
-  if(input == "D" & !is.null(exist_list) & ybeta_update == 0) {
+  if(!is.null(exist_list) & ybeta_update == 0) {
     outlist <- exist_list
   }
-  if(input == "R" & is.null(exist_list)) {  # il_y
-    il <- fetch_inputs(input_key = input_key, input = "R") 
-    ybeta <- yield_mod_r(inlist = il[c("p_yield", "pp_curr")], ybetas = ybetas, 
-                         code = code, cropnames = il$cropnames, silent = silent)
-    outlist <- il
-    outlist$y_std <- ybeta$y_std
-    outlist[c("p_yield", "pp_curr")] <- ybeta[c("p_yield", "pp_curr")]
-  } 
-  if(input == "R" & !is.null(exist_list) & ybeta_update == 1) {
-    if(any(!lnms %in% names(exist_list))) {
-       stop("Input list must have all variables", call. = FALSE)
-    }
-    ybeta <- yield_mod_r(inlist = exist_list[c("p_yield", "pp_curr")], 
-                         ybetas = ybetas, code = code, cropnames = il$cropnames)
-    outlist <- exist_list
-    outlist$y_std <- ybeta$y_std
-    outlist[c("p_yield", "pp_curr")] <- ybeta[c("p_yield", "pp_curr")]
-  }
-  if(input == "R" & !is.null(exist_list) & ybeta_update == 0) {
-    outlist <- exist_list
-  }
-  
+
   # Calculate conversion probabilities so they are done by impact/production
   yield <- outlist$p_yield
   

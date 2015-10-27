@@ -4,7 +4,7 @@
 \alias{input_handler}
 \title{Data preparation function}
 \usage{
-input_handler(input_key = "ZA", ybetas, input = "D", code, ybeta_update,
+input_handler(input_key = "ZA", ybetas, code, ybeta_update,
   exist_list = NULL, silent = TRUE)
 }
 \arguments{
@@ -14,9 +14,6 @@ indicating input data to load.}
 \item{ybetas}{list of either 2 rasters or 2 vectors providing yield
 modifications for climate & irrigation.}
 
-\item{input}{"D" or "R". "D" runs the (faster) data.table version of the
-model, "R" the raster version.}
-
 \item{code}{Unique simulation code.}
 
 \item{ybeta_update}{1 or 0; determines whether yield_mod_* is run or not.}
@@ -25,6 +22,9 @@ model, "R" the raster version.}
 
 \item{silent}{Hide or show print statements describing processing steps
 (TRUE [default] or FALSE)}
+
+\item{input}{"D" or "R". "D" runs the (faster) data.table version of the
+model, "R" the raster version.}
 }
 \value{
 List of input variables for model
@@ -55,26 +55,16 @@ ybetas <- lapply(1:2, function(x) {
   nm_up(mask(r, m, maskvalue = 0), cropnames)
 })
 
-input_handler(input_key = "ZA", ybetas = ybetas, input = "D", code = rc,
-              ybeta_update = 1)
-input_handler(input_key = "ZA", ybetas = ybetas, input = "R", code = rc,
+input_handler(input_key = "ZA", ybetas = ybetas, code = rc,
               ybeta_update = 1)
 il <- fetch_inputs(input_key = "ZA")  #' fetch all necessary inputs
-input_handler(input_key = "ZA", ybetas = ybetas, input = "D", code = rc,
+input_handler(input_key = "ZA", ybetas = ybetas, code = rc,
               ybeta_update = 0, exist_list = il)
-input_handler(input_key = "ZA", ybetas = ybetas, input = "D", code = rc,
+input_handler(input_key = "ZA", ybetas = ybetas, code = rc,
               ybeta_update = 0, exist_list = il[-1])
-input_handler(input_key = "ZA", ybetas = ybetas, input = "D", code = rc,
+input_handler(input_key = "ZA", ybetas = ybetas, code = rc,
               ybeta_update = 1, exist_list = il)
-input_handler(input_key = "ZA", ybetas = list(1, 1), input = "D", code = rc,
-              ybeta_update = 1, exist_list = il)
-
-il <- fetch_inputs(input_key = "ZA", input = "R")
-input_handler(input_key = "ZA", ybetas = ybetas, input = "R", code = rc,
-              ybeta_update = 0, exist_list = il)
-input_handler(input_key = "ZA", ybetas = ybetas, input = "R", code = rc,
-              ybeta_update = 0, exist_list = il[-1])
-input_handler(input_key = "ZA", ybetas = ybetas, input = "R", code = rc,
+input_handler(input_key = "ZA", ybetas = list(1, 1), code = rc,
               ybeta_update = 1, exist_list = il)
 }
 

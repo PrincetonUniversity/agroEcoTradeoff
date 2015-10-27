@@ -4,12 +4,10 @@
 \alias{standardize}
 \title{Function to standardize values from 0-1, for raster or data.table}
 \usage{
-standardize(x, input = "D")
+standardize(x)
 }
 \arguments{
-\item{x}{A raster* or data.table}
-
-\item{input}{"D" for data.table (default) or "R" for raster*}
+\item{x}{A data.table}
 }
 \description{
 Function to standardize values from 0-1, for raster or data.table

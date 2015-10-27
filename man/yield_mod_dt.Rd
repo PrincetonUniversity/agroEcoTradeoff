@@ -22,11 +22,26 @@ modifications for climate & irrigation}
 This is a data.table-based version of this function.
 }
 \details{
-For ybetas, if data.tables are provided, each data.table should
+For ybetas, if rasters are provided, they should be as a single
+brick that maps the yield impacts of climate change/irrigation, or both,
+with 1 layer for each crop. For ybetas, if data.tables are provided,
+each data.table should
 provide one column to represent the impacts to each crop, or a single column
 that will apply to all crops. Vectors can alternatively be provided that
-apply a uniform yield modification. See further details in documentation
-for \code{\link{yield_mod_r}}
+apply a uniform yield modification. Vectors can alternatively be provided
+that apply a uniform yield modification. A single value can be provided,
+in which case it will be recycled across all assessed crops, or a vector
+equal in length to the number of crops being analyzed can be used. The first
+element of ybeta can be treated as a climate change modifier, as a way to
+modify the potential yield of each crop to investigate, say, the spatial
+patterns that will result if yield achieve only half their potential. The
+second element should be reserved for testing irrigation effects, for the
+sake of good practice.
+}
+\note{
+ybetas could also be used in future to test fertilizer-related yield
+modifications, thereby becoming a three parameter term. The write_out logic
+will need to be fixed for theified pp_curr and p_yield also
 }
 \examples{
 rc <- run_code(input_key = "ZA")
@@ -89,8 +104,5 @@ ybeta_r <- yield_mod_r(inlist = il[c("p_yield", "pp_curr")],
 plot(ybeta5r$y_std - ybeta_r$y_std)  # equal
 plot(ybeta5r$p_yield - ybeta_r$p_yield)  # equal
 plot(ybeta5r$pp_curr - ybeta_r$pp_curr)  # equal
-}
-\seealso{
-\code{\link{yield_mod_r}} for raster-based version
 }
 

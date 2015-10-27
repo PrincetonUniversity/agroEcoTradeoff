@@ -79,7 +79,8 @@ convert_dt <- function(conv_prob, target, crop_frac, pot_yield, cropnames, base,
   setkey(base, ind)
   #prod_dt <- pot_yield[valind, ] * crop_frac[valind, ] * ha
   #prod_dt <- pot_yield * crop_frac * ha
-  prod_dt <- data.table::as.data.table(as.matrix(pot_yield) * ha) #temporarily removed crop_frac
+  # temporarily removed crop_frac
+  prod_dt <- data.table::as.data.table(as.matrix(pot_yield) * ha) 
   prod_dt[, ind := base$ind]
   if(any(is.na(prod_dt)) | any(is.na(conv_prob))) {
     stop("NAs are not allowed", call. = FALSE)
@@ -88,29 +89,39 @@ convert_dt <- function(conv_prob, target, crop_frac, pot_yield, cropnames, base,
   
   conv_prob$ind <- 1:nrow(conv_prob) #use inds to keep track of unallocated pixels
   sequence = c(1:length(cropnames)) #sequence by which crops are considered
-  T <- rep(-1, nrow(conv_prob)) #vector representing allocation of pixels to crops
+  
+  # 26/10/2015 - To-fix: bad practice to use T as object name. This is variable
+  # (shorthand) for TRUE in R.
+  TT <- rep(-1, nrow(conv_prob)) #vector representing allocation of pixels to crops
   targ_rem <- NULL
   
   for (k in 1:length(cropnames)) {
     for (i in 1:length(cropnames))
-      targ_rem[i] <- target$target_newland[i] - sum(prod_dt[[i]][T == i]) #remaining production to be met
-    #only use unallocated pixels
-    conv_prob_u <- conv_prob[T == -1]   
-    prod_dt_u <- prod_dt[T == -1] 
-    alloc_rp <- rep(0, nrow(conv_prob_u)) #vector of residual profit for each pixel in its current allocation
+      # remaining production to be met only use unallocated pixels
+      targ_rem[i] <- target$target_newland[i] - sum(prod_dt[[i]][TT == i]) 
+    conv_prob_u <- conv_prob[TT == -1]   
+    prod_dt_u <- prod_dt[TT == -1] 
+    # vector of residual profit for each pixel in its current allocation
+    alloc_rp <- rep(0, nrow(conv_prob_u)) 
     for(i in sequence) {
       targ <- targ_rem[i]
       if (targ > 0) {
-        conv_prob_u[[i]] <- conv_prob_u[[i]] - alloc_rp #subtract the residual profit of pixels already allocated
-        inds <- order(conv_prob_u[, i, with = FALSE], decreasing = TRUE) #sort the probabilities in descending order
-        inds_map <- conv_prob_u$ind[inds] #map the index for unallocated pixels to their original indices
+        #subtract the residual profit of pixels already allocated
+        conv_prob_u[[i]] <- conv_prob_u[[i]] - alloc_rp 
+        # sort the probabilities in descending order
+        inds <- order(conv_prob_u[, i, with = FALSE], decreasing = TRUE)
+        # map the index for unallocated pixels to their original indices
+        inds_map <- conv_prob_u$ind[inds] 
         for (j in 0:(sum(ifelse(cumsum(prod_dt_u[inds, i, with = FALSE]) < targ, 1, 0))+1)) #pixels to exceed targ
-          T[inds_map[j]] <- i
-        #Here's where we could alter the algorithm. Instead of using just the one highest probability pixel that wasn't
-        #selected, maybe it makes sense to take a mean of the next % pixels if we assume that a lot of pixels are going
-        #to be allocated elsewhere
-        nextp = conv_prob_u[[i]][inds[j + 1]] #the highest probability pixel that wasn't selected
-        alloc_rp[inds[1:j]] = alloc_rp[inds[1:j]] + (conv_prob_u[[i]][inds[1:j]] - nextp) #update resid profit vector
+          TT[inds_map[j]] <- i
+        # Here's where we could alter the algorithm. Instead of using just the 
+        # one with the highest probability pixel that wasn't
+        # selected, maybe it makes sense to take a mean of the next % pixels 
+        # if we assume that a lot of pixels are going
+        # to be allocated elsewhere
+        nextp <- conv_prob_u[[i]][inds[j + 1]] # highest prob pixel that wasn't selected
+        alloc_rp[inds[1:j]] <- alloc_rp[inds[1:j]] + 
+         (conv_prob_u[[i]][inds[1:j]] - nextp) #update resid profit vector
       }
     }
     #Eliminate the last crop considered from the sequence. Its target has been met.
@@ -118,8 +129,10 @@ convert_dt <- function(conv_prob, target, crop_frac, pot_yield, cropnames, base,
   }
   
   for (i in 1:length(cropnames)) {
-    conv_dt[, cropnames[i]] = 0 #initialize a column for each crop filled with zeroes
-    conv_dt[T == i, cropnames[i]] = 1 #for a crop, put a 1 in all the rows where T indicates that crop
+    # initialize a column for each crop filled with zeroes
+    conv_dt[, cropnames[i]] <- 0 
+    # for a crop, put a 1 in all the rows where TT indicates that crop
+    conv_dt[TT == i, cropnames[i]] <- 1 
   }
   
   out_dt <- merge(base, conv_dt, all = TRUE)

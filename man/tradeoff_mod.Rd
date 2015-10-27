@@ -4,8 +4,8 @@
 \alias{tradeoff_mod}
 \title{Spatial tradeoffs model}
 \usage{
-tradeoff_mod(prod_targ, ybetas, cbetas, input_key = "ZA", input = "D",
-  ybeta_update = 1, exist_list = NULL, ctype = "X", silent = TRUE)
+tradeoff_mod(prod_targ, ybetas, cbetas, input_key = "ZA", ybeta_update = 1,
+  exist_list = NULL, ctype = "X", silent = TRUE)
 }
 \arguments{
 \item{prod_targ}{Production targets passed as list. See examples for format.}
@@ -15,8 +15,6 @@ tradeoff_mod(prod_targ, ybetas, cbetas, input_key = "ZA", input = "D",
 \item{cbetas}{Vector of constraints to apply to land use. See examples.}
 
 \item{input_key}{Country/location code indicating input data to load.}
-
-\item{input}{"D" or "R" for data.table or raster version of the model.}
 
 \item{ybeta_update}{1 (default) or 0 - determines whether yield_mod_* is run.}
 

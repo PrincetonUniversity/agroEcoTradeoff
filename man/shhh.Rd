@@ -2,7 +2,7 @@
 % Please edit documentation in R/utilities.R
 \name{shhh}
 \alias{shhh}
-\title{Converts rasters to data.tables}
+\title{Silences print statements or not}
 \usage{
 shhh(x, silent)
 }
@@ -12,7 +12,7 @@ shhh(x, silent)
 \item{silent}{TRUE or FALSE}
 }
 \description{
-Converts rasters to data.tables
+Silences print statements or not
 }
 \keyword{internal}
 

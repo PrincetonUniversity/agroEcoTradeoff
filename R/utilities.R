@@ -115,19 +115,16 @@ set_base_path <- function() {
 #' Fetches inputs from file structure for trademod
 #' @param path Base path to data
 #' @param input_key A unique file identifier for simulation-specific inputs
-#' @param input "D" for data.table, "R" for raster (moving towards deprecation)
 #' @keywords internal
 #' @export
-fetch_inputs <- function(path = "external/data", input_key = "ZA", 
-                         input = "D") {
-  path <- ifelse(input == "D", 
-                 full_path(set_base_path(), "external/data/dt"), 
-                 full_path(set_base_path(), "external/data/"))
- 
+fetch_inputs <- function(path = "external/data", input_key = "ZA") {
+  path <- full_path(set_base_path(), "external/data/dt") 
+
   # Don't read in conversion probability tables. Derive them instead from 
   # constraints.
-  for (i in full_path(set_base_path(), c("data/cropnames.rda", 
-                                         "data/carbon-names.rda"))) load(i)
+  fp <- full_path(set_base_path(), 
+                  c("data/cropnames.rda", "data/carbon-names.rda"))
+  for (i in fp) load(i)
   lnms <- c("currprod", "pp_curr", "p_yield", "cropfrac", "carbon", 
             "mask", "cost", "richness", "pas")
   bnms <- c("current-production", "production-current", "potential-yields\\.", 
@@ -135,47 +132,27 @@ fetch_inputs <- function(path = "external/data", input_key = "ZA",
   rnms <- c("mask", "cost", "-div", "pas")
   nmupnms <- c(rep("cropnames", 4), "carbon_names")
   innms <- c(bnms, rnms)
-  if (input == "D") {
-   in_files <- list.files(path, pattern = input_key, full.names = TRUE)
-   in_files <- unlist(lapply(innms, function(x) in_files[grep(x, 
-                                                              in_files)]))
-   disksize <- sum(file.info(in_files)$size) * 0.00098^2
-   if (disksize > 2048) {
-    stop(paste0("The data.table version of tradeoff_mod must still", 
-                "needs to have an intelligent system for dealing with", 
-                "very large file sizes", call. = FALSE))
-   }
-   l <- lapply(in_files, function(x) fread(x))
-   names(l) <- lnms
+  in_files <- list.files(path, pattern = input_key, full.names = TRUE)
+  in_files <- unlist(lapply(innms, function(x) in_files[grep(x, in_files)]))
+  disksize <- sum(file.info(in_files)$size) * 0.00098^2
+  if (disksize > 2048) {
+   stop(paste0("The data.table version of tradeoff_mod must still", 
+               "needs to have an intelligent system for dealing with", 
+               "very large file sizes", call. = FALSE))
   }
-  else if (input == "R") {
-   in_files <- list.files(path, pattern = input_key, full.names = TRUE)
-   bin_files <- unlist(lapply(bnms, function(x) in_files[grep(x, 
-                                                              in_files)]))
-   rin_files <- unlist(lapply(rnms, function(x) in_files[grep(x, 
-                                                              in_files)]))
-   lb <- lapply(1:length(bin_files), function(x) {
-    nm_up(brick(bin_files[x]), get(nmupnms[x]))
-   })
-   lr <- lapply(rin_files, function(x) raster(x))
-   l <- c(lb, lr)
-   names(l) <- lnms
-  }
+  l <- lapply(in_files, function(x) fread(x))
+  names(l) <- lnms
   l[[length(l) + 1]] <- cropnames
   names(l) <- c(lnms, "cropnames")
   return(l)
 }
 
 #' Function to standardize values from 0-1, for raster or data.table
-#' @param x A raster* or data.table
-#' @param input "D" for data.table (default) or "R" for raster*
+#' @param x A data.table
 #' @keywords internal
 #' @export
-standardize <- function(x, input = "D") {
-  if(input == "R") o <- (x - cellStats(x, min)) / diff(cellStats(x, range))
-  if(input == "D") {
-    o <- (x - min(x, na.rm = TRUE)) / diff(range(x, na.rm = TRUE))
-  }
+standardize <- function(x) {
+  o <- (x - min(x, na.rm = TRUE)) / diff(range(x, na.rm = TRUE))
   return(o)
 }
 
@@ -219,7 +196,7 @@ dt_list_to_raster <- function(base, inlist, CRSobj) {
   return(dts)
 }
 
-#' Converts rasters to data.tables
+#' Silences print statements or not
 #' @param x print statement
 #' @param silent TRUE or FALSE
 #' @keywords internal
@@ -228,6 +205,24 @@ dt_list_to_raster <- function(base, inlist, CRSobj) {
 shhh <- function(x, silent) {
   if(silent == FALSE) print(x)
 } 
+
+#' Fetches raster meta data for study area
+#' @param input_key Input key (country code) passed through trademod function
+#' @keywords internal
+#' @note This will likely be replaced by upgrades to dtraster package, which 
+#' will provide header data for raster tables. Currently this reads metadata 
+#' from a raster mask of the study area.
+#' @export
+spatial_meta <- function(input_key) {
+  rnm <- full_path(set_base_path(), paste0("external/data/", input_key, 
+                                          "-mask.tif"))
+  r <- raster(rnm)
+  ha <- res(r)[1]^2 / 10000  # hectares for study area
+  CRSobj <- projection(r)
+  list("ha" = ha, "crs" = CRSobj)
+}
+ 
+
 
 # #' Cumulative sum, ignoring NA.
 # #' @param x numeric vector

@@ -12,13 +12,13 @@ Depends:
     rgdal,
     lmisc,
     data.table,
-    RColorBrewer
+    RColorBrewer,
     dtraster
 Imports:
     raster,
     rgdal,
     lmisc,
     data.table,
-    RColorBrewer
+    RColorBrewer,
     dtraster
 License: GPL (>= 3)
