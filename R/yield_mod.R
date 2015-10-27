@@ -93,7 +93,8 @@
 #' plot(round(ybeta_dt1_y_std[[2:10]], 9) - round(ybeta$y_std, 9))  
 #' # ...due to very minor rounding (R Inferno)
 #' @export
-yield_mod_r <- function(inlist, ybetas, code, cropnames, write_out = FALSE, silent = TRUE) {
+yield_mod_r <- function(inlist, ybetas, code, cropnames, write_out = FALSE, 
+                        silent = TRUE) {
   fpath <- "external/output/yield-mod/"
   #ybnm <- fname(paste0(fpath, "yb-rst-"), code)
   ybeta_l <- lapply(1:length(ybetas), function(x) {

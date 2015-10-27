@@ -48,8 +48,8 @@
 #'                      ha = ha)
 
 #' @export
-impact_dt <- function(conv, carbon, pot_yield, div_list, cost, crop_frac, cropnames,
-                      ha) {
+impact_dt <- function(conv, carbon, pot_yield, div_list, cost, crop_frac, 
+                      cropnames, ha) {
    cn <- cropnames
    mymean <- function(x) mean(x[x > 0], na.rm = TRUE)
    mysum <- function(x) sum(x, na.rm = TRUE)

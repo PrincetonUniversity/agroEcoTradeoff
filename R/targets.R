@@ -72,7 +72,9 @@ targets_dt <- function(prod_targ, currprod, potprod) {#, cropnames)
   
   prod_diff <- potprod - currprod
   mysum <- function(x) round(sum(x, na.rm = TRUE))
-  for(i in seq_along(prod_diff)) set(prod_diff, i = which(prod_diff[[i]] < 0), j = i, value = 0)
+  for(i in seq_along(prod_diff)) {
+    set(prod_diff, i = which(prod_diff[[i]] < 0), j = i, value = 0)
+  }
   t_df <- cbind.data.frame("current" = t(currprod[, lapply(.SD, mysum)]), 
                            "potential" = t(prod_diff[, lapply(.SD, mysum)]))
   t_df$target <- t_df$current * prod_targ

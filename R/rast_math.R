@@ -13,7 +13,8 @@
 #' improved to run in blocks, and perhaps parallelize, while calculation is being done. In future this 
 #' function, if it proves useful, should go into separate R library for raster functions. 
 #' @export
-rast_math <- function(x, tmpdir = NULL, format = "GTiff", NAval = NULL, filename = NULL) {
+rast_math <- function(x, tmpdir = NULL, format = "GTiff", NAval = NULL, 
+                      filename = NULL) {
   if(!is.null(tmpdir)) rasterOptions(tmpdir = tmpdir)
   rasterOptions(format = format)
   rexp <- expression(x)
@@ -32,7 +33,10 @@ rast_math <- function(x, tmpdir = NULL, format = "GTiff", NAval = NULL, filename
 #' @details Internal function
 #' @keywords internal
 #' @export
-rclass_chk <- function(x) any(sapply(c("RasterLayer", "RasterBrick", "RasterStack"), function(j) is(x, j)))
+rclass_chk <- function(x) {
+  rtypes <- c("RasterLayer", "RasterBrick", "RasterStack")
+  any(sapply(rtypes, function(j) is(x, j)))
+}
 
 #' @title Run gdal_calc.py
 #' 
@@ -48,13 +52,15 @@ rclass_chk <- function(x) any(sapply(c("RasterLayer", "RasterBrick", "RasterStac
 #' @keywords internal
 #' @note This still has to be fixed to handle multi-band rasters gracefully
 #' @export
-gdal_calc <- function(cstr, x, filename, type = "UInt16", gdformat = "GTiff", overwrite = TRUE, 
-                      robject = FALSE) {
+gdal_calc <- function(cstr, x, filename, type = "UInt16", gdformat = "GTiff", 
+                      overwrite = TRUE, robject = FALSE) {
   dang <- Sys.time()
   rnm <- function(j) if(is.vector(j)) j else if(rclass_chk(j)) j@file@name
   rnms <- paste("-", names(x), " ",  sapply(x, rnm), sep = "", collapse = " ")
-  calc_str <- paste0("gdal_calc.py ", rnms, " --outfile=", filename, " --type=", type, " --format=", 
-                     gdformat, paste(ifelse(overwrite == TRUE, " --overwrite ", " ")), "--calc='", cstr, "'")
+  calc_str <- paste0("gdal_calc.py ", rnms, " --outfile=", filename, " --type=", 
+                     type, " --format=", gdformat, 
+                     paste(ifelse(overwrite == TRUE, " --overwrite ", " ")), 
+                     "--calc='", cstr, "'")
   print(paste("Running calculation", cstr))
   system(calc_str)
   print(paste("finished in", Sys.time() - dang))

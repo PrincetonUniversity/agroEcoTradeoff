@@ -8,17 +8,20 @@
 #' @keywords internal
 #' @export
 set_length <- function(x, lx = y, name = "") {
-  if(any(sapply(c("RasterLayer", "RasterBrick", "RasterStack"), function(j) is(x, j)))) {
+  rtypes <- c("RasterLayer", "RasterBrick", "RasterStack")
+  if(any(sapply(rtypes, function(j) is(x, j)))) {
     if((nlayers(x) > 1) & (nlayers(x) < lx)) {
       o <- x[[1]]
-      print(paste("Length of object", name, "is incorrect, only the first element will be applied"))
+      print(paste("Length of object", name, 
+                  "is incorrect, only the first element will be applied"))
     } else {
       o <- x 
     }
   } else if(is.vector(x)) {
     if((length(x) > 1) & (length(x) < lx)) {
       o <- x[1]
-      print(paste("Length of object", name, "is incorrect, only the first element will be applied"))
+      print(paste("Length of object", name, 
+                  "is incorrect, only the first element will be applied"))
     } else {
       o <- x
     }
@@ -35,19 +38,23 @@ set_length <- function(x, lx = y, name = "") {
 #' @keywords internal
 #' @export
 check_length <- function(x, lx, name = "") {
-  if(any(sapply(c("RasterLayer", "RasterBrick", "RasterStack"), function(j) is(x, j)))) {
+  rtypes <- c("RasterLayer", "RasterBrick", "RasterStack")
+  if(any(sapply(rtypes, function(j) is(x, j)))) {
     if((nlayers(x) != 1) & (nlayers(x) != lx)) {
-      stop(paste("Number of layers in", name, "must be equal to 1 or", lx), call. = FALSE)
+      stop(paste("Number of layers in", name, "must be equal to 1 or", lx), 
+           call. = FALSE)
     }
     o <- nlayers(x)
   } else if(is.vector(x)) {
     if((length(x) != 1) & (length(x) != lx)) {
-      stop(paste("Length of vector", name, "must be equal to 1 or", lx), call. = FALSE)
+      stop(paste("Length of vector", name, "must be equal to 1 or", lx), 
+           call. = FALSE)
     }
     o <- length(x)
   } else if(is.data.table(x)) {
     if((ncol(x) != 1) & (ncol(x) != lx)) {
-    stop(paste("Number of columns in", name, "must be equal to 1 or", lx), call. = FALSE)
+    stop(paste("Number of columns in", name, "must be equal to 1 or", lx), 
+         call. = FALSE)
    }
    o <- length(x)
   }
@@ -63,8 +70,10 @@ check_length <- function(x, lx, name = "") {
 run_code <- function(input_key) {
   #code <- paste0(input_key, "-", gsub("\\-|\\:|\\ ", "", strptime(Sys.time(), "%Y-%m-%d %H:%M:%S")))
   code <- paste0(input_key, "_", 
-                 paste0(gsub(" ", "_", gsub(":|-", "", as.character(Sys.time()))), 
-                        "_", Sys.getpid(), "_", paste0(sample(0:9, 5, replace = TRUE), collapse = "")))
+                 paste0(gsub(" ", "_", 
+                             gsub(":|-", "", as.character(Sys.time()))), 
+                        "_", Sys.getpid(), "_", 
+                        paste0(sample(0:9, 5, replace = TRUE), collapse = "")))
   return(code)
 }
 
@@ -109,11 +118,11 @@ set_base_path <- function() {
 #' @param input "D" for data.table, "R" for raster (moving towards deprecation)
 #' @keywords internal
 #' @export
-fetch_inputs <- function(path = "external/ext_data", input_key = "ZA", 
+fetch_inputs <- function(path = "external/data", input_key = "ZA", 
                          input = "D") {
   path <- ifelse(input == "D", 
-                 full_path(set_base_path(), "external/ext_data/dt"), 
-                 full_path(set_base_path(), "external/ext_data/"))
+                 full_path(set_base_path(), "external/data/dt"), 
+                 full_path(set_base_path(), "external/data/"))
  
   # Don't read in conversion probability tables. Derive them instead from 
   # constraints.

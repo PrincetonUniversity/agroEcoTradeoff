@@ -54,8 +54,7 @@ tradeoff_mod <- function(prod_targ, ybetas, cbetas, input_key = "ZA",
   names(cbetas) <- c("Ag", "C", "bd", "cost")
   
   # set up 
-  
-  rnm <- full_path(set_base_path(), paste0("external/ext_data/", input_key, 
+  rnm <- full_path(set_base_path(), paste0("external/data/", input_key, 
                                            "-mask.tif"))
   ha <- res(raster(rnm))[1]^2 / 10000  # nasty, hard-coded
   rc <- run_code(input_key)  # creates a once off code for any outputs
