@@ -1,0 +1,22 @@
+---
+title: "Model Set-up"
+author: "Lyndon Estes"
+date: "05 February 2015"
+output: html_document
+---
+
+## Notes on setting up tradeoffMod
+
+
+```{r}
+if(!"devtools" %in% installed.packages()) install.packages("devtools")
+require(devtools)
+install_github("PrincetonUniversity/lmisc", 
+               auth_token = "389c3fa42ad41bb7b6e1b403b6d52870a758d5a2")
+install_github("ldemaz/dtraster")
+require(lmisc)
+
+install_github("PrincetonUniversity/agroEcoTradeoff@devel", 
+               auth_token = "389c3fa42ad41bb7b6e1b403b6d52870a758d5a2")
+```
+

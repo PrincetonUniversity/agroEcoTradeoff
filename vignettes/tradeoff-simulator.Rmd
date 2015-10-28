@@ -1,0 +1,96 @@
+---
+title: "A fuller simulation"
+author: "Lyndon Estes"
+date: "October 27, 2015"
+output: 
+  html_document:
+    highlight: tango
+    theme: spacelab
+    toc: yes 
+---
+
+# Overview
+
+Having examined the manner in which different weightings alter the impacts of different land use priorities, you can now choose a few of those weighting schemes and explore them more fully in relation to different crop production targets.  
+
+# Set parameters
+
+Give a reasoned value for the future target for each of the 9 crops in the `prod_targ` vector below. The values you give are a multiplier relative to current levels of production. Below that, give the values of the weights you want to apply to each of the four land use priorities, in the `cbeta` vector. 
+```{r}
+# production target list
+prod_targ <- c("maize" = 4, 
+               "cassava" = 2, 
+               "ground" = 2, 
+               "cotton" = 2, 
+               "soy" = 2, 
+               "pulse" = 2, 
+               "sunflower" = 2, 
+               "sugarcane" = 2, 
+               "wheat" = 2)
+
+# cbeta vector
+cbetas <- c("Ag" = 0.5, 
+            "C" = 0.5, 
+            "bd" = 0, 
+            "cost" = 0)
+
+```
+
+# Run the model
+```{r, echo = FALSE, eval = FALSE}
+library(agroEcoTradeoff)
+bcode <- run_code("ZA")
+dnm <- paste0(full_path(set_base_path(), "external/output/batch/dt/"), bcode)
+dir.create(dnm)
+
+# Run model
+ybetas <- list(1, 1)
+tdt <- tradeoff_mod(prod_targ, ybetas, cbetas)  # 2.5 seconds
+
+# Write out outputs
+fnm <- full_path(set_base_path(), 
+                 paste0("external/output/batch/dt/", bcode, "/", 
+                        tdt$runcode, ".csv"))
+write.table(tdt$conv, file = fnm, sep = ",", col.names = TRUE, 
+            row.names = FALSE)
+impacts <- tdt[[c("impacts")]]
+
+fnm <- full_path(set_base_path(), 
+                 paste0("external/output/batch/dt/", bcode, "/impacts.rda"))
+save(impacts, file = fnm)
+save(bcode, file = paste0("external/output/batch/dt/bcode.rda"))
+```
+
+# Plot results
+
+## Where were the impacts?
+```{r, echo = FALSE, message=FALSE}
+library(agroEcoTradeoff)
+setwd(set_base_path())
+load(paste0("external/output/batch/dt/bcode.rda"))
+CRSobj <- spatial_meta("ZA")$crs
+dnm <- full_path("external/output/batch/dt", bcode)
+dt <- fread(full_path(dnm, dir(dnm, pattern = ".csv")))
+
+xy <- dt[, .(x, y)]
+xy[, conv := dt[, rowSums(.SD), .SDcols = names(dt)[-c(1:2)]]]
+dtr <- dt_to_raster(xy, CRSobj = CRSobj)
+
+load(paste0(dnm, "/impacts.rda"))
+
+v1 <- sum(impacts$conv_area) / 1000
+v2 <- sum(impacts$pa_loss) / 1000
+v3 <- mean(impacts[, 3], na.rm = TRUE)
+v4 <- mean(impacts[, 5], na.rm = TRUE)
+
+par(mar = c(1, 1, 1, 1))
+plot(dtr, axes = FALSE, box = FALSE, legend = FALSE)
+mtext(paste(v1, "ha converted"), side = 3, adj = 0)
+mtext(paste(v2, "PA ha converted"), side = 3, adj = 0, line = -1)
+mtext(paste(round(v3, 1), "spp/tYield"), side = 3, adj = 0, line = -2)
+mtext(paste(round(v4, 1), "tC/tYield"), side = 3, adj = 0, line = -3)
+
+```
+
+
+

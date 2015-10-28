@@ -19,37 +19,37 @@
 #' load("data/cropnames.rda")
 #' rc <- run_code(input_key = "ZA")  
 #' 
-#' # dummy climate/irrigation modifiers
-#' dfact <- c(0.9, 1.2)
-#' ybetas <- lapply(1:2, function(x) {
-#'   m <- brick("external/ext_data/ZA-crop-areas.tif")
-#'   r <- m
-#'   r <- setValues(r, values = rnorm(n = ncell(r) * nlayers(r), mean = dfact[x], 
-#'                  sd = 0.05))
-#'   nm_up(mask(r, m, maskvalue = 0), cropnames)
-#' })
+#' # # dummy climate/irrigation modifiers
+#' # dfact <- c(0.9, 1.2)
+#' # ybetas <- lapply(1:2, function(x) {
+#' #   m <- brick("external/ext_data/ZA-crop-areas.tif")
+#' #   r <- m
+#' #   r <- setValues(r, values = rnorm(n = ncell(r) * nlayers(r), mean = dfact[x], 
+#' #                  sd = 0.05))
+#' # nm_up(mask(r, m, maskvalue = 0), cropnames)
+#' # })
+#' 
 #' ybetas <- list(1, 1)
-#' # production target list
+# # production target list
 #' prod_targ <- c("maize" = 4, "cassava" = 2, "ground" = 2, "cotton" = 2, 
 #'                "soy" = 2, "pulse" = 2, "sunflower" = 2, "sugarcane" = 2, 
 #'                "wheat" = 2)
 #' 
 #' # cbeta vector
-#' cbetas <- c(1, 1, 0.5, 0)
+#' cbetas <- c(0.5, 0.5, 0, 0)
 #' names(cbetas) <- c("Ag", "C", "bd", "cost")
 #' 
 #' # Comparing the two versions
 #' system.time(tdt <- tradeoff_mod(prod_targ, ybetas, cbetas))  # 2.5 seconds
-#' system.time(tdr <- tradeoff_mod(prod_targ, ybetas, cbetas, input = "R"))  # 6 
-#' identical(tdt$impacts, tdr$impacts)  # check output stats for consistency
 #' 
 #' CRSobj <- projection(raster("external/ext_data/ZA-carbon-priorities.tif"))
 #' plot(dt_to_raster(tdt$conv, CRSobj = CRSobj) - tdr$conv)  # check maps
 #' @export 
-#input_key = "ZA"; input = "D"; ybeta_update = 1; exist_list = NULL
+#input_key = "ZA"; input = "D"; ybeta_update = 1; exist_list = NULL; 
+
 tradeoff_mod <- function(prod_targ, ybetas, cbetas, input_key = "ZA", 
                          ybeta_update = 1, exist_list = NULL, 
-                         ctype = "X", silent = TRUE) {
+                         ctype = "+", silent = TRUE) {
   names(cbetas) <- c("Ag", "C", "bd", "cost")
   
   # set up 

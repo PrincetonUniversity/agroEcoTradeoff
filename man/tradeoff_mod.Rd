@@ -5,7 +5,7 @@
 \title{Spatial tradeoffs model}
 \usage{
 tradeoff_mod(prod_targ, ybetas, cbetas, input_key = "ZA", ybeta_update = 1,
-  exist_list = NULL, ctype = "X", silent = TRUE)
+  exist_list = NULL, ctype = "+", silent = TRUE)
 }
 \arguments{
 \item{prod_targ}{Production targets passed as list. See examples for format.}
@@ -43,23 +43,23 @@ resulting from multi-season cropping in converted pixels.
 load("data/cropnames.rda")
 rc <- run_code(input_key = "ZA")
 
-# dummy climate/irrigation modifiers
-dfact <- c(0.9, 1.2)
-ybetas <- lapply(1:2, function(x) {
-  m <- brick("external/ext_data/ZA-crop-areas.tif")
-  r <- m
-  r <- setValues(r, values = rnorm(n = ncell(r) * nlayers(r), mean = dfact[x],
-                 sd = 0.05))
-  nm_up(mask(r, m, maskvalue = 0), cropnames)
-})
+# # dummy climate/irrigation modifiers
+# dfact <- c(0.9, 1.2)
+# ybetas <- lapply(1:2, function(x) {
+#   m <- brick("external/ext_data/ZA-crop-areas.tif")
+#   r <- m
+#   r <- setValues(r, values = rnorm(n = ncell(r) * nlayers(r), mean = dfact[x],
+#                  sd = 0.05))
+# nm_up(mask(r, m, maskvalue = 0), cropnames)
+# })
+
 ybetas <- list(1, 1)
-# production target list
 prod_targ <- c("maize" = 4, "cassava" = 2, "ground" = 2, "cotton" = 2,
                "soy" = 2, "pulse" = 2, "sunflower" = 2, "sugarcane" = 2,
                "wheat" = 2)
 
 # cbeta vector
-cbetas <- c(1, 1, 0.5, 0)
+cbetas <- c(0.5, 0.5, 0, 0)
 names(cbetas) <- c("Ag", "C", "bd", "cost")
 
 # Comparing the two versions

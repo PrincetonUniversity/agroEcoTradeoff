@@ -1,0 +1,100 @@
+---
+title: "Optimization Demo"
+author: "Lyndon Estes"
+date: "October 27, 2015"
+output: 
+  html_document:
+    highlight: tango
+    theme: spacelab
+    toc: yes 
+---
+
+# Overview
+
+The following code runs a demonstration of how one might try to balance different land use priorities.  We test different weights that reflect the level of priority we might attach to each of the following four goals: 
+
+   1. Maximizing the potential yield we might get from different crops
+   2. Minimizing the loss of carbon resulting from land use conversion
+   3. Minimizing the loss of biodiversity and protected areas
+   4. Minimizing transport time, a proxy for cost
+
+The model balances these priorities according to different permutations of weights as it sets out to satisfy crop production targets that we set. These targets can be thought of as scenarios for future agricultural demand.  
+
+In the following code, we are going to try evaluate which set of weights is optimal, given an across the board increase that needs to be met for 9 different crops. 
+
+In this first chunk of code, you are getting to set just two options: 
+
+  1. The multiple by which existing production must be increased to meet future demand across all crops; 
+  2. Which of the four priorities we are going to care about. You can choose just two, three, or all four.  For each pairwise permutation there are 5 combinations, so the model runs a bit longer depending on how many priorities you choose.  
+```{r}
+# set the target multiplier
+targ <- 4  
+
+# choose which of the priorities you want to evaluate. "Ag" = agriculture, or 
+# the desire to maximixe potential agricultural productivity, "C" = carbon, 
+# or the desire to minimize carbon loss, "bd" = biodiversity, or the desire to 
+# minimize protected area loss or higher biodiversity unprotected areas, 
+# "cost" = the desire to minimize transport costs. 
+# you can simply uncomment one of the options below, or add your own combination,
+# but always make sure at least two are selected
+cnames <- c("Ag", "C")
+# cnames <- c("Ag", "C", "bd")
+# cnames <- c("Ag", "C", "bd", "cost")
+```
+
+This chunk will execute the model and plot the outputs, which takes a little while to run
+```{r, eval = FALSE, echo=FALSE}
+library(agroEcoTradeoff)
+yblist <- list(yb1 <- c(1, 1))
+ot <- pareto(cnames = cnames, step = step, yblist = yblist, targ = targ)
+bcode <- ot$bcode
+save(bcode, file = paste0("external/output/batch/dt/bcode.rda"))
+```
+
+# Weights evaluated
+
+```{r, echo = FALSE, message=FALSE}
+# Load the output tables
+library(agroEcoTradeoff)
+setwd(set_base_path())
+load(paste0("external/output/batch/dt/bcode.rda"))
+dnm <- full_path("external/output/batch/dt", bcode)
+load(paste0(dnm, "/out_tables.rda"))
+load(paste0(dnm, "/parms.rda"))
+
+parms[, cnames]
+```
+
+# Tradeoff plots
+
+```{r, echo = FALSE, message=FALSE}
+# dtrs <- lapply(dtrs, function(x) aggregate(x, fact = 4))
+# Plotted values of the 5 scenarios, aggregated across all crops
+scenRange <- 1:length(out_list)
+cl <- 1.5
+cx <- 2
+cols <- bpy.colors(5)
+par(mfrow = c(3, 2), mar = c(1, 4, 1, 2), mgp = c(2, 1, 0))
+v <- sapply(scenRange, function(x) sum(out_list[[x]]$conv_area) / 1000)
+plot(v, pch = 20, cex = cx, col = cols, ylab = "ha/1000", xaxt = "n", xlab = "",      ylim = range(v), cex.lab = cl) 
+v <- sapply(scenRange, function(x) sum(out_list[[x]]$pa_loss) / 1000)
+plot(v, pch = 20, cex = cx, col = cols, 
+     ylab = "Protected ha/1000", xaxt = "n", xlab = "", 
+     ylim = range(v) * c(0.9, 1.1), cex.lab = cl) 
+v <- sapply(scenRange, function(x) mean(out_list[[x]][, 3], na.rm = TRUE))
+plot(v, pch = 20, cex = cx, col = cols, ylab = "spp/tY", xaxt = "n", xlab = "", 
+     ylim = range(v), cex.lab = cl) 
+v <- sapply(scenRange, function(x) mean(out_list[[x]][, 5], na.rm = TRUE))
+plot(v, pch = 20, cex = cx, col = cols, ylab = "tC/tY", xaxt = "n", xlab = "", 
+     ylim = range(v), cex.lab = cl) 
+plot(1:1000, 1:1000, pch = "", axes = FALSE, ylab = "")
+points(rep(400, 5), seq(50, 950, 200), pch = 20, col = cols, cex = 4)
+text(rep(440, 5), seq(50, 950, 200), 
+     labels = c("Scen 1", "Scen 2", "Scen 3", "Scen 4", "Scen 5"), 
+     adj = 0)
+
+```
+
+Note that colors repeat themselves after every 5th scenario. The weights applied can be examined in the preceding table.
+
+

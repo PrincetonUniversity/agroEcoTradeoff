@@ -79,10 +79,11 @@ careas <- lapply(cnames, function(x) {
 })
 
 # current yields
-lapply(cnames, function(x) {
+lapply(cnames, function(x) { # x <- "ZA"
   fname <- full_path("external/base_data/", paste0(x, "-crop-yields.tif"))
   b <- crop(brick("external/base_data/crop-yields.tif"), cntr_l[[x]])
   b <- resample(b, mgrids[[x]])
+  b[is.na(b)] <- 0
   b <- mask(b, af[af$fips_cntry == x,  ])
   writeRaster(b, filename = fname, overwrite = TRUE)
 })
@@ -106,7 +107,7 @@ potyld <- lapply(cnames, function(x) {
 ha <- res(careas[[1]])[1]^2 / 10000
 lapply(1:length(cnames), function(x) {
   fname <- full_path("external/base_data/", 
-                     paste0(cnames[x], "-potential-production-current-area.tif"))
+                     paste0(cnames[x],"-potential-production-current-area.tif"))
   b <- potyld[[x]] * (careas[[x]] * ha)
   writeRaster(b, filename = fname, overwrite = TRUE)
 })
@@ -307,8 +308,8 @@ crop_sel_tab$crop <- cropnames
 
 3. Create new country mask
 ```{r, eval = FALSE}
-lapply(1:length(cnames), function(x) {
-  msk <- calc(potylds_cnt_std[[x]], sum)
+lapply(1:length(cnames), function(x) {  # x <- 1
+  msk <- calc(stack(potylds_cnt_std[[x]], carbon_cnt[[x]]), sum)
   msk <- !is.na(msk) * 1
   writeRaster(msk, filename = full_path(p_dat, paste0(cnames[x], "-mask.tif")), 
               overwrite = TRUE)
@@ -494,15 +495,17 @@ lapply(1:length(cnames), function(x) {
   lr <- lapply(rin_files, function(x) raster(x))
   l <- c(lb, lr)
   names(l) <- lnms 
-
+  
   valinds <- which(values(msk) == 1)
-  lapply(l, function(x) {
+  dtl <- lapply(l, function(x) {
     #x <- il[dt_nms][[1]]
     DT <- as.data.table.raster(x, xy = FALSE)[valinds, ]
     fnm <- paste0("external/data/dt/", 
                   gsub(paste0(p_dat, "|\\/|\\.tif"), "", filename(x)), ".csv")
     write.table(DT, file = fnm, sep = ",", col.names = TRUE, row.names = FALSE)
+    DT
   })
+  # for(i in dtl) print(which(is.na(dtl)))
   base_dt <- as.data.table.raster(msk, xy = TRUE)
   setnames(base_dt, old = names(msk), new = "val")
   base_dt[, ind := 1:nrow(base_dt)]
@@ -512,13 +515,7 @@ lapply(1:length(cnames), function(x) {
               row.names = FALSE)
 })
 
-
-
-
 il <- fetch_inputs("ZA")
-ilr <- fetch_inputs("ZA",input = "R")
-round(colSums(il$currprod, na.rm = TRUE), 7) == 
- round(cellStats(ilr$currprod, sum), 7)
 ```
 
 

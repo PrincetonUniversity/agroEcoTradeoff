@@ -1,13 +1,4 @@
 library(agroEcoTradeoff)
-# source("R/tradeoff_mod.R")
-# source("R/constraints_dt.R")
-# source("R/convert_dt.R")
-# source("R/pareto.R")
-# source("R/targets.R")
-# source("R/impact_dt.R")
-# source("R/input_handler.R")
-# source("R/fetch_inputs.R")
-# source("R/yield_mod.R")
 
 # 2 Constraints
 # Yield modification
@@ -17,12 +8,16 @@ targ <- 4
 # Refine the step interval (divisible evenly into 1) over which to search for optimal solutions
 step <- 0.25
 # Pick the constraints to optimize over
-cnames <- c("Ag", "C")
+cnames <- c("Ag", "C", "bd")
 
 ot <- pareto(cnames = cnames, step = step, yblist = yblist, targ = targ)
 # Plot the Pareto front
-plot(ot$table$land, ot$table$carbon, xlab = "Total Area Converted (ha)", 
-     ylab = "Total Carbon Lost (t)")
+# plot(ot$table$land, ot$table$carbon, xlab = "Total Area Converted (ha)", 
+#      ylab = "Total Carbon Lost (t)")
+# plot(ot$table$land, ot$table$biodiversity, xlab = "Total Area Converted (ha)", 
+#      ylab = "Total Carbon Lost (t)")
+# plot(ot$table$carbon, ot$table$biodiversity, xlab = "Total Area Converted (ha)", 
+#      ylab = "Total Carbon Lost (t)")
 
 # Load the output tables
 # setwd(full_path(proj_root("agroEcoTradeoff"), "agroEcoTradeoff"))
@@ -31,11 +26,17 @@ load(paste0(dnm, "/out_tables.rda"))
 load(paste0(dnm, "/parms.rda"))
 
 # Set projection
-il <- fetch_inputs(input_key = "ZA", input = "R")
-CRSobj <- projection(il$currprod)
+# il <- fetch_inputs(input_key = "ZA", input = "R")
+# CRSobj <- projection(il$currprod)
+CRSobj <- spatial_meta(input_key = "ZA")$crs
+
+# raster("external/data/ZA-mask.tif")
+# r1 <- fread("external/data/dt/ZA-mask.csv")
+# r1a <- dt_to_raster(r1, spatial_meta(input_key = "ZA")$crs)
+# plot(r1a)
 
 # Fetch Inputs using data table format
-il <- fetch_inputs(input_key = "ZA")
+# il <- fetch_inputs(input_key = "ZA")
 
 # View targets
 target <- targets_dt(prod_targ = parms[1, il$cropnames], 
@@ -64,7 +65,14 @@ dtrs <- lapply(1:5, function(x) {
   dtr <- dt_to_raster(dto, CRSobj = CRSobj)
 })
 
-dtrs <- lapply(dtrs, function(x) aggregate(x, fact = 4))
+
+
+# dtrs <- lapply(dtrs, function(x) aggregate(x, fact = 4))
+
+dt_total <- calc(dtrs[[2]], sum)
+cellStats(dt_total, sum)
+
+plot(dt_total)
 
 brks <- c(0, 0.01, 0.05, 0.1, 0.15, 0.2)
 brks2 <- c(0, seq(0.001, 0.601, 0.15))
@@ -85,24 +93,29 @@ conv_plot(scen = scen)
 plot(dtrs[[1]][[1]])
 
 # Plotted values of the 5 scenarios, aggregated across all crops
-scenRange <- 1:5
+scenRange <- 1:length(out_list)
 cl <- 1.5
+cx <- 2
 cols <- bpy.colors(5)
 par(mfrow = c(3, 2), mar = c(2, 4, 1, 2), mgp = c(2, 1, 0))
 v <- sapply(scenRange, function(x) sum(out_list[[x]]$conv_area) / 1000)
-plot(v, pch = 20, cex = 4, col = cols, ylab = "ha/1000", xaxt = "n", xlab = "", ylim = range(v), cex.lab = cl) 
+plot(v, pch = 20, cex = cx, col = cols, ylab = "ha/1000", xaxt = "n", xlab = "", 
+     ylim = range(v), cex.lab = cl) 
 v <- sapply(scenRange, function(x) sum(out_list[[x]]$pa_loss) / 1000)
-plot(v, pch = 20, cex = 4, col = cols, ylab = "ha/1000", xaxt = "n", xlab = "", ylim = range(v) * 1.1, 
-     cex.lab = cl) 
+plot(v, pch = 20, cex = cx, col = cols, ylab = "ha/1000", xaxt = "n", xlab = "", 
+     ylim = range(v) * c(0.9, 1.1), cex.lab = cl) 
 v <- sapply(scenRange, function(x) mean(out_list[[x]][, 3], na.rm = TRUE))
-plot(v, pch = 20, cex = 4, col = cols, ylab = "spp/tY", xaxt = "n", xlab = "", ylim = range(v), cex.lab = cl) 
+plot(v, pch = 20, cex = cx, col = cols, ylab = "spp/tY", xaxt = "n", xlab = "", 
+     ylim = range(v), cex.lab = cl) 
 v <- sapply(scenRange, function(x) mean(out_list[[x]][, 5], na.rm = TRUE))
-plot(v, pch = 20, cex = 4, col = cols, ylab = "tC/tY", xaxt = "n", xlab = "", ylim = range(v), cex.lab = cl) 
-v <- sapply(scenRange, function(x) sum(out_list[[x]][, 6], na.rm = TRUE) / 1000)
-plot(v, pch = 20, cex = 4, col = cols, ylab = "C loss (tonnes / 1000)", xaxt = "n", xlab = "",
-     ylim = range(v), cex.lab = cl)
+plot(v, pch = 20, cex = cx, col = cols, ylab = "tC/tY", xaxt = "n", xlab = "", 
+     ylim = range(v), cex.lab = cl) 
+# v <- sapply(scenRange, function(x) sum(out_list[[x]][, 6], na.rm = TRUE) / 1000)
+# plot(v, pch = 20, cex = 4, col = cols, ylab = "C loss (tonnes / 1000)", 
+#      xaxt = "n", xlab = "", ylim = range(v), cex.lab = cl)
 plot(1:1000, 1:1000, pch = "", axes = FALSE, ylab = "")
 points(rep(400, 5), seq(50, 950, 200), pch = 20, col = cols, cex = 4)
-text(rep(440, 5), seq(50, 950, 200), labels = c("Scen 1", "Scen 2", "Scen 3", "Scen 4", "Scen 5"), 
+text(rep(440, 5), seq(50, 950, 200), 
+     labels = c("Scen 1", "Scen 2", "Scen 3", "Scen 4", "Scen 5"), 
      adj = 0)
 
