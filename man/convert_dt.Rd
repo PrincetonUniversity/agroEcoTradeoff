@@ -4,13 +4,11 @@
 \alias{convert_dt}
 \title{Land conversion module}
 \usage{
-convert_dt(conv_prob, target, crop_frac, pot_yield, cropnames, base, ha,
+convert_dt(conv_prob, target, pot_yield, cropnames, base, ha,
   keep_index = FALSE)
 }
 \arguments{
 \item{conv_prob}{Conversion probability brick}
-
-\item{crop_frac}{RasterBrick of crop allocation fraction}
 
 \item{pot_yield}{RasterBrick of potential crop yields (modified, if necessary)}
 
@@ -64,14 +62,9 @@ conv_prob <- constraints_dt(inlist = clist, cbetas = cbetas, code = rc,
                             cropnames = il$cropnames)
 valind <- which(values(il$mask) == 1)
 system.time(conv <- convert_dt(conv_prob, target = target,
-                               crop_frac = il$cropfrac,
                                pot_yield = ybeta$p_yield, valind = valind,
                                cropnames = il$cropnames,
                                base = il$grid, ha = ha))  # 0.135 seconds
-system.time(convr <- convert_r(conv_prob = conv_probr2, target = targetr,
-                               crop_frac = il$cropfrac,
-                               pot_yield = ybetar$p_yield,
-                               code = il$code, cropnames = il$cropnames))  # 2.9s
 convr2 <- dt_to_raster(dt = conv, CRSobj = projection(il$currprod))
 plot(convr - convr2)  # both approaches equal
 
@@ -80,12 +73,9 @@ conv_prob <- constraints_dt(inlist = clist, cbetas = cbetas, code = rc,
                             cropnames = il$cropnames, base = il$mask)
 conv_probr1 <- dt_list_to_raster(base = base, inlist = list(conv_prob),
                                  CRSobj = prj)[[1]]
-conv_probr2 <- constraints_r(inlist = clistr, cbetas = cbetas, code = rc,
-                             cropnames = il$cropnames)
 
 valind <- which(values(il$mask) == 1)
 system.time(conv <- convert_dt(conv_prob, target = target,
-                               crop_frac = il$cropfrac,
                                pot_yield = ybeta$p_yield,
                                cropnames = il$cropnames,
                                base = il$mask, ha = ha))  # 0.135 seconds

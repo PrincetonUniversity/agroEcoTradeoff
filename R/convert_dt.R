@@ -4,7 +4,6 @@
 #' convert, which is relies on data.table functions. 
 #' @param conv_prob Conversion probability brick
 #' @param prod_targ Production target data.frame
-#' @param crop_frac RasterBrick of crop allocation fraction
 #' @param pot_yield RasterBrick of potential crop yields (modified, if necessary)
 #' @param cropnames Vector of crop names in analysis
 #' @param base Name of base data.table that provides grid numbers and coordinates
@@ -42,14 +41,9 @@
 #'                             cropnames = il$cropnames)
 #' valind <- which(values(il$mask) == 1) 
 #' system.time(conv <- convert_dt(conv_prob, target = target, 
-#'                                crop_frac = il$cropfrac, 
 #'                                pot_yield = ybeta$p_yield, valind = valind, 
 #'                                cropnames = il$cropnames, 
 #'                                base = il$grid, ha = ha))  # 0.135 seconds
-#' system.time(convr <- convert_r(conv_prob = conv_probr2, target = targetr, 
-#'                                crop_frac = il$cropfrac, 
-#'                                pot_yield = ybetar$p_yield, 
-#'                                code = il$code, cropnames = il$cropnames))  # 2.9s
 #' convr2 <- dt_to_raster(dt = conv, CRSobj = projection(il$currprod))
 #' plot(convr - convr2)  # both approaches equal
 #' 
@@ -58,12 +52,9 @@
 #'                             cropnames = il$cropnames, base = il$mask)
 #' conv_probr1 <- dt_list_to_raster(base = base, inlist = list(conv_prob), 
 #'                                  CRSobj = prj)[[1]]
-#' conv_probr2 <- constraints_r(inlist = clistr, cbetas = cbetas, code = rc, 
-#'                              cropnames = il$cropnames)
 #' 
 #' valind <- which(values(il$mask) == 1) 
 #' system.time(conv <- convert_dt(conv_prob, target = target, 
-#'                                crop_frac = il$cropfrac,
 #'                                pot_yield = ybeta$p_yield, 
 #'                                cropnames = il$cropnames, 
 #'                                base = il$mask, ha = ha))  # 0.135 seconds
@@ -72,7 +63,7 @@
 #' plot(convr2)
 
 #' @export
-convert_dt <- function(conv_prob, target, crop_frac, pot_yield, cropnames, base, 
+convert_dt <- function(conv_prob, target, pot_yield, cropnames, base, 
                        ha, keep_index = FALSE) {
   #conv_prob[, ind := base[, ind]]
   #setkey(conv_prob, ind)

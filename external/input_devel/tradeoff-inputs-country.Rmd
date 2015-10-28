@@ -57,13 +57,37 @@ names(mgrids) <- cnames
 ```{r, eval = FALSE}
 # Crops
 # current production
+# lapply(cnames, function(x) {
+#   # x <- "ZA"
+#   fname <- full_path("external/base_data/", paste0(x, "-current-production.tif"))
+#   b <- crop(brick("external/base_data/current-production.tif"), cntr_l[[x]])
+#   b <- resample(b, mgrids[[x]])
+#   b <- mask(b, af[af$fips_cntry == x,  ])
+#   writeRaster(b, filename = fname, overwrite = TRUE)
+# })
+
+# Production areas
 lapply(cnames, function(x) {
-  # x <- "ZA"
-  fname <- full_path("external/base_data/", paste0(x, "-current-production.tif"))
-  b <- crop(brick("external/base_data/current-production.tif"), cntr_l[[x]])
+  fname <- full_path("external/base_data/", paste0(x, "-crop-areas.tif"))
+  b <- crop(brick(fname), cntr_l[[x]])
   b <- resample(b, mgrids[[x]])
   b <- mask(b, af[af$fips_cntry == x,  ])
   writeRaster(b, filename = fname, overwrite = TRUE)
+})
+careas <- lapply(cnames, function(x) {
+   brick(full_path("external/base_data/", paste0(x, "-crop-areas.tif")))
+})
+
+# current yields
+lapply(cnames, function(x) {
+  fname <- full_path("external/base_data/", paste0(x, "-crop-yields.tif"))
+  b <- crop(brick("external/base_data/crop-yields.tif"), cntr_l[[x]])
+  b <- resample(b, mgrids[[x]])
+  b <- mask(b, af[af$fips_cntry == x,  ])
+  writeRaster(b, filename = fname, overwrite = TRUE)
+})
+yld <- lapply(cnames, function(x) {
+   brick(full_path("external/base_data/", paste0(x, "-crop-yields.tif")))
 })
 
 # potential yield
@@ -74,16 +98,32 @@ lapply(cnames, function(x) {
   b <- mask(b, af[af$fips_cntry == x,  ])
   writeRaster(b, filename = fname, overwrite = TRUE)
 })
+potyld <- lapply(cnames, function(x) {
+   brick(full_path("external/base_data/", paste0(x, "-potential-yields.tif")))
+})
 
 # potential production, current area
-lapply(cnames, function(x) {
+ha <- res(careas[[1]])[1]^2 / 10000
+lapply(1:length(cnames), function(x) {
   fname <- full_path("external/base_data/", 
-                     paste0(x, "-potential-production-current-area.tif"))
-  fnamein <- "external/base_data/potential-production-current-area.tif"
-  b <- crop(brick(fnamein), cntr_l[[x]])
-  b <- resample(b, mgrids[[x]])
-  b <- mask(b, af[af$fips_cntry == x,  ])
+                     paste0(cnames[x], "-potential-production-current-area.tif"))
+  b <- potyld[[x]] * (careas[[x]] * ha)
   writeRaster(b, filename = fname, overwrite = TRUE)
+})
+currpotprod <- lapply(cnames, function(x) {
+   brick(full_path("external/base_data/", 
+                   paste0(x, "-potential-production-current-area.tif")))
+})
+
+# current production
+lapply(1:length(cnames), function(x) {
+  fname <- full_path("external/base_data/", 
+                     paste0(cnames[x], "-current-production.tif"))
+  b <- yld[[x]] * (careas[[x]] * ha)
+  writeRaster(b, filename = fname, overwrite = TRUE)
+})
+currprod <- lapply(cnames, function(x) {
+   brick(full_path("external/base_data/", paste0(x, "-current-production.tif")))
 })
 
 # unfarmed area
@@ -198,15 +238,6 @@ plot(cost_p_cnt[[1]])
 
 2. Now that we have those datasets, let's figure out how to do the cropland share. First create some necessary inputs regarding cropland area, standardized potential yields and cropland area for the country in question
 ```{r, eval = FALSE}
-# Production areas
-lapply(cnames, function(x) {
-  fname <- full_path("external/base_data/", paste0(x, "-crop-areas.tif"))
-  b <- crop(brick(fname), cntr_l[[x]])
-  b <- resample(b, mgrids[[x]])
-  b <- mask(b, af[af$fips_cntry == x,  ])
-  writeRaster(b, filename = fname, overwrite = TRUE)
-})
-
 # Standardized potential yields are also the probability of conversion
 potylds_cnt <- lapply(cnames, function(x) {
  fname <- full_path("external/base_data/", 
@@ -281,6 +312,9 @@ lapply(1:length(cnames), function(x) {
   msk <- !is.na(msk) * 1
   writeRaster(msk, filename = full_path(p_dat, paste0(cnames[x], "-mask.tif")), 
               overwrite = TRUE)
+  file.copy(full_path(p_dat, paste0(cnames[x], "-mask.tif")),
+            full_path(full_path(set_base_path(), "external/data"), 
+                      paste0(cnames[x], "-mask.tif")), overwrite = TRUE)
 })
 
 ```
@@ -464,7 +498,7 @@ lapply(1:length(cnames), function(x) {
   valinds <- which(values(msk) == 1)
   lapply(l, function(x) {
     #x <- il[dt_nms][[1]]
-    DT <- as.data.table.raster(x)[valinds, ]
+    DT <- as.data.table.raster(x, xy = FALSE)[valinds, ]
     fnm <- paste0("external/data/dt/", 
                   gsub(paste0(p_dat, "|\\/|\\.tif"), "", filename(x)), ".csv")
     write.table(DT, file = fnm, sep = ",", col.names = TRUE, row.names = FALSE)
@@ -473,7 +507,7 @@ lapply(1:length(cnames), function(x) {
   setnames(base_dt, old = names(msk), new = "val")
   base_dt[, ind := 1:nrow(base_dt)]
   base_dt <- base_dt[!val == 0][, val := NULL]
-  fnm <- paste0("external/base_data/dt/", nm, "-mask.csv")
+  fnm <- paste0("external/data/dt/", nm, "-mask.csv")
   write.table(base_dt, file = fnm, sep = ",", col.names = TRUE, 
               row.names = FALSE)
 })

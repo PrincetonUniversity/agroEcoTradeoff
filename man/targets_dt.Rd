@@ -25,19 +25,14 @@ of the \code{\link{yield_mod_dt}} function.
 }
 \examples{
 il <- fetch_inputs(input_key = "ZA")  # fetch all necessary inputs
-il_dt <- raster_list_to_dt(inlist = il[c("p_yield", "pp_curr")])
-ybetas <- c(1, 1)
-ybeta <- yield_mod_dt(inlist = il_dt[[2]], ybetas = ybetas, code = rc, cropnames = il$cropnames)
-ybeta_r <- yield_mod_r(inlist = il[c("p_yield", "pp_curr")], ybetas = ybetas, code = rc,
-                       cropnames = il$cropnames)
+ybetas <- list(1, 1)
+ybeta <- yield_mod_dt(inlist = il[c("p_yield", "pp_curr")], ybetas = ybetas,
+                      code = rc, cropnames = il$cropnames)
 potprod <- ybeta$pp_curr
-currprod <- raster_list_to_dt(inlist = il["currprod"], base = FALSE)$currprod
+currprod <- il$currprod
 prod_targ <- c("maize" = 2, "cassava" = 2, "ground" = 2, "cotton" = 2, "soy" = 2, "pulse" = 2,
                "sunflower" = 2, "sugarcane" = 2, "wheat" = 2)
 t_dt <- targets_dt(prod_targ, currprod, potprod)
-rc <- run_code(input_key = "ZA")  # creates a once off code for any outputs saved from this simulation
-t_r <- targets_r(prod_targ, il$currprod, ybeta_r$pp_curr, code = rc, cropnames = il$cropnames)
-identical(t_dt, t_r)
 }
 \seealso{
 \code{\link{targets_r}} for raster-based version

@@ -15,8 +15,6 @@ impact_dt(conv, carbon, pot_yield, div_list, cost, crop_frac, cropnames, ha)
 
 \item{div_list}{list of diversity data.tables}
 
-\item{crop_frac}{data.table of cropland fractions}
-
 \item{cropnames}{Vector of crop names in analysis}
 
 \item{ha}{Pixel area}

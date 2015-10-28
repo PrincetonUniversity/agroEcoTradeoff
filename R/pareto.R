@@ -134,7 +134,7 @@ pareto <- function(cnames, step = 0.1, yblist, targ) {
       to <- tradeoff_mod(prod_targ = parms[i, tnames], 
                           ybetas = list(parms[i, "y1"], parms[i, "y2"]), 
                           cbetas = parms[i, compnames], input_key = input_key, 
-                          ybeta_update = 1, ctype = ctype,  silent = silent)
+                          ybeta_update = 1, ctype = ctype, silent = silent)
     } 
     if(i > 1) {
       ybup <- ifelse(all(parms[i, c("y1", "y2")] == parms[i - 1, c("y1", "y2")]), 

@@ -68,17 +68,16 @@ tradeoff_mod <- function(prod_targ, ybetas, cbetas, input_key = "ZA",
                        potprod = il$pp_curr)
 
   # constraints module 
-  c_prob <- constraints_dt(inlist = list("y_std" = il$y_std, "C"=il$carbon_p, 
-                                         "bd" = il$cons_p, "cost"=il$cost_p), 
+  c_prob <- constraints_dt(inlist = list("y_std" = il$y_std, "C" = il$carbon_p, 
+                                         "bd" = il$cons_p, "cost" = il$cost_p), 
                            cbetas = cbetas, code = rc, 
                            cropnames = il$cropnames, ctype = ctype, 
                            silent = silent)
   
   # convert module
   converted <- convert_dt(conv_prob = c_prob, target = target, 
-                          crop_frac = il$cropfrac, pot_yield = il$p_yield, 
-                          cropnames = il$cropnames, base = il$mask, ha = ha, 
-                          keep_index = FALSE)
+                          pot_yield = il$p_yield, cropnames = il$cropnames, 
+                          base = il$mask, ha = ha, keep_index = FALSE)
 
   # impacts
   impacts <- impact_dt(conv = converted, 
@@ -86,7 +85,6 @@ tradeoff_mod <- function(prod_targ, ybetas, cbetas, input_key = "ZA",
                        pot_yield = il$p_yield, 
                        div_list = il[c("richness", "pas")],
                        cost = il$cost,
-                       crop_frac = il$cropfrac, 
                        cropnames = il$cropnames, ha = ha)
   
   out <- list("conv" = converted, "impacts" = impacts, "inputs" = il, 

@@ -99,16 +99,18 @@ input_handler <- function(input_key = "ZA", ybetas, code,
 
   # Calculate conversion probabilities so they are done by impact/production
   # for division
-  carbonperyield <- 1 / outlist$p_yield[, outlist$cropnames, with = FALSE]
+  # carbonperyield <- copy(outlist$p_yield)[, c(outlist$cropnames) := 
+                                     # lapply(.SD, function(x) 1 / x), 
+                                     # .SDcols = outlist$cropnames]
+  carbonperyield <- 1 / outlist$p_yield
   carbon <- outlist$carbon$veg + outlist$carbon$soil * 0.25
   for(j in outlist$cropnames) {
     set(carbonperyield, i = NULL, j = j, carbonperyield[[j]] * carbon)
   }
   outlist$carbon_p <- 1 - (carbonperyield - min(carbonperyield, na.rm = TRUE)) / 
    diff(range(carbonperyield, na.rm = TRUE))
-
-  bdperyield <- 1 / outlist$p_yield[, outlist$cropnames, with = FALSE]
-  # bd[(is.na(bd))] <- 0
+  
+  bdperyield <- 1 / outlist$p_yield
   for(j in outlist$cropnames) {
    set(bdperyield, i = NULL, j = j, bdperyield[[j]] * 
         outlist$cons[, grep("cons", names(outlist$cons)), with = FALSE])  
@@ -116,7 +118,7 @@ input_handler <- function(input_key = "ZA", ybetas, code,
   outlist$cons_p <- 1 - (bdperyield - min(bdperyield, na.rm = TRUE)) / 
    diff(range(bdperyield, na.rm = TRUE))
   
-  costperyield <- 1 / outlist$p_yield[, outlist$cropnames, with = FALSE]
+  costperyield <- 1 / outlist$p_yield
   for(j in outlist$cropnames) {
     set(costperyield, i = NULL, j = j, costperyield[[j]] * 
          outlist$cost[, grep("cost", names(outlist$cost)), with = FALSE])
