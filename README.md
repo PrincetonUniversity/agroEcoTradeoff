@@ -22,7 +22,9 @@ Once you have done that, download the following files:
 
 [mask file](https://www.dropbox.com/s/ncy76swgnhqx98h/ZA-mask.tif?dl=0)
 
-The first should be added into your model directory under `external/data/`, and unzipped there. Note: there will be an existing `dt` folder in there. Overwrite it with the folder containing the data. The second can be downloaded straight to the same location. You should end up with a file `ZA-mask.tif` under `external/data/`, and a folder 
+[roads/parks file](https://www.dropbox.com/s/gwnt9svs6fwurah/parks_roads.rda?dl=0)
+
+The first should be added into your model directory under `external/data/`, and unzipped there. Note: there will be an existing `dt` folder in there. Overwrite it with the folder containing the data. The second and third can be downloaded straight to the same location. You should end up with files `ZA-mask.tif` and `parks_roads.rda` under `external/data/`, and a folder 
 `external/data/dt` with 9 csv files in it.
 
 If all went well, the model should work.  See `optimization-runner.Rmd` and `tradeoff-simulator.Rmd` for examples of how to run the model. 

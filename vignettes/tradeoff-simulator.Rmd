@@ -64,7 +64,7 @@ save(bcode, file = paste0("external/output/batch/dt/bcode.rda"))
 # Plot results
 
 ## Where were the impacts?
-```{r, echo = FALSE, message=FALSE}
+```{r, echo = FALSE, message=FALSE, warning=FALSE}
 library(agroEcoTradeoff)
 setwd(set_base_path())
 load(paste0("external/output/batch/dt/bcode.rda"))
@@ -77,6 +77,7 @@ xy[, conv := dt[, rowSums(.SD), .SDcols = names(dt)[-c(1:2)]]]
 dtr <- dt_to_raster(xy, CRSobj = CRSobj)
 
 load(paste0(dnm, "/impacts.rda"))
+load("external/data/parks_roads.rda")
 
 v1 <- sum(impacts$conv_area) / 1000
 v2 <- sum(impacts$pa_loss) / 1000
@@ -85,6 +86,11 @@ v4 <- mean(impacts[, 5], na.rm = TRUE)
 
 par(mar = c(1, 1, 1, 1))
 plot(dtr, axes = FALSE, box = FALSE, legend = FALSE)
+plot(pas[pas@data$type == "gma", ], add = TRUE, col = rgb(1, 0, 0, alpha = 0.1),
+     border = FALSE)
+plot(pas[pas@data$type == "npark", ], add = TRUE, 
+     col = rgb(0, 0, 1, alpha = 0.1), border = FALSE)
+plot(roads, add = TRUE, lwd = 0.1, col = "grey")
 mtext(paste(v1, "ha converted"), side = 3, adj = 0)
 mtext(paste(v2, "PA ha converted"), side = 3, adj = 0, line = -1)
 mtext(paste(round(v3, 1), "spp/tYield"), side = 3, adj = 0, line = -2)
