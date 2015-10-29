@@ -28,7 +28,7 @@ prod_targ <- c("maize" = 4,
                "sugarcane" = 2, 
                "wheat" = 2)
 
-# cbeta vector
+# Weights vector
 cbetas <- c("Ag" = 0.5, 
             "C" = 0.5, 
             "bd" = 0, 
@@ -83,6 +83,7 @@ v1 <- sum(impacts$conv_area) / 1000
 v2 <- sum(impacts$pa_loss) / 1000
 v3 <- mean(impacts[, 3], na.rm = TRUE)
 v4 <- mean(impacts[, 5], na.rm = TRUE)
+v5 <- round(mean(impacts$cost / 60 / 24 / 7, na.rm = TRUE))
 
 par(mar = c(1, 1, 1, 1))
 plot(dtr, axes = FALSE, box = FALSE, legend = FALSE)
@@ -95,6 +96,7 @@ mtext(paste(v1, "ha converted"), side = 3, adj = 0)
 mtext(paste(v2, "PA ha converted"), side = 3, adj = 0, line = -1)
 mtext(paste(round(v3, 1), "spp/tYield"), side = 3, adj = 0, line = -2)
 mtext(paste(round(v4, 1), "tC/tYield"), side = 3, adj = 0, line = -3)
+mtext(paste(round(v5, 1), "Cost"), side = 3, adj = 0, line = -4)
 
 ```
 

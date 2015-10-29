@@ -35,12 +35,13 @@ targ <- 4
 # or the desire to minimize carbon loss, "bd" = biodiversity, or the desire to 
 # minimize protected area loss or higher biodiversity unprotected areas, 
 # "cost" = the desire to minimize transport costs. 
-# you can simply uncomment one of the options below, or add your own combination,
-# but always make sure at least two are selected
-cnames <- c("Ag", "C")
-# cnames <- c("Ag", "C", "bd")
-# cnames <- c("Ag", "C", "bd", "cost")
+# you can simply run all four to get all possible combinations, but could also
+# just run a subset (e.g. the commented out one below)
+# cnames <- c("Ag", "C")
+cnames <- c("Ag", "C", "bd", "cost")
 ```
+
+<a href="#top">Back to top</a>
 
 This chunk will execute the model and plot the outputs, which takes a little while to run
 ```{r, eval = FALSE, echo=FALSE}
@@ -50,10 +51,11 @@ step <- 0.25
 ot <- pareto(cnames = cnames, step = step, yblist = yblist, targ = targ)
 bcode <- ot$bcode
 save(bcode, file = paste0("external/output/batch/dt/bcode.rda"))
+save(ot, file = paste0("external/output/batch/dt/", bcode, "/ot.rda"))
 ```
 
 # Weights evaluated
-```{r, echo = FALSE, message=FALSE}
+```{r, echo = FALSE, message=FALSE, warning = FALSE}
 # Load the output tables
 library(agroEcoTradeoff)
 setwd(set_base_path())
@@ -61,40 +63,76 @@ load(paste0("external/output/batch/dt/bcode.rda"))
 dnm <- full_path("external/output/batch/dt", bcode)
 load(paste0(dnm, "/out_tables.rda"))
 load(paste0(dnm, "/parms.rda"))
+load(paste0(dnm, "/ot.rda"))
 
 parms[, cnames]
 ```
 
+<a href="#top">Back to top</a>
+
 # Tradeoff plots
+## Sorted by converted area and carbon lost
 
-```{r, echo = FALSE, message=FALSE}
-# dtrs <- lapply(dtrs, function(x) aggregate(x, fact = 4))
-# Plotted values of the 5 scenarios, aggregated across all crops
-scenRange <- 1:length(out_list)
-cl <- 1.5
-cx <- 2
-cols <- bpy.colors(5)
-par(mfrow = c(3, 2), mar = c(1, 4, 1, 2), mgp = c(2, 1, 0))
-v <- sapply(scenRange, function(x) sum(out_list[[x]]$conv_area) / 1000)
-plot(v, pch = 20, cex = cx, col = cols, ylab = "ha/1000", xaxt = "n", xlab = "",      ylim = range(v), cex.lab = cl) 
-v <- sapply(scenRange, function(x) sum(out_list[[x]]$pa_loss) / 1000)
-plot(v, pch = 20, cex = cx, col = cols, 
-     ylab = "Protected ha/1000", xaxt = "n", xlab = "", 
-     ylim = range(v) * c(0.9, 1.1), cex.lab = cl) 
-v <- sapply(scenRange, function(x) mean(out_list[[x]][, 3], na.rm = TRUE))
-plot(v, pch = 20, cex = cx, col = cols, ylab = "spp/tY", xaxt = "n", xlab = "", 
-     ylim = range(v), cex.lab = cl) 
-v <- sapply(scenRange, function(x) mean(out_list[[x]][, 5], na.rm = TRUE))
-plot(v, pch = 20, cex = cx, col = cols, ylab = "tC/tY", xaxt = "n", xlab = "", 
-     ylim = range(v), cex.lab = cl) 
-plot(1:1000, 1:1000, pch = "", axes = FALSE, ylab = "")
-points(rep(400, 5), seq(50, 950, 200), pch = 20, col = cols, cex = 4)
-text(rep(440, 5), seq(50, 950, 200), 
-     labels = c("Scen 1", "Scen 2", "Scen 3", "Scen 4", "Scen 5"), 
-     adj = 0)
+The first column are the results sorted by total land converted, and the second by carbon loss. Both are ordered from least to most. The weighting scenario numbers are listed at the bottom of the bars for reference. 
 
+```{r, echo = FALSE, message=FALSE, fig.width=8 , fig.height=8}
+ott <- data.frame(ot$table)
+ott$colors <- rainbow(length(ott$ind))
+ott$ind <- seq(1, length(ott$ind))
+
+odfs <- lapply(c("land", "carbon", "biodiversity", "cost"), function(x) {
+ odf <- ott[order(ott[, x]),]
+ odf
+})
+
+
+pvec <- c("land", "carbon", "biodiversity", "cost")
+tvec <- c("by area", "by carbon", "by PA loss", "by cost")
+yvec <- c("Area (ha X 1000)", "C (ton X 10000)", "PAs (ha X 1000)", "Time")
+div <- c(1 / 1000, 1 / 10000, 1 / 1000, 60 * 24 * 7)
+par(mfcol = c(4,2), oma = c(2, 5, 1, 0), mar = c(1, 1, 1, 1) + 0.1, 
+    xaxs = "i", mgp = c(1, 0.1, 0), tcl = -0.2)
+for(i in 1:2) {  #i <- 1
+  d <- odfs[[i]]
+  for(j in 1:length(pvec)) {
+    barplot(round(d[, pvec[j]] * div[j]), names.arg = d$ind, col = d$colors, yaxt = "n", 
+            las = 2, cex.axis = 0.3)
+    if(j == 1) mtext(tvec[i], side = 3)
+    if(i == 1) mtext(yvec[j], side = 2, cex = 0.8, line = 3)
+    if(i == 1) {
+      axis(2, las = 2, cex = 0.6)
+    } else {
+      axis(2, labels = FALSE)
+    }
+  }
+}
 ```
 
-Note that colors repeat themselves after every 5th scenario. The weights applied can be examined in the preceding table.
+<a href="#top">Back to top</a>
+
+## Sorted by protected area loss and total cost
+
+The first column are the results sorted by area of protected areas converted (a good proxy for biodiversity impacts, and the second by transportation costs. The weighting scenario numbers are listed at the bottom of the bars for reference. 
+
+```{r, echo = FALSE, message=FALSE, fig.width=8 , fig.height=8}
+par(mfcol = c(4,2), oma = c(2, 5, 1, 0), mar = c(1, 1, 1, 1) + 0.1, 
+    xaxs = "i", mgp = c(1, 0.1, 0), tcl = -0.2)
+for(i in 3:length(pvec)) {  #i <- 1
+  d <- odfs[[i]]
+  for(j in 1:length(pvec)) {
+    barplot(round(d[, pvec[j]] * div[j]), names.arg = d$ind, col = d$colors, yaxt = "n", 
+            las = 2, cex.axis = 0.3)
+    if(j == 1) mtext(tvec[i], side = 3)
+    if(i == 3) mtext(yvec[j], side = 2, cex = 0.8, line = 3)
+    if(i == 3) {
+      axis(2, las = 2, cex = 0.6)
+    } else {
+      axis(2, labels = FALSE)
+    }
+  }
+}
+```
+
+<a href="#top">Back to top</a>
 
 
