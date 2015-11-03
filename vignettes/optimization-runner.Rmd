@@ -38,7 +38,8 @@ targ <- 4
 # you can simply run all four to get all possible combinations, but could also
 # just run a subset (e.g. the commented out one below)
 # cnames <- c("Ag", "C")
-cnames <- c("Ag", "C", "bd", "cost")
+cnames <- c("Ag", "C", "cost")
+# cnames <- c("Ag", "C", "bd", "cost")
 ```
 
 <a href="#top">Back to top</a>
@@ -81,29 +82,45 @@ ott$colors <- rainbow(length(ott$ind))
 ott$ind <- seq(1, length(ott$ind))
 
 odfs <- lapply(c("land", "carbon", "biodiversity", "cost"), function(x) {
- odf <- ott[order(ott[, x]),]
- odf
+  if(x %in% colnames(ott)) {
+    odf <- ott[order(ott[, x]), ]
+  } else{ 
+    odf <- NULL
+  }
+  odf
 })
-
 
 pvec <- c("land", "carbon", "biodiversity", "cost")
 tvec <- c("by area", "by carbon", "by PA loss", "by cost")
 yvec <- c("Area (ha X 1000)", "C (ton X 10000)", "PAs (ha X 1000)", "Time")
 div <- c(1 / 1000, 1 / 10000, 1 / 1000, 60 * 24 * 7)
-par(mfcol = c(4,2), oma = c(2, 5, 1, 0), mar = c(1, 1, 1, 1) + 0.1, 
+dfs <- which(sapply(odfs, is.data.frame))
+if(length(dfs) == 2) {
+ par(mfcol = c(2, 2), oma = c(2, 5, 1, 0), mar = c(1, 1, 1, 1) + 0.1, 
     xaxs = "i", mgp = c(1, 0.1, 0), tcl = -0.2)
+} else if(length(dfs) == 3) {
+  par(mfcol = c(3, 2), oma = c(2, 5, 1, 0), mar = c(1, 1, 1, 1) + 0.1, 
+    xaxs = "i", mgp = c(1, 0.1, 0), tcl = -0.2)
+} else if(length(dfs) == 4) {
+  par(mfcol = c(4, 2), oma = c(2, 5, 1, 0), mar = c(1, 1, 1, 1) + 0.1, 
+    xaxs = "i", mgp = c(1, 0.1, 0), tcl = -0.2)
+}
 for(i in 1:2) {  #i <- 1
   d <- odfs[[i]]
-  for(j in 1:length(pvec)) {
-    barplot(round(d[, pvec[j]] * div[j]), names.arg = d$ind, col = d$colors, yaxt = "n", 
-            las = 2, cex.axis = 0.3)
-    if(j == 1) mtext(tvec[i], side = 3)
-    if(i == 1) mtext(yvec[j], side = 2, cex = 0.8, line = 3)
-    if(i == 1) {
-      axis(2, las = 2, cex = 0.6)
-    } else {
-      axis(2, labels = FALSE)
-    }
+  if(!is.null(d)) {
+   for(j in 1:length(pvec)) {  # j <- 1
+     if(pvec[[j]] %in% colnames(d)) {
+      barplot(round(d[, pvec[j]] * div[j]), names.arg = d$ind, col = d$colors,
+              yaxt = "n", las = 2, cex.axis = 0.3)
+      if(j == 1) mtext(tvec[i], side = 3)
+      if(i == 1) mtext(yvec[j], side = 2, cex = 0.8, line = 3)
+      if(i == 1) {
+       axis(2, las = 2, cex = 0.6)
+      } else {
+       axis(2, labels = FALSE)
+      }
+     }
+   } 
   }
 }
 ```
@@ -115,20 +132,30 @@ for(i in 1:2) {  #i <- 1
 The first column are the results sorted by area of protected areas converted (a good proxy for biodiversity impacts, and the second by transportation costs. The weighting scenario numbers are listed at the bottom of the bars for reference. 
 
 ```{r, echo = FALSE, message=FALSE, fig.width=8 , fig.height=8}
-par(mfcol = c(4,2), oma = c(2, 5, 1, 0), mar = c(1, 1, 1, 1) + 0.1, 
+if(length(dfs) == 3) {
+  par(mfcol = c(3, 2), oma = c(2, 5, 1, 0), mar = c(1, 1, 1, 1) + 0.1, 
     xaxs = "i", mgp = c(1, 0.1, 0), tcl = -0.2)
+} else if(length(dfs) == 4) {
+  par(mfcol = c(4, 2), oma = c(2, 5, 1, 0), mar = c(1, 1, 1, 1) + 0.1, 
+    xaxs = "i", mgp = c(1, 0.1, 0), tcl = -0.2)
+}
 for(i in 3:length(pvec)) {  #i <- 1
   d <- odfs[[i]]
-  for(j in 1:length(pvec)) {
-    barplot(round(d[, pvec[j]] * div[j]), names.arg = d$ind, col = d$colors, yaxt = "n", 
-            las = 2, cex.axis = 0.3)
-    if(j == 1) mtext(tvec[i], side = 3)
-    if(i == 3) mtext(yvec[j], side = 2, cex = 0.8, line = 3)
-    if(i == 3) {
-      axis(2, las = 2, cex = 0.6)
-    } else {
-      axis(2, labels = FALSE)
-    }
+  if(!is.null(d)) {
+   for(j in 1:length(pvec)) {  # j <- 1
+     if(pvec[[j]] %in% colnames(d)) {
+      barplot(round(d[, pvec[j]] * div[j]), names.arg = d$ind, col = d$colors,
+              yaxt = "n", 
+              las = 2, cex.axis = 0.3)
+      if(j == 1) mtext(tvec[i], side = 3)
+      if(i == 3) mtext(yvec[j], side = 2, cex = 0.8, line = 3)
+      if(i == 3) {
+       axis(2, las = 2, cex = 0.6)
+      } else {
+       axis(2, labels = FALSE)
+      }
+     }
+   } 
   }
 }
 ```
