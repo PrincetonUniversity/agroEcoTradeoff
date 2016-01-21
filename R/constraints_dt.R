@@ -126,7 +126,7 @@ constraints_dt <- function(inlist, cbetas, code, cropnames, ctype = "X",
   p_y <- rlist_mod[[i]]
   while (i < length(rlist_mod)) {
     i <- i + 1
-    if(ctype == "X") {
+    if(ctype == "X") {  ## this needs to be removed, as it is duplicated
       p_y <- p_y + rlist_mod[[i]]
     } else if(ctype == "+") {
       p_y <- p_y + rlist_mod[[i]]

@@ -105,11 +105,13 @@ nm_up <- function(x, namevec) {
 #' @export
 set_base_path <- function() {
   dpath <- getwd()
-  if(!"agroEcoTradeoff" %in% strsplit(dpath, .Platform$file.sep)[[1]]) {
-    stop("setwd() into tradeoffMod", .call = FALSE)
+  dpathrt <- strsplit(dpath, .Platform$file.sep)[[1]]
+  bnames <- c("agroEcoTradeoff", "agroecotradeoff")
+  if(!dpathrt[length(dpathrt)] %in% bnames) {
+    stop("setwd() into agroEcoTradeoff", .call = FALSE)
   }
-  full_path(gsub("(agroEcoTradeoff.*)", "", dpath, perl = TRUE), 
-            "agroEcoTradeoff")
+  full_path(gsub("(agroEcoTradeoff.*)", "", dpath, ignore.case = TRUE, 
+                 perl = TRUE), "agroEcoTradeoff")
 }
 
 #' Fetches inputs from file structure for trademod

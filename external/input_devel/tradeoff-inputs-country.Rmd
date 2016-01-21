@@ -150,7 +150,6 @@ carbon_cnt <- lapply(cnames, function(x) {
 })
 
 # Biodiversity
-
 af_pas_r <- raster("external/base_data/af-pas-10km.tif")
 af_mamdiv <- raster("external/base_data/af_mammal_div.tif")
 af_nat_areas <- raster("external/base_data/af-natural-cover.tif")

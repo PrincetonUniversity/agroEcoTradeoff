@@ -64,8 +64,6 @@ names(cbetas) <- c("Ag", "C", "bd", "cost")
 
 # Comparing the two versions
 system.time(tdt <- tradeoff_mod(prod_targ, ybetas, cbetas))  # 2.5 seconds
-system.time(tdr <- tradeoff_mod(prod_targ, ybetas, cbetas, input = "R"))  # 6
-identical(tdt$impacts, tdr$impacts)  # check output stats for consistency
 
 CRSobj <- projection(raster("external/ext_data/ZA-carbon-priorities.tif"))
 plot(dt_to_raster(tdt$conv, CRSobj = CRSobj) - tdr$conv)  # check maps
