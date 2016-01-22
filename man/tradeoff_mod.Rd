@@ -4,8 +4,8 @@
 \alias{tradeoff_mod}
 \title{Spatial tradeoffs model}
 \usage{
-tradeoff_mod(prod_targ, ybetas, cbetas, input_key = "ZA", ybeta_update = 1,
-  exist_list = NULL, ctype = "+", silent = TRUE)
+tradeoff_mod(prod_targ, ybetas, cbetas, currprodmod = 1, input_key = "ZA",
+  ybeta_update = 1, exist_list = NULL, ctype = "+", silent = TRUE)
 }
 \arguments{
 \item{prod_targ}{Production targets passed as list. See examples for format.}

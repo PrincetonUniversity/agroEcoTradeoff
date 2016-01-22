@@ -47,8 +47,8 @@
 #' @export 
 #input_key = "ZA"; input = "D"; ybeta_update = 1; exist_list = NULL; 
 
-tradeoff_mod <- function(prod_targ, ybetas, cbetas, input_key = "ZA", 
-                         ybeta_update = 1, exist_list = NULL, 
+tradeoff_mod <- function(prod_targ, ybetas, cbetas, currprodmod = 1, 
+                         input_key = "ZA", ybeta_update = 1, exist_list = NULL, 
                          ctype = "+", silent = TRUE) {
   names(cbetas) <- c("Ag", "C", "bd", "cost")
   
@@ -64,15 +64,14 @@ tradeoff_mod <- function(prod_targ, ybetas, cbetas, input_key = "ZA",
                       exist_list = exist_list, silent = silent)
   
   # target module
-  target <- targets_dt(prod_targ = prod_targ, currprod = il$currprod, 
-                       potprod = il$pp_curr)
-
+  target <- targets(prod_targ = prod_targ, currprod = il$currprod, 
+                    currprodmod = currprodmod)
+  
   # constraints module 
-  c_prob <- constraints_dt(inlist = list("y_std" = il$y_std, "C" = il$carbon_p, 
-                                         "bd" = il$cons_p, "cost" = il$cost_p), 
-                           cbetas = cbetas, code = rc, 
-                           cropnames = il$cropnames, ctype = ctype, 
-                           silent = silent)
+  c_prob <- constraints(inlist = list("y_std" = il$y_std, "C" = il$carbon_p, 
+                                      "bd" = il$cons_p, "cost" = il$cost_p), 
+                        cbetas = cbetas, # code = rc, cropnames = il$cropnames,
+                        silent = silent)
   
   # convert module
   converted <- convert_dt(conv_prob = c_prob, target = target, 

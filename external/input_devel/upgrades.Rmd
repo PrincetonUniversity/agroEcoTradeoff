@@ -16,10 +16,14 @@ output:
      + Notes: 
          + currprod.rda is main file to read
 
-     + Status: Not yet done
+     + Status: __Done__
      
 
 2. Fraction available cropland needs to be incorporated
+
+     + Status: Not yet done
+     
+3. New biodiversity impact metric incorporated
 
      + Status: Not yet done
 
@@ -49,6 +53,9 @@ output:
     + renamed to targets
     + replaced scheme for modifying current production with simple modification vector, which draws on vector of current production, with argument named `currprodmod`. 
     + yield_mod argument removed. 
+    
+4. `constraints_dt`
+
 
 
     
