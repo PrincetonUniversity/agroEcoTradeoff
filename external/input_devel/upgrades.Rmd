@@ -1,0 +1,27 @@
+---
+title: "Upgrades"
+author: "Lyndon Estes"
+date: "January 21, 2016"
+output: 
+  html_document:
+    highlight: tango
+    theme: spacelab
+    toc: yes 
+---
+
+# Upgrades for version 2
+
+1. Current production becomes non-spatial, adjusted with coefficient
+
+     + Notes: 
+         + currprod.rda is main file to read
+
+     + Status: Not yet done
+     
+
+2. Fraction available cropland needs to be incorporated
+
+     + Status: Not yet done
+
+
+

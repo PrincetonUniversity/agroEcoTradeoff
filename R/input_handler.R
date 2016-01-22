@@ -65,16 +65,21 @@ ybeta_rast_to_dt <- function(ybetas, cropnames, base) {
 #' @export
 input_handler <- function(input_key = "ZA", ybetas, code, 
                           ybeta_update, exist_list = NULL, silent = TRUE) {
+  # input_key = "ZA"; exist_list = NULL; silent = TRUE
   # ybetas <- list(1, 1); code = run_code(input_key); ybeta_update <- 0
-  lnms <- c("currprod", "pp_curr", "p_yield", "carbon", "mask",
-            "cost", "richness", "pas", "cons", "cropnames")
-  #ha <- res(il$currprod)[2]^2 / 10000
+  # lnms <- c("pp_curr", "p_yield", "carbon", "mask", "cost", "richness", "pas", 
+            # "cons", "cropnames")
+  lnms <- c("p_yield", "carbon", "mask", "cost", "bd", "cons", "cropnames", 
+            "currprod")
+  
   if(!is.null(exist_list) & any(!lnms %in% names(exist_list))) {
     stop("Input list must have all variables", call. = FALSE) 
   }
   # no existing data list provided 
   if(is.null(exist_list)) {  # il_y
+    # il <- fetch_inputs(path = "external/data/dt/new/", input_key = input_key)
     il <- fetch_inputs(input_key = input_key)  # fetch all necessary inputs 
+    il$cropnames
     ybetas <- ybeta_rast_to_dt(ybetas, cropnames = il$cropnames, base = il$mask)
     ybeta <- yield_mod_dt(inlist = il[c("p_yield", "pp_curr")], ybetas = ybetas, 
                           code = code, cropnames = il$cropnames, 

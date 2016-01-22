@@ -114,39 +114,39 @@ set_base_path <- function() {
                  perl = TRUE), "agroEcoTradeoff")
 }
 
-#' Fetches inputs from file structure for trademod
-#' @param path Base path to data
-#' @param input_key A unique file identifier for simulation-specific inputs
-#' @keywords internal
-#' @export
-fetch_inputs <- function(path = "external/data/dt", input_key = "ZA") {
-  path <- full_path(set_base_path(), path) 
-
-  # Don't read in conversion probability tables. Derive them instead from 
-  # constraints.
-  fp <- full_path(set_base_path(), 
-                  c("data/cropnames.rda", "data/carbon-names.rda"))
-  for (i in fp) load(i)
-  lnms <- c("currprod", "pp_curr", "p_yield", "carbon", 
-            "mask", "cost", "richness", "pas", "cons")
-  bnms <- c("current-production", "production-current", "potential-yields\\.", 
-            "carbon\\.")
-  rnms <- c("mask", "cost", "-div", "pas", "cons")
-  innms <- c(bnms, rnms)
-  in_files <- list.files(path, pattern = input_key, full.names = TRUE)
-  in_files <- unlist(lapply(innms, function(x) in_files[grep(x, in_files)]))
-  disksize <- sum(file.info(in_files)$size) * 0.00098^2
-  if (disksize > 2048) {
-    stop(paste0("The data.table version of tradeoff_mod must still", 
-                "needs to have an intelligent system for dealing with", 
-                "very large file sizes", call. = FALSE))
-  }
-  l <- lapply(in_files, function(x) fread(x))
-  names(l) <- lnms
-  l[[length(l) + 1]] <- cropnames
-  names(l) <- c(lnms, "cropnames")
-  return(l)
-}
+# #' Fetches inputs from file structure for trademod
+# #' @param path Base path to data
+# #' @param input_key A unique file identifier for simulation-specific inputs
+# #' @keywords internal
+# #' @export
+# fetch_inputs <- function(path = "external/data/dt", input_key = "ZA") {
+#   path <- full_path(set_base_path(), path) 
+# 
+#   # Don't read in conversion probability tables. Derive them instead from 
+#   # constraints.
+#   fp <- full_path(set_base_path(), 
+#                   c("data/cropnames.rda", "data/carbon-names.rda"))
+#   for (i in fp) load(i)
+#   lnms <- c("currprod", "pp_curr", "p_yield", "carbon", 
+#             "mask", "cost", "richness", "pas", "cons")
+#   bnms <- c("current-production", "production-current", "potential-yields\\.", 
+#             "carbon\\.")
+#   rnms <- c("mask", "cost", "-div", "pas", "cons")
+#   innms <- c(bnms, rnms)
+#   in_files <- list.files(path, pattern = input_key, full.names = TRUE)
+#   in_files <- unlist(lapply(innms, function(x) in_files[grep(x, in_files)]))
+#   disksize <- sum(file.info(in_files)$size) * 0.00098^2
+#   if (disksize > 2048) {
+#     stop(paste0("The data.table version of tradeoff_mod must still", 
+#                 "needs to have an intelligent system for dealing with", 
+#                 "very large file sizes", call. = FALSE))
+#   }
+#   l <- lapply(in_files, function(x) fread(x))
+#   names(l) <- lnms
+#   l[[length(l) + 1]] <- cropnames
+#   names(l) <- c(lnms, "cropnames")
+#   return(l)
+# }
 
 #' Function to standardize values from 0-1, for raster or data.table
 #' @param x A data.table
@@ -223,8 +223,6 @@ spatial_meta <- function(input_key) {
   list("ha" = ha, "crs" = CRSobj)
 }
  
-
-
 # #' Cumulative sum, ignoring NA.
 # #' @param x numeric vector
 # #' @return: cumulative sum of x, but NA values are ignored
@@ -241,5 +239,3 @@ spatial_meta <- function(input_key) {
 #   s[is.na(x)] <- NA
 #   return(s)
 # }
-# 
-

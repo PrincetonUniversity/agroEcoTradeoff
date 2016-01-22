@@ -8,7 +8,6 @@
 #' @param yblist A two element list giving yield modifications 
 #' @param targ The target multiplier for production
 #' @export
-
 pareto <- function(cnames, step = 0.1, yblist, targ) {
   
   compnames <- c("Ag", "C", "bd", "cost")
