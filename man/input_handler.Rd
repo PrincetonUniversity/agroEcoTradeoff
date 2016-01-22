@@ -5,7 +5,7 @@
 \title{Data preparation function}
 \usage{
 input_handler(input_key = "ZA", ybetas, code, ybeta_update,
-  exist_list = NULL, silent = TRUE)
+  exist_list = NULL, silent = TRUE, path = "external/data/dt")
 }
 \arguments{
 \item{input_key}{Two letter country/location code (but possibly arbitrary) 

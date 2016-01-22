@@ -23,5 +23,9 @@ output:
 
      + Status: Not yet done
 
+# Fixes
+
+1. Yield standardization procedure
+
 
 

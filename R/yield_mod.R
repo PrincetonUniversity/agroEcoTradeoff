@@ -87,6 +87,7 @@
 #' plot(ybeta5r$pp_curr - ybeta_r$pp_curr)  # equal
 #' @export
 yield_mod_dt <- function(inlist, ybetas, code, cropnames, silent = TRUE) {
+  # inlist = il["p_yield"]; cropnames = il$cropnames
   ybeta_l <- lapply(1:length(ybetas), function(x) {
     check_length(ybetas[[x]], ncol(inlist[[1]]), paste("ybetas", x))
   })
@@ -125,12 +126,9 @@ yield_mod_dt <- function(inlist, ybetas, code, cropnames, silent = TRUE) {
   }
  
   # Standardize potential yields (by area/production)
-  y_std <- 1-standardize(1/outlist$p_yield) # Standardize over all values, not by crop
-  outlistf <- list(y_std, outlist[[1]], outlist[[2]])
+  # Standardize over all values, not by crop
+  y_std <- 1 - standardize(1 / outlist$p_yield)  # this assumption needs fixing 
+  outlistf <- list(y_std, outlist[[1]]) # , outlist[[2]])
   names(outlistf) <- c("y_std", names(inlist))
   return(outlistf)
 } 
-
-
-
-

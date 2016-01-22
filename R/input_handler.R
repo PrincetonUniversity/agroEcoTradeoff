@@ -63,12 +63,13 @@ ybeta_rast_to_dt <- function(ybetas, cropnames, base) {
 #' input_handler(input_key = "ZA", ybetas = list(1, 1), code = rc, 
 #'               ybeta_update = 1, exist_list = il)
 #' @export
-input_handler <- function(input_key = "ZA", ybetas, code, 
-                          ybeta_update, exist_list = NULL, silent = TRUE) {
-  # input_key = "ZA"; exist_list = NULL; silent = TRUE
-  # ybetas <- list(1, 1); code = run_code(input_key); ybeta_update <- 0
-  # lnms <- c("pp_curr", "p_yield", "carbon", "mask", "cost", "richness", "pas", 
-            # "cons", "cropnames")
+input_handler <- function(input_key = "ZA", ybetas, code, ybeta_update, 
+                          exist_list = NULL, silent = TRUE, 
+                          path = "external/data/dt") {
+#   input_key = "ZA"; exist_list = NULL; silent = TRUE
+#   ybetas <- list(1, 1); code = run_code(input_key); ybeta_update <- 0
+#   lnms <- c("pp_curr", "p_yield", "carbon", "mask", "cost", "richness", "pas", 
+#             "cons", "cropnames")
   lnms <- c("p_yield", "carbon", "mask", "cost", "bd", "cons", "cropnames", 
             "currprod")
   
@@ -77,16 +78,15 @@ input_handler <- function(input_key = "ZA", ybetas, code,
   }
   # no existing data list provided 
   if(is.null(exist_list)) {  # il_y
-    # il <- fetch_inputs(path = "external/data/dt/new/", input_key = input_key)
-    il <- fetch_inputs(input_key = input_key)  # fetch all necessary inputs 
-    il$cropnames
+    il <- fetch_inputs(path = path, input_key = input_key)  # fetch inputs 
     ybetas <- ybeta_rast_to_dt(ybetas, cropnames = il$cropnames, base = il$mask)
-    ybeta <- yield_mod_dt(inlist = il[c("p_yield", "pp_curr")], ybetas = ybetas, 
+    ybeta <- yield_mod_dt(inlist = il["p_yield"], ybetas = ybetas, 
                           code = code, cropnames = il$cropnames, 
                           silent = silent)
     outlist <- il
     outlist$y_std <- ybeta$y_std
-    outlist[c("p_yield", "pp_curr")] <- ybeta[c("p_yield", "pp_curr")]
+    # outlist[c("p_yield", "pp_curr")] <- ybeta[c("p_yield", "pp_curr")]
+    outlist["p_yield"] <- ybeta["p_yield"]
   }
   # if existing list is provided but ybeta needs adjustment
   if(!is.null(exist_list) & ybeta_update == 1) {
