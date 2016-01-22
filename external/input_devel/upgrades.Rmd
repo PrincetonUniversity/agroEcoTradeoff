@@ -1,5 +1,5 @@
 ---
-title: "Upgrades"
+title: "Changes"
 author: "Lyndon Estes"
 date: "January 21, 2016"
 output: 
@@ -26,6 +26,32 @@ output:
 # Fixes
 
 1. Yield standardization procedure
+
+    + Notes: 
+        + Might need to move this back to standardizing against each crop
+
+
+# Sequence
+
+1. `fetch_inputs`
+
+    + including altering carbon-names.rda, dumping cropnames.rda entirely
+
+2. `input_handler`
+
+    + yield_mod_dt
+        + fixed to remove pp_curr from list of modified rasters
+        + noticed potential standardization issue
+        + renamed to just `yield_mod`
+
+3. `targets_dt`
+
+    + renamed to targets
+    + replaced scheme for modifying current production with simple modification vector, which draws on vector of current production, with argument named `currprodmod`. 
+    + yield_mod argument removed. 
+
+
+    
 
 
 

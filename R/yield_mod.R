@@ -31,20 +31,15 @@
 #' 
 #' # no yield modification
 #' ybetas <- list(1, 1)
-#' ybeta <- yield_mod_dt(inlist = inlist_dt[[2]], ybetas = ybetas, 
-#'                       code = rc, cropnames = il$cropnames)
+#' ybeta <- yield_mod(inlist = inlist_dt[[2]], ybetas = ybetas, 
+#'                    code = rc, cropnames = il$cropnames)
 #' 
 #' # yield modification with vectors
 #' ybetas <- list(rep(0.75, nlayers(il[[3]])), rep(0.75, nlayers(il[[3]])))
-#' ybeta2 <- yield_mod_dt(inlist = inlist_dt[[2]], ybetas = ybetas, code = rc,
-#'                        cropnames = il$cropnames)
+#' ybeta2 <- yield_mod(inlist = inlist_dt[[2]], ybetas = ybetas, code = rc,
+#'                     cropnames = il$cropnames)
 #' ybeta2r <- dt_list_to_raster(inlist_dt[[1]][, c("x", "y"), with = FALSE],
 #'                              ybeta2, projection(il$currprod))
-#' ybeta_r <- yield_mod_r(il[c("p_yield", "pp_curr")], ybetas = ybetas, 
-#'                        code = rc, cropnames = il$cropnames)
-#' plot(ybeta2r$y_std - ybeta_r$y_std)  # equal
-#' plot(ybeta2r$p_yield - ybeta_r$p_yield)  # equal
-#' plot(ybeta2r$pp_curr - ybeta_r$pp_curr)  # equal
 #' 
 #' # yield modification with rasters
 #' # ybetas as rasters
@@ -56,37 +51,26 @@
 #' })
 #' ybetas_dt <- raster_list_to_dt(ybetas_l)
 #' 
-#' ybeta3 <- yield_mod_dt(inlist = inlist_dt[[2]], ybetas = ybetas_dt[[2]],
-#'                        code = rc, cropnames = il$cropnames)
+#' ybeta3 <- yield_mod(inlist = inlist_dt[[2]], ybetas = ybetas_dt[[2]],
+#'                     code = rc, cropnames = il$cropnames)
 #' ybeta3r <- dt_list_to_raster(inlist_dt[[1]][, c("x", "y"), with = FALSE],
 #'                              ybeta3, projection(il$currprod))
-#' ybeta_r <- yield_mod_r(inlist = il[c("p_yield", "pp_curr")], 
-#'                        ybetas = ybetas_l, code = rc, cropnames = il$cropnames)
-#' plot(ybeta3r$y_std - ybeta_r$y_std)  # equal
-#' plot(ybeta3r$p_yield - ybeta_r$p_yield)  # equal
-#' plot(ybeta3r$pp_curr - ybeta_r$pp_curr)  # equal
 #' 
 #' # Raster modifier X vector
 #' ybetas_dt[[2]][[2]] <- c(0.9, 0.9)
-#' ybeta4 <- yield_mod_dt(inlist = inlist_dt[[2]], ybetas = ybetas_dt[[2]],
-#'                        code = rc, cropnames = il$cropnames)  # wrong length
+#' ybeta4 <- yield_mod(inlist = inlist_dt[[2]], ybetas = ybetas_dt[[2]],
+#'                     code = rc, cropnames = il$cropnames)  # wrong length
 #' ybetas_dt[[2]][[2]] <- c(0.9, 0.9) <- c(1)
-#' ybeta4 <- yield_mod_dt(inlist = inlist_dt[[2]], ybetas = ybetas_dt[[2]],
-#'                        code = rc, cropnames = il$cropnames)  # wrong length
+#' ybeta4 <- yield_mod(inlist = inlist_dt[[2]], ybetas = ybetas_dt[[2]],
+#'                     code = rc, cropnames = il$cropnames)  # wrong length
 #' ybetas_dt[[2]][[2]] <- rep(1.25, nlayers(il$currprod)) 
-#' ybeta5 <- yield_mod_dt(inlist = inlist_dt[[2]], ybetas = ybetas_dt[[2]],
-#'                        code = rc, cropnames = il$cropnames)
+#' ybeta5 <- yield_mod(inlist = inlist_dt[[2]], ybetas = ybetas_dt[[2]],
+#'                     code = rc, cropnames = il$cropnames)
 #' ybeta5r <- dt_list_to_raster(inlist_dt[[1]][, c("x", "y"), with = FALSE],
 #'                              ybeta5, projection(il$currprod))
 #' ybetas_l[[2]] <- rep(1.25, nlayers(il$currprod)) 
-#' ybeta_r <- yield_mod_r(inlist = il[c("p_yield", "pp_curr")], 
-#'                        ybetas = ybetas_l, code = rc, 
-#'                        cropnames = il$cropnames)
-#' plot(ybeta5r$y_std - ybeta_r$y_std)  # equal
-#' plot(ybeta5r$p_yield - ybeta_r$p_yield)  # equal
-#' plot(ybeta5r$pp_curr - ybeta_r$pp_curr)  # equal
 #' @export
-yield_mod_dt <- function(inlist, ybetas, code, cropnames, silent = TRUE) {
+yield_mod <- function(inlist, ybetas, code, cropnames, silent = TRUE) {
   # inlist = il["p_yield"]; cropnames = il$cropnames
   ybeta_l <- lapply(1:length(ybetas), function(x) {
     check_length(ybetas[[x]], ncol(inlist[[1]]), paste("ybetas", x))

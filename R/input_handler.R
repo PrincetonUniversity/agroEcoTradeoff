@@ -80,9 +80,9 @@ input_handler <- function(input_key = "ZA", ybetas, code, ybeta_update,
   if(is.null(exist_list)) {  # il_y
     il <- fetch_inputs(path = path, input_key = input_key)  # fetch inputs 
     ybetas <- ybeta_rast_to_dt(ybetas, cropnames = il$cropnames, base = il$mask)
-    ybeta <- yield_mod_dt(inlist = il["p_yield"], ybetas = ybetas, 
-                          code = code, cropnames = il$cropnames, 
-                          silent = silent)
+    ybeta <- yield_mod(inlist = il["p_yield"], ybetas = ybetas, 
+                       code = code, cropnames = il$cropnames, 
+                       silent = silent)
     outlist <- il
     outlist$y_std <- ybeta$y_std
     # outlist[c("p_yield", "pp_curr")] <- ybeta[c("p_yield", "pp_curr")]
@@ -91,9 +91,9 @@ input_handler <- function(input_key = "ZA", ybetas, code, ybeta_update,
   # if existing list is provided but ybeta needs adjustment
   if(!is.null(exist_list) & ybeta_update == 1) {
     ybetas <- ybeta_rast_to_dt(ybetas, cropnames = il$cropnames, base = il$mask)
-    ybeta <- yield_mod_dt(inlist = exist_list[c("p_yield", "pp_curr")], 
-                          ybetas = ybetas, code = code, 
-                          cropnames = il$cropnames)
+    ybeta <- yield_mod(inlist = exist_list[c("p_yield", "pp_curr")], 
+                       ybetas = ybetas, code = code, 
+                       cropnames = il$cropnames)
     outlist <- exist_list
     outlist$y_std <- ybeta$y_std
     outlist[c("p_yield", "pp_curr")] <- ybeta[c("p_yield", "pp_curr")]
