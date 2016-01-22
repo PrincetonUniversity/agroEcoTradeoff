@@ -4,7 +4,8 @@ Title: Landuse Tradeoff analysis model
 Description: As above, but package was developed later than initial model
 Version: 1.5
 Date: 26-10-2015
-Author: Lyndon Estes <lestes@princeton.edu>, Marcus Spiegel <mspiegel@princeton.edu>
+Author: Lyndon Estes <lestes@princeton.edu>, Marcus Spiegel
+    <mspiegel@princeton.edu>
 Maintainer: Lyndon Estes <lestes@princeton.edu>
 Depends:
     R (>= 3.0.0),
@@ -22,3 +23,4 @@ Imports:
     RColorBrewer,
     dtraster
 License: GPL (>= 3)
+RoxygenNote: 5.0.1
