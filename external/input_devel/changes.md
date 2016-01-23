@@ -40,14 +40,20 @@ output:
 1. `fetch_inputs`
 
     + including altering carbon-names.rda, dumping cropnames.rda entirely
+    + Updated fetch_inputs to read in convertible fraction data.table, and to find spatial metadata. 
 
 2. `input_handler`
 
-    + yield_mod_dt
+    + fixes to `yield_mod_dt`
         + fixed to remove pp_curr from list of modified rasters
         + noticed potential standardization issue
         + renamed to just `yield_mod`
-
+        + moved yield standardization to input_handler
+    + added yield standardization here
+    + switched off one potential yield modification option
+    + all data.tables, including mask, reduced down to location with >0 farmable areas. 
+    + cost/yield is performed on those areas only
+    
 3. `targets_dt`
 
     + renamed to targets
@@ -60,5 +66,5 @@ output:
 
     
 
-
+Updated fetch_inputs to read in convertible fraction data.table, and to find spatial metadata.
 

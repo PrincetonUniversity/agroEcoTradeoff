@@ -7,7 +7,7 @@
 yield_mod(inlist, ybetas, code, cropnames, silent = TRUE)
 }
 \arguments{
-\item{inlist}{Named list of input data.tables}
+\item{inlist}{Named list of crop yield data.table}
 
 \item{ybetas}{list of either 2 data.tables or 2 vectors providing 
 modifications for climate & irrigation}

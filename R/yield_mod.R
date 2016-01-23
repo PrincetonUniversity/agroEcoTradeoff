@@ -1,6 +1,6 @@
 #' Modifies input data.tables by provided multipliers
 #' @description This is a data.table-based version of this function. 
-#' @param inlist Named list of input data.tables
+#' @param inlist Named list of crop yield data.table
 #' @param ybetas list of either 2 data.tables or 2 vectors providing 
 #' modifications for climate & irrigation 
 #' @param code Unique simulation code resulting from run_code function
@@ -71,7 +71,8 @@
 #' ybetas_l[[2]] <- rep(1.25, nlayers(il$currprod)) 
 #' @export
 yield_mod <- function(inlist, ybetas, code, cropnames, silent = TRUE) {
-  # inlist = il["p_yield"]; cropnames = il$cropnames
+#   inlist = il["p_yield"]; cropnames = il$cropnames
+#   silent = FALSE
   ybeta_l <- lapply(1:length(ybetas), function(x) {
     check_length(ybetas[[x]], ncol(inlist[[1]]), paste("ybetas", x))
   })
@@ -98,7 +99,7 @@ yield_mod <- function(inlist, ybetas, code, cropnames, silent = TRUE) {
     ybeta <- ybetas[[1]] * ybetas[[2]]
   }
  
- # Modify data, if needed
+  # Modify data, if needed
   ybeta_vl <- ifelse(is.vector(ybeta), sum(ybeta), 0)
   if(is.vector(ybeta) & (ybeta_vl == 1 | ybeta_vl == ncol(inlist[[1]]))) {
     shhh("No yield modifications made", silent = silent)
@@ -111,8 +112,9 @@ yield_mod <- function(inlist, ybetas, code, cropnames, silent = TRUE) {
  
   # Standardize potential yields (by area/production)
   # Standardize over all values, not by crop
-  y_std <- 1 - standardize(1 / outlist$p_yield)  # this assumption needs fixing 
-  outlistf <- list(y_std, outlist[[1]]) # , outlist[[2]])
-  names(outlistf) <- c("y_std", names(inlist))
-  return(outlistf)
+  # y_std <- 1 - standardize(1 / outlist$p_yield)  # this assumption needs fixing 
+  # outlistf <- list(y_std, outlist[[1]]) # , outlist[[2]])
+  # names(outlistf) <- c("y_std", names(inlist))
+  # return(outlistf)
+  return(outlist)
 } 
