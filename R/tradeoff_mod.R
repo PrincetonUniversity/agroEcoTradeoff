@@ -74,9 +74,9 @@ tradeoff_mod <- function(prod_targ, ybetas, cbetas, currprodmod = 1,
                         silent = silent)
   
   # convert module
-  converted <- convert_dt(conv_prob = c_prob, target = target, 
-                          pot_yield = il$p_yield, cropnames = il$cropnames, 
-                          base = il$mask, ha = ha, keep_index = FALSE)
+  converted <- convert(conv_prob = c_prob, target = target, 
+                       pot_yield = il$p_yield, cropnames = il$cropnames, 
+                       base = il$mask, ha = ha, keep_index = FALSE)
 
   # impacts
   impacts <- impact_dt(conv = converted, 

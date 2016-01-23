@@ -52,8 +52,9 @@ output:
     + added yield standardization here
     + switched off one potential yield modification option
     + all data.tables, including mask, reduced down to location with >0 farmable areas. 
+    + key set on index of reduced mask
     + cost/yield is performed on those areas only
-    
+
 3. `targets_dt`
 
     + renamed to targets
@@ -61,6 +62,10 @@ output:
     + yield_mod argument removed. 
     
 4. `constraints_dt`
+
+    + renamed to `targets`
+    + allocation logic checked
+    + j loop in inner allocation loop replaced with data.table-centric code
 
 
 

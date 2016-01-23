@@ -66,11 +66,10 @@ ybeta_rast_to_dt <- function(ybetas, cropnames, base) {
 input_handler <- function(input_key = "ZA", ybetas, code, ybeta_update, 
                           exist_list = NULL, silent = TRUE, 
                           path = "external/data/dt") {
-#   input_key = "ZA"; exist_list = NULL; silent = TRUE; 
-#   path = path = "external/data/dt/new/"
-#   ybetas <- list(1, 1); code = run_code(input_key); ybeta_update <- 0
-#   lnms <- c("pp_curr", "p_yield", "carbon", "mask", "cost", "richness", "pas", 
-#             "cons", "cropnames")
+  # input_key = "ZA"; exist_list = NULL; silent = TRUE; 
+  # path = path = "external/data/dt/new/"
+  # ybetas <- list(1, 1); code = run_code(input_key); ybeta_update <- 0
+  
   lnms <- c("p_yield", "carbon", "mask", "cost", "bd", "cons", "cropnames", 
             "currprod", "convertible")
 
@@ -114,6 +113,7 @@ input_handler <- function(input_key = "ZA", ybetas, code, ybeta_update,
   newmask <- cbind(outlist$mask, outlist$convertible)
   valinds <- which(newmask$convertible > 0)  # values to keep
   newmask <- newmask[valinds, ]  # reduce mask to just farmable area
+  setkey(newmask, "ind") 
   # plot(dt_to_raster(outlist$mask, CRSobj = CRS(il$sp$crs)))
   
   # remove unfarmable areas from all data.tables
@@ -124,7 +124,7 @@ input_handler <- function(input_key = "ZA", ybetas, code, ybeta_update,
   # Crops
   # Standardize over all values, not by crop
   ### this standardization assumption needs to be validated 
-  outlist$y_stdy_std <- 1 - standardize(1 / outlist$p_yield)  
+  outlist$y_std <- 1 - standardize(1 / outlist$p_yield)  
   
   # calculate farmable area
   # farmha <- newmask[["convertible"]] * outlist$sp$ha  # farmable area
@@ -177,8 +177,11 @@ input_handler <- function(input_key = "ZA", ybetas, code, ybeta_update,
   outlist$cost_p <- 1 - standardize(costperyield)
   outlist$cost_p <- 1 - (costperyield - min(costperyield, na.rm = TRUE)) / 
    diff(range(costperyield, na.rm = TRUE))
+  
+  
 
   outlist[["mask"]] <- newmask
+
   return(outlist)
 }
 

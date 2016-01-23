@@ -113,7 +113,8 @@ img {
 <li>added yield standardization here</li>
 <li>switched off one potential yield modification option</li>
 <li>all data.tables, including mask, reduced down to location with &gt;0 farmable areas.</li>
-<li>cost/yield is performed on those area</li>
+<li>key set on index of reduced mask</li>
+<li>cost/yield is performed on those areas only</li>
 </ul></li>
 <li><p><code>targets_dt</code></p>
 <ul>
@@ -121,7 +122,12 @@ img {
 <li>replaced scheme for modifying current production with simple modification vector, which draws on vector of current production, with argument named <code>currprodmod</code>.</li>
 <li>yield_mod argument removed.</li>
 </ul></li>
-<li><p><code>constraints_dt</code></p></li>
+<li><p><code>constraints_dt</code></p>
+<ul>
+<li>renamed to <code>targets</code></li>
+<li>allocation logic checked</li>
+<li>j loop in inner allocation loop replaced with data.table-centric code</li>
+</ul></li>
 </ol>
 <p>Updated fetch_inputs to read in convertible fraction data.table, and to find spatial metadata.</p>
 </div>
