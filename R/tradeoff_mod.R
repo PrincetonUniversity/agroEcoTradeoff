@@ -79,12 +79,9 @@ tradeoff_mod <- function(prod_targ, ybetas, cbetas, currprodmod = 1,
                        base = il$mask, ha = ha, keep_index = FALSE)
 
   # impacts
-  impacts <- impact_dt(conv = converted, 
-                       carbon = il$carbon[, c("veg", "soil"), with = FALSE], 
-                       pot_yield = il$p_yield, 
-                       div_list = il[c("richness", "pas")],
-                       cost = il$cost,
-                       cropnames = il$cropnames, ha = ha)
+  impacts <- impact_dt(conv = converted, carbon = il$carbon, 
+                       pot_yield = il$p_yield, div_list = il$bd,
+                       cost = il$cost, cropnames = il$cropnames, ha = ha)
   
   out <- list("conv" = converted, "impacts" = impacts, "inputs" = il, 
               "runcode" = rc)

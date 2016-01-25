@@ -12,7 +12,7 @@
 #' @param silent TRUE, otherwise FALSE gives verbose mode
 #' @return data.table of conversion probabilities for each crop
 #' @details For inlist, the input should be a named list, with the first element 
-#' named "y_std, then "C", "bd", and "cost". The weights must sum to 1, 
+#' named "Y, then "C", "BD", and "COST". The weights must sum to 1, 
 #' regardless of how they are apportioned. For weights of 1/3, write them to at 
 #' least the third decimal place (code tolerates summing to 0.999) 
 #' @examples 
@@ -33,7 +33,7 @@
 #' #con1[, lapply(.SD, max, na.rm = TRUE)]
 #' 
 #' # all four constraints
-#' cbetas <- c("y_std" = 0.25, "C" = 0.25, "bd" = 0.25, "cost" = 0.25)
+#' cbetas <- c("Y" = 0.25, "C" = 0.25, "BD" = 0.25, "COST" = 0.25)
 #' con2 <- constraints(inlist = inlist, cbetas = cbetas, code = rc, 
 #'                     cropnames = il$cropnames)
 #' con2r <- dt_list_to_raster(base = il$mask, inlist = list(con2), 
@@ -46,6 +46,8 @@
 constraints <- function(inlist, cbetas, silent = TRUE) {
                         # code, # cropnames, #ctype = "+", 
   # code <- run_code(input_key = "ZA"); ctype = "+"; silent = TRUE
+  # inlist = list("Y" = il$y_std, "C" = il$carbon_p, "BD" = il$cons_p, 
+  #                "COST" = il$cost_p)
   if(round(sum(cbetas), 2) != 1) stop("cbetas must sum to one", call. = FALSE)
   if(length(cbetas) != 4) {
     stop("cbetas must be a 4 element vector", call. = FALSE)
@@ -58,10 +60,9 @@ constraints <- function(inlist, cbetas, silent = TRUE) {
 #     cbetas <- c(1, 0, 0, 0)
 #     cbetas_gt0 <- cbetas
 #   }
-
-  rlist <- inlist[which(cbetas != 0)]
+  rlist <- inlist[names(cbetas)[which(cbetas != 0)]]
   cbetas_r <- cbetas[which(cbetas != 0)]
-  rlist_mod <- lapply(1:length(rlist), function(x) {
+  rlist_mod <- lapply(1:length(rlist), function(x) {  # x <- 1
     if(cbetas_r[x] == 1) {
       shhh(paste(names(rlist)[x], ": full constraint applied"), silent = silent)
       r <- rlist[[x]]
@@ -79,7 +80,8 @@ constraints <- function(inlist, cbetas, silent = TRUE) {
   # modified to account for unique constraint values for each crop
   i <- 1
   p_y <- rlist_mod[[i]]
-  while (i < length(rlist_mod)) {
+  
+  while(i < length(rlist_mod)) {
     i <- i + 1
 #     if(ctype == "X") {  ## this needs to be removed, as it is duplicated
 #       p_y <- p_y + rlist_mod[[i]]

@@ -13,7 +13,7 @@ fetch_inputs <- function(path = "external/data/dt", input_key = "ZA") {
   # Don't read in conversion probability tables. Derive them instead from 
   # constraints.
   # ds_nms <- c("cropnames", "carbon-names", "currprod")
-  ds_nms <- c("carbon-names", "currprod")
+  ds_nms <- c("currprod", paste0(input_key, "-bdprops"))
   fp <- full_path(bpath, paste0("data/", ds_nms, ".rda"))
   for (i in fp) load(i)
   cropnames <- names(currprod)
@@ -23,7 +23,7 @@ fetch_inputs <- function(path = "external/data/dt", input_key = "ZA") {
   
   # data.tables
   dtnms <- c("potential-yields", "carbon", "mask", "cost", "bd", "cons", 
-             "convertible")
+             "convertible", "intpa")
   lnms <- dtnms
   lnms[1] <- "p_yield"
   in_files <- list.files(path, pattern = input_key, full.names = TRUE)
@@ -37,8 +37,8 @@ fetch_inputs <- function(path = "external/data/dt", input_key = "ZA") {
   l <- lapply(in_files, function(x) fread(x))
   names(l) <- lnms
   ii <- length(l)
-  rda_list <- list(cropnames, currprod, sp_parms)
+  rda_list <- list(cropnames, currprod, bdprops, sp_parms)
   for(i in 1:length(rda_list)) l[[ii + i]] <- rda_list[[i]]
-  names(l) <- c(lnms, "cropnames", "currprod", "sp")
+  names(l) <- c(lnms, "cropnames", "currprod", "bdprops", "sp")
   return(l)
 }

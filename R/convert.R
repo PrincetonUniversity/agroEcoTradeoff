@@ -71,8 +71,8 @@ convert <- function(conv_prob, target, pot_yield, cropnames, base,
   # temporarily removed crop_frac
   # all(testmat[, 2] == pot_yield$soy * base$convertible)
  
-  # convert to production (yield to tons from kg/ha)
-  prod_dt <- data.table(as.matrix(pot_yield) * 0.001 * base$convertible * ha)
+  # convert to production (yield must be in tons/ha)
+  prod_dt <- data.table(as.matrix(pot_yield) * base$convertible * ha)
   # prod_dt <- data.table::as.data.table(as.matrix(pot_yield) * ha) 
   
   prod_dt[, ind := base$ind]

@@ -30,7 +30,7 @@ constraints as per yield potential.
 }
 \details{
 For inlist, the input should be a named list, with the first element 
-named "y_std, then "C", "bd", and "cost". The weights must sum to 1, 
+named "Y, then "C", "BD", and "COST". The weights must sum to 1, 
 regardless of how they are apportioned. For weights of 1/3, write them to at 
 least the third decimal place (code tolerates summing to 0.999)
 }
@@ -52,7 +52,7 @@ con1 <- constraints(inlist = inlist, cbetas = cbetas, code = rc,
 #con1[, lapply(.SD, max, na.rm = TRUE)]
 
 # all four constraints
-cbetas <- c("y_std" = 0.25, "C" = 0.25, "bd" = 0.25, "cost" = 0.25)
+cbetas <- c("Y" = 0.25, "C" = 0.25, "BD" = 0.25, "COST" = 0.25)
 con2 <- constraints(inlist = inlist, cbetas = cbetas, code = rc, 
                     cropnames = il$cropnames)
 con2r <- dt_list_to_raster(base = il$mask, inlist = list(con2), 

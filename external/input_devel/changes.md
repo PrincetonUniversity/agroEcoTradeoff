@@ -21,7 +21,9 @@ output:
 
 2. Fraction available cropland needs to be incorporated
 
-     + Status: Not yet done
+     + Status: 
+         + __Done__ in `convert`
+         + __Pending__ in `impacts`
      
 3. New biodiversity impact metric incorporated
 
@@ -33,7 +35,7 @@ output:
 
     + Notes: 
         + Might need to move this back to standardizing against each crop
-
+        + Current version is correct, checked by Marcus
 
 # Sequence
 

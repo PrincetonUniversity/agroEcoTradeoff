@@ -66,12 +66,11 @@ ybeta_rast_to_dt <- function(ybetas, cropnames, base) {
 input_handler <- function(input_key = "ZA", ybetas, code, ybeta_update, 
                           exist_list = NULL, silent = TRUE, 
                           path = "external/data/dt") {
-  # input_key = "ZA"; exist_list = NULL; silent = TRUE; 
-  # path = path = "external/data/dt/new/"
-  # ybetas <- list(1, 1); code = run_code(input_key); ybeta_update <- 0
-  
+#   input_key = "ZA"; exist_list = NULL; silent = TRUE; 
+#   path = "external/data/dt/new/"
+#   ybetas <- list(1, 1); code = run_code(input_key); ybeta_update <- 0
   lnms <- c("p_yield", "carbon", "mask", "cost", "bd", "cons", "cropnames", 
-            "currprod", "convertible")
+            "convertible", "intpa")
 
   if(!is.null(exist_list) & any(!lnms %in% names(exist_list))) {
     stop("Input list must have all variables", call. = FALSE) 
@@ -86,7 +85,7 @@ input_handler <- function(input_key = "ZA", ybetas, code, ybeta_update,
     outlist <- il
     # outlist$y_std <- ybeta$y_std
     # outlist[c("p_yield", "pp_curr")] <- ybeta[c("p_yield", "pp_curr")]
-    outlist["p_yield"] <- ybeta["p_yield"]
+    outlist[["p_yield"]] <- ybeta[["p_yield"]]
   }
   # if existing list is provided but ybeta needs adjustment
   if(!is.null(exist_list) & ybeta_update == 1) {
@@ -117,7 +116,7 @@ input_handler <- function(input_key = "ZA", ybetas, code, ybeta_update,
   # plot(dt_to_raster(outlist$mask, CRSobj = CRS(il$sp$crs)))
   
   # remove unfarmable areas from all data.tables
-  ol_nms <- c("p_yield", "carbon", "cost", "bd", "cons")
+  ol_nms <- c("p_yield", "carbon", "cost", "bd", "cons", "intpa")
   outlist[ol_nms] <- lapply(ol_nms, function(x) outlist[[x]][valinds, ])
   
   # standardize
@@ -154,7 +153,7 @@ input_handler <- function(input_key = "ZA", ybetas, code, ybeta_update,
                                      # lapply(.SD, function(x) 1 / x), 
                                      # .SDcols = outlist$cropnames]
   carbonperyield <- 1 / outlist$p_yield
-  carbon <- outlist$carbon$veg + outlist$carbon$soil * 0.25
+  carbon <- outlist$carbon$veg + outlist$carbon$soil * 0.25  # hard-code loss
   for(j in outlist$cropnames) {
     set(carbonperyield, i = NULL, j = j, carbonperyield[[j]] * carbon)
   }
@@ -175,13 +174,8 @@ input_handler <- function(input_key = "ZA", ybetas, code, ybeta_update,
          outlist$cost[, grep("cost", names(outlist$cost)), with = FALSE])
   }
   outlist$cost_p <- 1 - standardize(costperyield)
-  outlist$cost_p <- 1 - (costperyield - min(costperyield, na.rm = TRUE)) / 
-   diff(range(costperyield, na.rm = TRUE))
-  
-  
 
   outlist[["mask"]] <- newmask
-
   return(outlist)
 }
 
