@@ -4,7 +4,8 @@
 \alias{tradeoff_batch}
 \title{Runs tradeoff_mod in batch mode}
 \usage{
-tradeoff_batch(parms, input_key = "ZA", todisk = TRUE, silent = FALSE)
+tradeoff_batch(parms, input_key = "ZA", todisk = FALSE, silent = FALSE,
+  ncl = 4, path)
 }
 \arguments{
 \item{parms}{Matrix or data.frame providing input parameters permutations}

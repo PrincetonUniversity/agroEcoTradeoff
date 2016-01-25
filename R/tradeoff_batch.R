@@ -43,55 +43,113 @@
 #' batch_test <- tradeoff_batch(parms = parms, input_key = "ZA", todisk = FALSE, 
 #'                              silent = TRUE)
 #' @export
-tradeoff_batch <- function(parms, input_key = "ZA", todisk = TRUE, 
-                           silent = FALSE) {
+tradeoff_batch <- function(parms, input_key = "ZA", todisk = FALSE, 
+                           silent = FALSE, ncl = 4, path) {
+  # prod_targ <- c("maize" = 2, "soy" = 2)
+  # cblist <- pareto_steps(c("Y", "C"), step = 0.25)
+  # parms <- batch_params(list(c(1, 1)), targlist = list(prod_targ), cblist)
+  # todisk <- TRUE; FALSE
+  # input_key = "ZA"; ncl = 4
+  # currprodmod <- c(1, 1); todisk <- FALSE; path = "external/data/dt/new/"
   bcode <- run_code(input_key)
-  if(todisk == TRUE) {
-   dnm <- paste0(full_path(set_base_path(), "external/output/batch/dt/"), bcode)
-   dir.create(dnm)
-  } 
-  out_list <- list()
-  for(i in 1:nrow(parms)) {
-    print(paste("running batch", i))
-    if(i == 1) {
-      if(!"ctype" %in% colnames(parms)) { 
-        ctype <- "X"
-      } else {
-        ctype <- parms[i, "ctype"]
-      }
-      to <- tradeoff_mod(prod_targ = parms[i, tnames], 
-                         ybetas = list(parms[i, "y1"], parms[i, "y2"]), 
-                         cbetas = parms[i, cnames], input_key = input_key, 
-                         ybeta_update = 1, ctype = ctype,  silent = silent)
-    } 
-    if(i > 1) {
-      ybup <- ifelse(all(parms[i, c("y1", "y2")] == parms[i - 1, c("y1", "y2")]), 
-                     0, 1)
-      if(!"ctype" %in% colnames(parms)) { 
-       ctype <- "X"
-      } else {
-       ctype <- parms[i, "ctype"]
-      }
-      to <- tradeoff_mod(prod_targ = parms[i, tnames], 
-                         ybetas = list(parms[i, "y1"], parms[i, "y2"]), 
-                         cbetas = parms[i, cnames], ybeta_update = ybup, 
-                         input_key = input_key, exist_list = to$inputs,
-                         ctype = ctype, silent = silent)
-    }
+  dnm <- full_path(set_base_path(), 
+                   paste0("external/output/batch/dt/", bcode, "/"))
+  if(todisk == TRUE) dir.create(dnm)  # create batch directory
+  
+  # Read in inputs
+  il <- input_handler(input_key = input_key, path = path, ybeta_update = 0)
+  
+  # fetch inputs first, since we are in batch mode and we aren't modifying 
+  # yields
+  # path <- "external/data/dt/new/"
+  # plot(dt_to_raster(il$mask, CRSobj = CRS(il$sp$crs)))
+  
+  # library(foreach)
+  # library(doMC)
+
+  registerDoMC(ncl)
+  out_list <- foreach(i = 1:nrow(parms)) %dopar% { # i <- 1
+    tof <- tradeoff_mod(prod_targ = parms[i, il$cropnames], 
+                        cbetas = parms[i, c("Y", "C", "BD", "COST")], 
+                        ybetas = list(1, 1), 
+                        currprodmod = 1,  # put in option for batch mod her 
+                        input_key = "ZA", exist_list = il,
+                        ybeta_update = 0,
+                        silent = FALSE, path = "external/data/dt/new/")
+    odf <- cbind.data.frame("iter" = i, "rc" = tof$runcode, tof$impacts)
+    
+    # write out
     if(todisk == TRUE) {
-      fnm <- full_path(set_base_path(), 
-                       paste0("external/output/batch/dt/", bcode, "/", 
-                              to$runcode, ".csv"))
-      write.table(to$conv, file = fnm, sep = ",", col.names = TRUE, 
-                  row.names = FALSE)
-      out_list[[i]] <- to[[c("impacts")]]
-      names(out_list)[i] <- to$runcode
+      fnm <- fname(dnm, tof$runcode, ".csv")
+      write.table(tof$conv[, 3:ncol(tof$conv), with = FALSE], file = fnm, 
+                  sep = ",", col.names = TRUE, row.names = FALSE)
+      out <- odf
     } else if(todisk == FALSE) {
-      out_list[[i]] <- to[c("impacts", "conv")]
-      names(out_list)[i] <- to$runcode
-    }   
+      out <- list("impacts" = odf, "conv" = tof$conv)
+    }
+    return(out)
   }
-  return(out_list)
+  if(todisk == TRUE) { 
+    save(out_list, file = fname(dnm, "impacts_tab.rda"))
+  }
+  return(out_list)  
 }
-
-
+#   for(i in 1:nrow(parms)) { # i <- 1
+#     print(paste("running batch", i))
+#     if(i == 1) {
+#       lval <- NULL
+#     } else {
+#       lval <- "to"
+#     } 
+#     get(lval)
+#      
+#       # if(!"ctype" %in% colnames(parms)) { 
+#         # ctype <- "X"
+#       # } else {
+#         # ctype <- parms[i, "ctype"]
+#       # }
+#       to <- tradeoff_mod(prod_targ = parms[i, tnames], 
+#                          ybetas = list(parms[i, "y1"], parms[i, "y2"]), 
+#                          cbetas = parms[i, cnames], input_key = input_key, 
+#                          ybeta_update = 1, silent = silent)
+#     } 
+#     if(i > 1) {
+#       ybup <- ifelse(all(parms[i, c("y1", "y2")] == parms[i - 1, c("y1", "y2")]), 
+#                      0, 1)
+#       if(!"ctype" %in% colnames(parms)) { 
+#        ctype <- "X"
+#       } else {
+#        ctype <- parms[i, "ctype"]
+#       }
+#       to <- tradeoff_mod(prod_targ = parms[i, tnames], 
+#                          ybetas = list(parms[i, "y1"], parms[i, "y2"]), 
+#                          cbetas = parms[i, cnames], ybeta_update = ybup, 
+#                          input_key = input_key, exist_list = to$inputs,
+#                          ctype = ctype, silent = silent)
+#       if(todisk == TRUE) {
+#        fnm <- full_path(set_base_path(), 
+#                         paste0("external/output/batch/dt/", bcode, "/", 
+#                                to$runcode, ".csv"))
+#        write.table(to$conv, file = fnm, sep = ",", col.names = TRUE, 
+#                    row.names = FALSE)
+#        out_list[[i]] <- to[[c("impacts")]]
+#        names(out_list)[i] <- to$runcode
+#        
+#     }
+#     if(todisk == TRUE) {
+#       fnm <- full_path(set_base_path(), 
+#                        paste0("external/output/batch/dt/", bcode, "/", 
+#                               to$runcode, ".csv"))
+#       write.table(to$conv, file = fnm, sep = ",", col.names = TRUE, 
+#                   row.names = FALSE)
+#       out_list[[i]] <- to[[c("impacts")]]
+#       names(out_list)[i] <- to$runcode
+#     } else if(todisk == FALSE) {
+#       out_list[[i]] <- to[c("impacts", "conv")]
+#       names(out_list)[i] <- to$runcode
+#     }   
+#   }
+#   return(out_list)
+# }
+# 
+# 

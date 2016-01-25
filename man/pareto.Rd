@@ -5,16 +5,16 @@
 \title{Approximates Pareto front for multi-objective optimization of AgroEcoTradeoff 
 Model outputs}
 \usage{
-pareto(cnames, step = 0.1, yblist, targ)
+pareto(cnames, step = 0.1, prod_targ, yblist = list(1, 1), todisk = TRUE)
 }
 \arguments{
 \item{cnames}{A list of the constraints to optimize over}
 
 \item{step}{The step interval over which to search for optimal solutions}
 
-\item{yblist}{A two element list giving yield modifications}
+\item{prod_targ}{Production targets passed as list. See examples for format.}
 
-\item{targ}{The target multiplier for production}
+\item{yblist}{A two element list of yield modifiers (currently disabled)}
 }
 \description{
 This function generates a series of possible outputs from the

@@ -14,13 +14,17 @@ Depends:
     lmisc,
     data.table,
     RColorBrewer,
-    dtraster
+    dtraster,
+    foreach,
+    doMC
 Imports:
     raster,
     rgdal,
     lmisc,
     data.table,
     RColorBrewer,
-    dtraster
+    dtraster,
+    foreach,
+    doMC
 License: GPL (>= 3)
 RoxygenNote: 5.0.1

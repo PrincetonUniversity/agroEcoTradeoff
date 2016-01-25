@@ -1,26 +1,22 @@
-#' Approximates Pareto front for multi-objective optimization of AgroEcoTradeoff 
-#' Model outputs
-#' @description This function generates a series of possible outputs from the
-#' AgroEcoTradeoff Model and retains those that are non-dominated, effectively
-#' mimicking the traditional weighted sum method for multi-objective optimization.
-#' @param cnames A list of the constraints to optimize over 
+#' Generate weight combinations for running pareto function
+#' @param cnames A vector of constraint names to optimize over e.g. c("Y", "BD")
 #' @param step The step interval over which to search for optimal solutions
-#' @param yblist A two element list giving yield modifications 
-#' @param targ The target multiplier for production
+#' #@param yblist A two element list giving yield modifications 
+#' @keywords internal
 #' @export
-pareto <- function(cnames, step = 0.1, yblist, targ) {
+pareto_steps <- function(cnames, step = 0.1) {
   
-  compnames <- c("Ag", "C", "bd", "cost")
+  # checks 
   if (length(cnames) == 0) stop("select at least one constraint")
-  
-  if (1 %% step != 0) stop("step must divide evenly into 1")
+  if (1 %% step != 0) stop("step must divide evenly into 1", call. = FALSE)
+  compnames <- c("Y", "C", "BD", "COST")
+  incl <- compnames %in% cnames
+  if (sum(incl) != length(cnames)) {
+    stop("Constraint choices are Y, C, BD, and COST.", call. = FALSE)
+  } 
+ 
   
   incl <- compnames %in% cnames
-  
-  if (sum(incl) != length(cnames)) {
-   stop("Constraint choices are Ag, C, bd, and cost.")
-  } 
-  
   if (length(cnames) > 0) {
     colone <- min(which(incl == TRUE))
     incl[colone] = FALSE
@@ -56,7 +52,7 @@ pareto <- function(cnames, step = 0.1, yblist, targ) {
         stepping <- stepping + step
         stepper <- 0
       }
-      # < step/2 would be == 0 if not for the small epsilon from numerical rep. error
+     # < step/2 would be == 0 if not for the small epsilon from numerical rep. error
     }
   }
   
@@ -82,7 +78,7 @@ pareto <- function(cnames, step = 0.1, yblist, targ) {
         cblist[[i]][colone] <- 1 - (cblist[[i]][coltwo] + cblist[[i]][colthree]
                                     + cblist[[i]][colfour])
         stepper <- stepper + step
-        if (cblist[[i]][colone] < step/2) {
+        if(cblist[[i]][colone] < step/2) {
           stepping <- stepping + step
           stepper <- 0
         }
@@ -91,28 +87,63 @@ pareto <- function(cnames, step = 0.1, yblist, targ) {
       stepping2 <- stepping2 + step
     }
   }
+  return(cblist)
+}
+
+#' Approximates Pareto front for multi-objective optimization of AgroEcoTradeoff 
+#' Model outputs
+#' @description This function generates a series of possible outputs from the
+#' AgroEcoTradeoff Model and retains those that are non-dominated, effectively
+#' mimicking the traditional weighted sum method for multi-objective optimization.
+#' @param cnames A list of the constraints to optimize over 
+#' @param step The step interval over which to search for optimal solutions
+#' @param yblist A two element list of yield modifiers (currently disabled) 
+#' @param prod_targ Production targets passed as list. See examples for format.
+#' @export
+# pareto <- function(cnames, step = 0.1, yblist, targ) {
+pareto <- function(cnames, step = 0.1, prod_targ, yblist = list(1, 1), 
+                   todisk = TRUE) {
   
+  # prod_targ <- c("maize" = 2, "soy" = 2)
+  # cnames <- c("Y", "C", "BD"); step = 0.1
+  # cnames <- c("Y", "C", "BD", "COST"); step = 0.1
+  # cnames <- c("Y", "C"); step = 0.1
+  
+  # weight combinations
+  cblist <- pareto_steps(cnames, step = step)
+
   # prod_targ space
   # LDE: this needs to changed so that crop names can be passed in as variable
   tnames <- c("maize", "cassava", "ground", "cotton", "soy", "pulse", "sunflower",
               "sugarcane", "wheat")
-  targlist <- list(targ1 <- rep(targ, length(tnames)))
+  # targ <- 4
+  #targlist <- list(targ1 <- rep(prod_targ, length(tnames)))
+  targlist <- list(prod_targ)
+  yblist <- list(do.call(c, yblist))
+  # yblist <- list(yb1 <- c(1, 1))
   
-  parms <- do.call(rbind, lapply(yblist, function(x) {
-    do.call(rbind, lapply(targlist, function(y) {
-      do.call(rbind, lapply(cblist, function(z) {
-        v <- c(z, x, y)
-        names(v) <- c(compnames, "y1", "y2", tnames)
-        v
-      }))
-    }))
-  }))
+  parms <- batch_params(yblist, targlist, cblist)
+#   parms <- do.call(rbind, lapply(yblist, function(x) {
+#     do.call(rbind, lapply(targlist, function(y) {
+#       do.call(rbind, lapply(cblist, function(z) {
+#         v <- c(z, x, y)
+#         tlistnms <- names(targlist[[1]])
+#         tlistnms <- ifelse(is.null(tlistnms), 
+#                            paste0("c", 1:length(targlist[[1]])), tlistnms)
+#         names(v) <- c(compnames, "y1", "y2", names(targlist[[1]]))
+#         v
+#       }))
+#     }))
+#   }))
   
   # Prepare for writing output table 
   # LDE: this needs to be passed in as variable also
   bcode <- run_code("ZA")
-  dnm <- paste0(full_path(set_base_path(), "external/output/batch/dt/"), bcode)
-  dir.create(dnm)
+  if(todisk == TRUE) {
+    dnm <- paste0(full_path(set_base_path(), "external/output/batch/dt/"), 
+                  bcode)
+    dir.create(dnm)
+  } 
   out_list <- list()
   
   input_key = "ZA"   # variabilize
