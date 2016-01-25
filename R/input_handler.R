@@ -69,8 +69,14 @@ input_handler <- function(input_key = "ZA", ybetas, code, ybeta_update,
 #   input_key = "ZA"; exist_list = NULL; silent = TRUE; 
 #   path = "external/data/dt/new/"
 #   ybetas <- list(1, 1); code = run_code(input_key); ybeta_update <- 0
+# exist_list = toff$inputs 
   lnms <- c("p_yield", "carbon", "mask", "cost", "bd", "cons", "cropnames", 
             "convertible", "intpa")
+  
+  if(ybeta_update == 1) {
+    stop("The yield modification facility is currently switched off", 
+         call. = FALSE)
+  }
 
   if(!is.null(exist_list) & any(!lnms %in% names(exist_list))) {
     stop("Input list must have all variables", call. = FALSE) 
@@ -78,19 +84,62 @@ input_handler <- function(input_key = "ZA", ybetas, code, ybeta_update,
   # no existing data list provided 
   if(is.null(exist_list)) {  # il_y
     il <- fetch_inputs(path = path, input_key = input_key)  # fetch inputs 
-    ybetas <- ybeta_rast_to_dt(ybetas, cropnames = il$cropnames, base = il$mask)
-    ybeta <- yield_mod(inlist = il["p_yield"], ybetas = ybetas, 
-                       code = code, cropnames = il$cropnames, 
-                       silent = silent)
-    outlist <- il
-    # outlist$y_std <- ybeta$y_std
-    # outlist[c("p_yield", "pp_curr")] <- ybeta[c("p_yield", "pp_curr")]
-    outlist[["p_yield"]] <- ybeta[["p_yield"]]
+    # ybetas <- ybeta_rast_to_dt(ybetas, cropnames = il$cropnames, base = il$mask)
+    # ybeta <- yield_mod(inlist = il["p_yield"], ybetas = ybetas, 
+    #                   code = code, cropnames = il$cropnames, 
+    #                   silent = silent)
+    # il[["p_yield"]] <- ybeta[["p_yield"]]
+    
+    # have to make a second mask now of convertible areas
+    newmask <- cbind(il$mask, il$convertible)
+    valinds <- which(newmask$convertible > 0)  # values to keep
+    newmask <- newmask[valinds, ]  # reduce mask to just farmable area
+    setkey(newmask, "ind") 
+    # plot(dt_to_raster(outlist$mask, CRSobj = CRS(il$sp$crs)))
+    
+    # remove unfarmable areas from all data.tables
+    il_nms <- c("p_yield", "carbon", "cost", "bd", "cons", "intpa")
+    il[il_nms] <- lapply(il_nms, function(x) il[[x]][valinds, ])
+    
+    # standardize
+    # Crops
+    # Standardize over all values, not by crop
+    ### this standardization assumption needs to be validated
+    # crops
+    il$y_std <- 1 - standardize(1 / il$p_yield)  
+    
+    # carbon
+    carbonperyield <- 1 / il$p_yield
+    carbon <- il$carbon$veg + il$carbon$soil * 0.25  # hard-code loss
+    for(j in il$cropnames) {
+     set(carbonperyield, i = NULL, j = j, carbonperyield[[j]] * carbon)
+    }
+    il$carbon_p <- 1 - standardize(carbonperyield)
+    
+    # biodiversity 
+    bdperyield <- 1 / il$p_yield
+    for(j in il$cropnames) {
+     set(bdperyield, i = NULL, j = j, bdperyield[[j]] * 
+          il$cons[, grep("cons", names(il$cons)), with = FALSE])  
+    }
+    il$cons_p <- standardize(bdperyield)
+    
+    # cost
+    costperyield <- 1 / il$p_yield
+    for(j in il$cropnames) {
+     set(costperyield, i = NULL, j = j, costperyield[[j]] * 
+          il$cost[, grep("cost", names(il$cost)), with = FALSE])
+    }
+    il$cost_p <- 1 - standardize(costperyield)
+    
+    il[["mask"]] <- newmask
+    
   }
+  
   # if existing list is provided but ybeta needs adjustment
-  if(!is.null(exist_list) & ybeta_update == 1) {
-    stop(paste("Modifying potential yields in an existing list is switched",
-               "off for the time being"), call. = FALSE)
+  # if(!is.null(exist_list) & ybeta_update == 1) {
+  #  stop(paste("Modifying potential yields in an existing list is switched",
+  #             "off for the time being"), call. = FALSE)
   #  ybetas <- ybeta_rast_to_dt(ybetas, cropnames = il$cropnames, base = il$mask)
   #  ybeta <- yield_mod(inlist = exist_list[c("p_yield", "pp_curr")], 
   #                     ybetas = ybetas, code = code, 
@@ -98,84 +147,11 @@ input_handler <- function(input_key = "ZA", ybetas, code, ybeta_update,
   #  outlist <- exist_list
   #  outlist$y_std <- ybeta$y_std
   #  outlist[c("p_yield", "pp_curr")] <- ybeta[c("p_yield", "pp_curr")]
-  }
+  # }
+
   if(!is.null(exist_list) & ybeta_update == 0) {
-    outlist <- exist_list
+    il <- exist_list
   }
-  
-#   plot(dt_list_to_raster(base = newmask, 
-#                          outlist["p_yield"], CRSobj = CRS(il$sp$crs)))
-#   plot(dt_to_raster(cbind(newmask, outlist$p_yield), CRSobj = CRS(il$sp$crs)))
-  
-
-  # have to make a second mask now of convertible areas
-  newmask <- cbind(outlist$mask, outlist$convertible)
-  valinds <- which(newmask$convertible > 0)  # values to keep
-  newmask <- newmask[valinds, ]  # reduce mask to just farmable area
-  setkey(newmask, "ind") 
-  # plot(dt_to_raster(outlist$mask, CRSobj = CRS(il$sp$crs)))
-  
-  # remove unfarmable areas from all data.tables
-  ol_nms <- c("p_yield", "carbon", "cost", "bd", "cons", "intpa")
-  outlist[ol_nms] <- lapply(ol_nms, function(x) outlist[[x]][valinds, ])
-  
-  # standardize
-  # Crops
-  # Standardize over all values, not by crop
-  ### this standardization assumption needs to be validated 
-  outlist$y_std <- 1 - standardize(1 / outlist$p_yield)  
-  
-  # calculate farmable area
-  # farmha <- newmask[["convertible"]] * outlist$sp$ha  # farmable area
-  
-  # hist(outlist$p_yield$soy)
-
-  # production <- outlist$p_yield[, lapply(.SD, function(x) x * farmha)]
-  # y_std <- standardize(production)  # and standardize
-  
-#   par(mfrow = c(1, 2))
-#   hist(standardize(production$maize))
-#   hist(standardize(production$soy))
-#   hist(y_std$maize)
-#   hist(y_std$soy)
-#   
-#   hist(outlist$p_yield$soy)
-#   hist(production$maize)
-#   hist(production$soy)
-#   
-
-  # y_std2 <- 1 - standardize(1 / production)  # this assumption needs fixing 
-  
-  # Calculate conversion probabilities so they are done by impact/production
-  # for division
-  # carbon
-  # carbonperyield <- copy(outlist$p_yield)[, c(outlist$cropnames) := 
-                                     # lapply(.SD, function(x) 1 / x), 
-                                     # .SDcols = outlist$cropnames]
-  carbonperyield <- 1 / outlist$p_yield
-  carbon <- outlist$carbon$veg + outlist$carbon$soil * 0.25  # hard-code loss
-  for(j in outlist$cropnames) {
-    set(carbonperyield, i = NULL, j = j, carbonperyield[[j]] * carbon)
-  }
-  outlist$carbon_p <- 1 - standardize(carbonperyield)
-  
-  # biodiversity 
-  bdperyield <- 1 / outlist$p_yield
-  for(j in outlist$cropnames) {
-   set(bdperyield, i = NULL, j = j, bdperyield[[j]] * 
-        outlist$cons[, grep("cons", names(outlist$cons)), with = FALSE])  
-  }
-  outlist$cons_p <- standardize(bdperyield)
-  
-  # cost
-  costperyield <- 1 / outlist$p_yield
-  for(j in outlist$cropnames) {
-    set(costperyield, i = NULL, j = j, costperyield[[j]] * 
-         outlist$cost[, grep("cost", names(outlist$cost)), with = FALSE])
-  }
-  outlist$cost_p <- 1 - standardize(costperyield)
-
-  outlist[["mask"]] <- newmask
-  return(outlist)
+  return(il)
 }
 

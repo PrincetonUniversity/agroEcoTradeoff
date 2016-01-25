@@ -76,12 +76,12 @@ img {
 <li>Status:
 <ul>
 <li><strong>Done</strong> in <code>convert</code></li>
-<li><strong>Pending</strong> in <code>impacts</code></li>
+<li><strong>Done</strong> in <code>impacts</code></li>
 </ul></li>
 </ul></li>
 <li><p>New biodiversity impact metric incorporated</p>
 <ul>
-<li>Status: Not yet done</li>
+<li>Status: Done</li>
 </ul></li>
 </ol>
 </div>
@@ -105,6 +105,7 @@ img {
 <ul>
 <li>including altering carbon-names.rda, dumping cropnames.rda entirely</li>
 <li>Updated fetch_inputs to read in convertible fraction data.table, and to find spatial metadata.</li>
+<li>Put in logic to check for equality of row number in input data.tables, and to call a halt if there are NAs in any of the inputs.</li>
 </ul></li>
 <li><p><code>input_handler</code></p>
 <ul>
@@ -120,6 +121,8 @@ img {
 <li>all data.tables, including mask, reduced down to location with &gt;0 farmable areas.</li>
 <li>key set on index of reduced mask</li>
 <li>cost/yield is performed on those areas only</li>
+<li>rearranged order of inputs to properly deal with recyled input list</li>
+<li>disabled yield modification function for now, on the assumption that this becomes an offline process for the time being. If ybeta_update is set to 1, model will halt.</li>
 </ul></li>
 <li><p><code>targets_dt</code></p>
 <ul>
@@ -132,6 +135,26 @@ img {
 <li>renamed to <code>targets</code></li>
 <li>allocation logic checked</li>
 <li>j loop in inner allocation loop replaced with data.table-centric code</li>
+</ul></li>
+<li><p><code>convert_dt</code></p>
+<ul>
+<li>Now <code>convert</code></li>
+<li>Replaced j for loop with data.table syntax</li>
+</ul></li>
+<li><p><code>impact_dt</code></p>
+<ul>
+<li>Now <code>impact</code></li>
+<li>Modularized - impact metrics now calculated in sub-modules, except for total area converted.
+<ul>
+<li>Revised metrics for cost - mean cost and cost/yield calculated also - these will be more appropriate than total cost</li>
+<li>New metrics for biodiversity, based on rarity. Several flavors to choose from - mean vegetation type rarity of converted pixels (0-1); rarity + protectedness (0 - 1); average intactness (0 - 1); ha of forest reserves lost</li>
+</ul></li>
+<li>Reduced number of input arguments to 2 (il and conv).</li>
+</ul></li>
+<li><p><code>tradeoff_mod</code></p>
+<ul>
+<li>Updated to incorporate changes to 4 primary sub-modules.</li>
+<li>Runs tested with</li>
 </ul></li>
 </ol>
 <p>Updated fetch_inputs to read in convertible fraction data.table, and to find spatial metadata.</p>

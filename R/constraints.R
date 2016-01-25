@@ -75,8 +75,8 @@ constraints <- function(inlist, cbetas, silent = TRUE) {
   names(rlist_mod) <- names(rlist)
   
   # create output
-  shhh(paste("processing constraints", paste(cnames, collapse = ", ")), 
-       silent = silent)
+  shhh(paste("processing constraints", 
+             paste(names(rlist_mod), collapse = ", ")), silent = silent)
   # modified to account for unique constraint values for each crop
   i <- 1
   p_y <- rlist_mod[[i]]

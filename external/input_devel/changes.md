@@ -23,11 +23,11 @@ output:
 
      + Status: 
          + __Done__ in `convert`
-         + __Pending__ in `impacts`
+         + __Done__ in `impacts`
      
 3. New biodiversity impact metric incorporated
 
-     + Status: Not yet done
+     + Status: Done
 
 # Fixes
 
@@ -43,6 +43,7 @@ output:
 
     + including altering carbon-names.rda, dumping cropnames.rda entirely
     + Updated fetch_inputs to read in convertible fraction data.table, and to find spatial metadata. 
+    + Put in logic to check for equality of row number in input data.tables, and to call a halt if there are NAs in any of the inputs. 
 
 2. `input_handler`
 
@@ -56,6 +57,8 @@ output:
     + all data.tables, including mask, reduced down to location with >0 farmable areas. 
     + key set on index of reduced mask
     + cost/yield is performed on those areas only
+    + rearranged order of inputs to properly deal with recyled input list
+    + disabled yield modification function for now, on the assumption that this becomes an offline process for the time being. If ybeta_update is set to 1, model will halt.  
 
 3. `targets_dt`
 
@@ -69,9 +72,23 @@ output:
     + allocation logic checked
     + j loop in inner allocation loop replaced with data.table-centric code
 
+5. `convert_dt`
 
+    + Now `convert`
+    + Replaced j for loop with data.table syntax
 
-    
+6. `impact_dt`
+
+    + Now `impact`
+    + Modularized - impact metrics now calculated in sub-modules, except for total area converted. 
+        + Revised metrics for cost - mean cost and cost/yield calculated also - these will be more appropriate than total cost
+        + New metrics for biodiversity, based on rarity. Several flavors to choose from - mean vegetation type rarity of converted pixels (0-1); rarity + protectedness (0 - 1); average intactness (0 - 1); ha of forest reserves lost
+    + Reduced number of input arguments to 2 (il and conv).
+
+7. `tradeoff_mod`
+
+    + Updated to incorporate changes to 4 primary sub-modules. 
+    + Runs tested with 
 
 Updated fetch_inputs to read in convertible fraction data.table, and to find spatial metadata.
 

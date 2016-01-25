@@ -5,7 +5,8 @@
 \title{Spatial tradeoffs model}
 \usage{
 tradeoff_mod(prod_targ, ybetas, cbetas, currprodmod = 1, input_key = "ZA",
-  ybeta_update = 1, exist_list = NULL, ctype = "+", silent = TRUE)
+  ybeta_update = 0, exist_list = NULL, silent = TRUE,
+  path = "external/data/dt/")
 }
 \arguments{
 \item{prod_targ}{Production targets passed as list. See examples for format.}
@@ -16,11 +17,11 @@ tradeoff_mod(prod_targ, ybetas, cbetas, currprodmod = 1, input_key = "ZA",
 
 \item{input_key}{Country/location code indicating input data to load.}
 
-\item{ybeta_update}{1 (default) or 0 - determines whether yield_mod_* is run.}
-
-\item{ctype}{Specific multiplicative ("X") or additive ("+") constraints}
+\item{ybeta_update}{1 or 0 (default) - determines whether yield_mod_* is run.}
 
 \item{silent}{Silent or verbose mode (TRUE [default] or FALSE)}
+
+\item{path}{Path to input data.tables}
 }
 \value{
 Data.frame of impacts, and data.table referencing conversions.
@@ -54,15 +55,12 @@ rc <- run_code(input_key = "ZA")
 # })
 
 ybetas <- list(1, 1)
-prod_targ <- c("maize" = 4, "cassava" = 2, "ground" = 2, "cotton" = 2, 
-               "soy" = 2, "pulse" = 2, "sunflower" = 2, "sugarcane" = 2, 
-               "wheat" = 2)
+prod_targ <- c("maize" = 4, "soy" = 2)
 
 # cbeta vector
 cbetas <- c(0.5, 0.5, 0, 0)
-names(cbetas) <- c("Ag", "C", "bd", "cost")
+names(cbetas) <- c("Y", "C", "BD", "COST")
 
-# Comparing the two versions
 system.time(tdt <- tradeoff_mod(prod_targ, ybetas, cbetas))  # 2.5 seconds
 
 CRSobj <- projection(raster("external/ext_data/ZA-carbon-priorities.tif"))

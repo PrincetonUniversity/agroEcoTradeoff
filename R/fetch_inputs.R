@@ -36,6 +36,17 @@ fetch_inputs <- function(path = "external/data/dt", input_key = "ZA") {
   }
   l <- lapply(in_files, function(x) fread(x))
   names(l) <- lnms
+  
+  # Check on equal number of rows
+  if(diff(range(sapply(l, function(x) nrow(x)))) != 0) {
+    stop("All inputs data.table need to have the same number of rows", 
+         call. = FALSE)
+  }
+  # Check on having NAs
+  if(any(sapply(l, function(x) any(is.na(x))))) {
+    stop("Input data.tables can't have NAs", call. = FALSE)
+  }
+  
   ii <- length(l)
   rda_list <- list(cropnames, currprod, bdprops, sp_parms)
   for(i in 1:length(rda_list)) l[[ii + i]] <- rda_list[[i]]
