@@ -2,7 +2,9 @@
 
 echo "Installing agroEcoTradeoffs"
 echo "Fetching demo datasets"
-cd external/data/dt/latest/
+
+a=pwd
+cd $a/external/data/dt/latest/
 wget https://www.dropbox.com/s/9tmsbxtdfo0gzxi/demodat.zip
 
 echo "Decompressing demo data"
