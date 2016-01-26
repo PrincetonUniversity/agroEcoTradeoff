@@ -130,14 +130,6 @@ pareto <- function(cnames, step = 0.1, prod_targ, yblist = list(1, 1),
   # weight combinations
   cblist <- pareto_steps(cnames, step = step)
 
-  # prod_targ space
-  # LDE: this needs to changed so that crop names can be passed in as variable
-#   tnames <- c("maize", "cassava", "ground", "cotton", "soy", "pulse", "sunflower",
-#               "sugarcane", "wheat")
-#   # targ <- 4
-  #targlist <- list(targ1 <- rep(prod_targ, length(tnames)))
-  
-  
   # dummy for switched of yield modification
   yblist <- list(do.call(c, yblist))
   targlist <- list(prod_targ)
@@ -145,19 +137,7 @@ pareto <- function(cnames, step = 0.1, prod_targ, yblist = list(1, 1),
   
   # compile parameters
   parms <- batch_params(yblist, targlist, cblist)
-#   parms <- do.call(rbind, lapply(yblist, function(x) {
-#     do.call(rbind, lapply(targlist, function(y) {
-#       do.call(rbind, lapply(cblist, function(z) {
-#         v <- c(z, x, y)
-#         tlistnms <- names(targlist[[1]])
-#         tlistnms <- ifelse(is.null(tlistnms), 
-#                            paste0("c", 1:length(targlist[[1]])), tlistnms)
-#         names(v) <- c(compnames, "y1", "y2", names(targlist[[1]]))
-#         v
-#       }))
-#     }))
-#   }))
-  
+
   # run batch 
   tob <- tradeoff_batch(parms, input_key = input_key, silent = silent, 
                         todisk = todisk, ncl = ncl, path = path)
@@ -167,90 +147,6 @@ pareto <- function(cnames, step = 0.1, prod_targ, yblist = list(1, 1),
     tobimp <- lapply(tob, function(x) x[[1]]) 
   }
   
-  
-  
-  # Prepare for writing output table 
-  # LDE: this needs to be passed in as variable also
-#   bcode <- run_code(input_key)
-#   if(todisk == TRUE) {
-#     dnm <- paste0(full_path(set_base_path(), "external/output/batch/dt/"), 
-#                   bcode)
-#     dir.create(dnm)
-#   } 
-#   out_list <- list()
-#   
-#   input_key = "ZA"   # variabilize
-#   silent = TRUE
-#   
-#   impact_list = NULL
-#   count = 1
-#   
-#   tnames <- c("maize", "soy")
-#   compnames <- c("Y", "C", "BD", "COST")
-#   for(i in 1:nrow(parms)) {
-#     # i <- 1; i <- 2; silent = FALSE
-#     print(paste("running batch", i))
-#     if(i == 1) {
-#       to <- tradeoff_mod(prod_targ = parms[i, tnames], 
-#                           ybetas = list(parms[i, "y1"], parms[i, "y2"]), 
-#                           cbetas = parms[i, compnames], input_key = input_key, 
-#                           ybeta_update = 0, silent = silent, path = path)
-#     } 
-#     if(i > 1) {
-#       to <- tradeoff_mod(prod_targ = parms[i, tnames], 
-#                          ybetas = list(parms[i, "y1"], parms[i, "y2"]), 
-#                          cbetas = parms[i, compnames], ybeta_update = 0, 
-#                          input_key = input_key, exist_list = to$inputs,
-#                          silent = silent)
-#     }
-    # Write table
-#     fnm <- full_path(set_base_path(), 
-#                      paste0("external/output/batch/dt/", bcode, "/", 
-#                             to$runcode, ".csv"))
-#     # write.table(to$conv, file = fnm, sep = ",", col.names = TRUE, 
-                # row.names = FALSE)
-#     out_list[[i]] <- to[[c("impacts")]]
-#     names(out_list)[i] <- to$runcode
-    # dnm <- dir("external/output/batch/dt")
-    
-#     if ("Y" %in% cnames) {
-#       impact_list$land[i] <- sum(to$impacts[, "conv_area"], na.rm = TRUE)
-#     }
-#     if ("C" %in% cnames) {
-#       impact_list$carbon[i] <- sum(to$impacts[, "tot_C"], na.rm = TRUE)
-#     }
-#     if ("BD" %in% cnames) {
-#       impact_list$biodiversity[i] <- mean(to$impacts[, "priority"], na.rm =TRUE)
-#     }
-#     if ("COST" %in% cnames) { 
-#       impact_list$cost[i] <- mean(to$impacts[, "mu_cost"], na.rm = TRUE)
-#     }
-#     #count <- count + 1
-#   }
-#   save(out_list, file = paste0("external/output/batch/dt/", bcode, 
-#                                "/out_tables.rda"))
-  # save(parms, file = paste0("external/output/batch/dt/", bcode, "/parms.rda"))
-
-#   outputtable <- as.data.table(do.call(cbind.data.frame, impact_list))
-#   outputtable <- as.data.table(outputtable)
-#   otnames <- names(outputtable)
-#   setorderv(outputtable, otnames)
-#   outputtable$ind <- seq(1, length(outputtable[[1]]))
-#   
-#   vars <- list(Yv = "conv_area", Cv = "tot_C", BDv = "priority", 
-#                COSTv = "mu_cost")
-#   ostat <- list("Y" = sum, "C" = sum, "BD" = mean, "COST" = mean)
-#   out_dt <- do.call(rbind, lapply(tobimp, function(x) {  # x <- tobimp[[1]]
-#     land <- ostat$Y(x[, vars$Yv], na.rm = TRUE)
-#     carbon <- ostat$C(x[, vars$Cv], na.rm = TRUE)
-#     bd <- ostat$BD(x[, vars$BDv], na.rm = TRUE)
-#     cost <- ostat$COST(x[, vars$COSTv], na.rm = TRUE)
-#     odt <- data.table(cbind("Y" = land, "C" = carbon, "BD" = bd, "COST" = cost, 
-#                             "ind" = x$iter[1]))
-#     setorderv(odt, names(odt))
-#     odt
-#   }))
-#   
   # summarize impacts across crops
   impacts <- batch_stat(tobimp, Yv, Cv, BDv, COSTv, Yst, Cst, BDst, COSTst)
   
@@ -258,26 +154,4 @@ pareto <- function(cnames, step = 0.1, prod_targ, yblist = list(1, 1),
   optimal <- non_dominator(impacts, cnames = c("Y", "C"))
   
   return(optimal)
-#   #Brute force elimination of dominated solutions
-#   dom = NULL
-#   h = 1
-#   for(i in 1:(nrow(outputtable) - 1)) {
-#   # for(i in 1:(length(outputtable[[1]]) - 1)) {
-#     for(j in (i + 1):nrow(outputtable)){ # j = 2
-#     # for(j in (i + 1):length(outputtable[[1]])){
-#       dominated = TRUE
-#       for(k in 1:(ncol(outputtable) - 1)){  # k = 1
-#       #for(k in 1:(length(outputtable)-1)){
-#         if(outputtable[[k]][j] < outputtable[[k]][i]) {
-#           dominated = FALSE
-#           break
-#         }
-#       }
-#       if (dominated == TRUE) {
-#         dom[h] = j
-#         h = h + 1
-#       }
-#     }
-#   }
-#   outputtable <- list("bcode" = bcode, "table" = outputtable[!(ind %in% dom)])
 }
