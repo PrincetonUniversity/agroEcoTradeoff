@@ -3,7 +3,7 @@
 echo "Installing agroEcoTradeoffs"
 echo "Fetching demo datasets"
 
-a=pwd
+a=`pwd`
 cd $a/external/data/dt/latest/
 wget https://www.dropbox.com/s/9tmsbxtdfo0gzxi/demodat.zip
 
@@ -11,5 +11,5 @@ echo "Decompressing demo data"
 unzip demodat.zip
 rm demodat.zip
 
-cd ../../..
+cd ../../../../
 R CMD BATCH installer.R
