@@ -88,7 +88,20 @@ output:
 7. `tradeoff_mod`
 
     + Updated to incorporate changes to 4 primary sub-modules. 
-    + Runs tested with 
 
-Updated fetch_inputs to read in convertible fraction data.table, and to find spatial metadata.
+8. `tradeoff_batch`
+
+    + Simplified (yield_mod disabled) and parallelized with foreach and doMC. 
+    + Output saving options altered. Conversion tables written out without xy coordinates, to save disk space and write times. 
+    
+
+9. `pareto`
+
+    + Modularized 
+       + `pareto_step` function created, removing this portion of code from inside main function
+       + `batch_params` combines parameter permutations into matrix used by `pareto` and `tradeoff_batch`
+       + `batch_stat` calculates summarizes impact metrics of interest from a batch run, which are fed to `non-dominator`. 
+       + `non-dominator` Separate function created for code that removes non-dominated solutions from output table of impacts
+       + Function engine is `tradeoff_batch`. 
+
 
