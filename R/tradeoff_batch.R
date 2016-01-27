@@ -52,8 +52,9 @@ tradeoff_batch <- function(parms, input_key = "ZA", todisk = FALSE,
   # input_key = "ZA"; ncl = 4
   # currprodmod <- c(1, 1); todisk <- FALSE; path = "external/data/dt/new/"
   bcode <- run_code(input_key)
-  dnm <- full_path(set_base_path(), 
-                   paste0("external/output/batch/dt/", bcode, "/"))
+  bdnm <- full_path(set_base_path(), "external/output/batch/dt/")
+  if(!dir.exists(bdnm)) dir.create(bdnm)
+  dnm <- full_path(bdnm, bcode)
   if(todisk == TRUE) dir.create(dnm)  # create batch directory
   
   # Read in inputs
@@ -89,7 +90,7 @@ tradeoff_batch <- function(parms, input_key = "ZA", todisk = FALSE,
     return(out)
   }
   if(todisk == TRUE) {
-    bcnm <- full_path(set_base_path(), "external/output/batch/dt/bcode.rda")
+    bcnm <- full_path(set_base_path(), paste0(bdnm, "bcode.rda"))
     save(bcode, file = bcnm)
     print(paste("Batch code is", bcode))
     save(out_list, file = fname(dnm, "impacts_tab.rda"))
