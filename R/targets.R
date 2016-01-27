@@ -43,9 +43,9 @@ targets <- function(prod_targ, currprod, currprodmod) {#, cropnames)
 #   }
 #   t_df <- cbind.data.frame("current" = t(currprod[, lapply(.SD, mysum)]), 
 #                            "potential" = t(prod_diff[, lapply(.SD, mysum)]))
-  t_df <- cbind.data.frame("current" = currprod, "potential" = prod_diff)
+  t_df <- cbind.data.frame("current" = currprod, "potential" = potprod)
   t_df$target <- t_df$current * prod_targ
-  t_df$target_newland <- t_df$target - t_df$potential
+  t_df$target_newland <- t_df$target - t_df$potential 
   t_df$target_newland <- ifelse(t_df$target_newland < 0, 0, t_df$target_newland)
   t_df$t_pct_currland <- round(t_df$potential / t_df$target * 100, 1)
   t_df$t_pct_newland <- round(t_df$target_newland / t_df$target * 100, 1)

@@ -67,7 +67,7 @@ input_handler <- function(input_key = "ZA", ybetas, code, ybeta_update,
                           exist_list = NULL, silent = TRUE, 
                           path = "external/data/dt") {
 #   input_key = "ZA"; exist_list = NULL; silent = TRUE; 
-#   path = "external/data/dt/new/"
+  # path = "external/data/dt/latest/"
 #   ybetas <- list(1, 1); code = run_code(input_key); ybeta_update <- 0
 # exist_list = toff$inputs 
   lnms <- c("p_yield", "carbon", "mask", "cost", "bd", "cons", "cropnames", 

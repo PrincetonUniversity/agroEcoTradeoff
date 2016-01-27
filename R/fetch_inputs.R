@@ -6,7 +6,7 @@
 #' ip <- fetch_inputs(path = "external/data/dt/new", input_key = "ZA")
 #' @export
 fetch_inputs <- function(path = "external/data/dt", input_key = "ZA") {
-  # path = "external/data/dt/new"; input_key = "ZA"
+  # path = "external/data/dt/latest"; input_key = "ZA"
   bpath <- set_base_path()
   path <- full_path(bpath, path) 
   
