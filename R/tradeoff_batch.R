@@ -88,7 +88,10 @@ tradeoff_batch <- function(parms, input_key = "ZA", todisk = FALSE,
     }
     return(out)
   }
-  if(todisk == TRUE) { 
+  if(todisk == TRUE) {
+    bcnm <- full_path(set_base_path(), "external/output/batch/dt/bcode.rda")
+    save(bcode, file = bcnm)
+    print(paste("Batch code is", bcode))
     save(out_list, file = fname(dnm, "impacts_tab.rda"))
   }
   return(out_list)  
