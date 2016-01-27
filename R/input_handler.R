@@ -122,7 +122,7 @@ input_handler <- function(input_key = "ZA", ybetas, code, ybeta_update,
      set(bdperyield, i = NULL, j = j, bdperyield[[j]] * 
           il$cons[, grep("cons", names(il$cons)), with = FALSE])  
     }
-    il$cons_p <- standardize(bdperyield)
+    il$cons_p <- 1 - standardize(bdperyield)
     
     # cost
     costperyield <- 1 / il$p_yield
