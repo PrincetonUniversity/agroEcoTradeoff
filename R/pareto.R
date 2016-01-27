@@ -116,7 +116,8 @@ pareto_steps <- function(cnames, step = 0.1) {
 # pareto <- function(cnames, step = 0.1, yblist, targ) {
 pareto <- function(cnames, step = 0.1, prod_targ, yblist = list(1, 1),
                    input_key = "ZA", Yv, Cv, BDv, COSTv, Yst, Cst, BDst, COSTst,
-                   todisk = FALSE, silent = TRUE, ncl = 4, path) {
+                   todisk = FALSE, silent = TRUE, ncl = 4, path) { 
+                   #keepconv = FALSE) {
 
   # prod_targ <- c("maize" = 2, "soy" = 2)
   # cnames <- c("Y", "C", "BD"); step = 0.1
@@ -143,9 +144,11 @@ pareto <- function(cnames, step = 0.1, prod_targ, yblist = list(1, 1),
                         todisk = todisk, ncl = ncl, path = path)
   if(todisk == TRUE) {
     tobimp <- tob
-  } else {
+  } else if(todisk == FALSE) {
     tobimp <- lapply(tob, function(x) x[[1]]) 
-  }
+  } # else {
+    # tobimp <- tob
+  # }
   
   # summarize impacts across crops
   impacts <- batch_stat(tobimp, Yv, Cv, BDv, COSTv, Yst, Cst, BDst, COSTst)

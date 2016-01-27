@@ -74,8 +74,7 @@ tradeoff_batch <- function(parms, input_key = "ZA", todisk = FALSE,
                         ybetas = list(1, 1), 
                         currprodmod = 1,  # put in option for batch mod her 
                         input_key = "ZA", exist_list = il,
-                        ybeta_update = 0,
-                        silent = FALSE, path = "external/data/dt/new/")
+                        ybeta_update = 0, silent = silent, path = path)
     odf <- cbind.data.frame("iter" = i, "rc" = tof$runcode, tof$impacts)
     
     # write out
