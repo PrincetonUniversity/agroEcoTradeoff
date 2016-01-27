@@ -80,7 +80,7 @@ tradeoff_batch <- function(parms, input_key = "ZA", todisk = FALSE,
     
     # write out
     if(todisk == TRUE) {
-      fnm <- fname(dnm, tof$runcode, ".csv")
+      fnm <- fname(dnm, paste0("/", tof$runcode), ".csv")
       write.table(tof$conv[, 3:ncol(tof$conv), with = FALSE], file = fnm, 
                   sep = ",", col.names = TRUE, row.names = FALSE)
       out <- odf
@@ -92,7 +92,7 @@ tradeoff_batch <- function(parms, input_key = "ZA", todisk = FALSE,
   if(todisk == TRUE) {
     save(bcode, file = full_path(bdnm, "bcode.rda"))
     print(paste("Batch code is", bcode))
-    save(out_list, file = fname(dnm, "impacts_tab.rda"))
+    save(out_list, file = fname(dnm, "/impacts_tab.rda"))
   }
   return(out_list)  
 }
