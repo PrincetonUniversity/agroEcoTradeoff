@@ -119,14 +119,14 @@ pareto <- function(cnames, step = 0.1, prod_targ, yblist = list(1, 1),
                    todisk = FALSE, silent = TRUE, ncl = 4, path) { 
                    #keepconv = FALSE) {
 
-  # prod_targ <- c("maize" = 2, "soy" = 2)
-  # cnames <- c("Y", "C", "BD"); step = 0.1
-  # cnames <- c("Y", "C", "BD", "COST"); step = 0.1
-  # cnames <- c("Y", "C"); step = 0.05
-  # Yv = "conv_area"; Cv = "tot_C"; BDv = "priority"; COSTv = "mu_cost"
-  # Yst = sum; Cst = sum; BDst = mean; COSTst = mean
-  # input_key = "ZA"; ncl = 4
-  # currprodmod <- c(1, 1); todisk <- FALSE; path = "external/data/dt/new/"
+#   prod_targ <- c("maize" = 2, "soy" = 2); yblist = list(1, 1)
+#   cnames <- c("Y", "C", "BD"); step = 0.25
+#   cnames <- c("Y", "C", "BD", "COST"); step = 0.1
+#   cnames <- c("Y", "C"); step = 0.05; silent = FALSE
+#   Yv = "conv_area"; Cv = "tot_C"; BDv = "priority"; COSTv = "mu_cost"
+#   Yst = sum; Cst = sum; BDst = mean; COSTst = mean
+#   input_key = "ZA"; ncl = 4
+#   currprodmod <- c(1, 1); todisk <- TRUE; path = "external/data/dt/latest/"
 
   # weight combinations
   cblist <- pareto_steps(cnames, step = step)
@@ -154,7 +154,7 @@ pareto <- function(cnames, step = 0.1, prod_targ, yblist = list(1, 1),
   impacts <- batch_stat(tobimp, Yv, Cv, BDv, COSTv, Yst, Cst, BDst, COSTst)
   
   # remove dominated solutions
-  optimal <- non_dominator(impacts, cnames = c("Y", "C"))
+  optimal <- non_dominator(impacts, cnames = cnames)
   
   return(optimal)
 }
