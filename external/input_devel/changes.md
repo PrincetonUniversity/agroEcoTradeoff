@@ -27,27 +27,22 @@ output:
      
 3. New biodiversity impact metric incorporated
 
-     + Status: Done
+     + Status: Mostly
 
-# Fixes
-
-1. Yield standardization procedure
-
-    + Notes: 
-        + Might need to move this back to standardizing against each crop
-        + Current version is correct, checked by Marcus
-
-# Sequence
+# Changes
 
 1. `fetch_inputs`
 
     + including altering carbon-names.rda, dumping cropnames.rda entirely
     + Updated fetch_inputs to read in convertible fraction data.table, and to find spatial metadata. 
     + Put in logic to check for equality of row number in input data.tables, and to call a halt if there are NAs in any of the inputs. 
+    + removed datasets in R data folder, because they should be installed as part of library, and therefore not called with a specific path by this function.  To allow users to generate their own data. 
+        + All inputs now live under `external/data/[ID]`, and are read in directly from there. These changes are designed to separate model from R package structure.  
 
 2. `input_handler`
 
-    + fixes to `yield_mod_dt`
+    + `yield_mod`
+        + Name changed from `yield_mod_dt`
         + fixed to remove pp_curr from list of modified rasters
         + noticed potential standardization issue
         + renamed to just `yield_mod`
@@ -60,26 +55,26 @@ output:
     + rearranged order of inputs to properly deal with recyled input list
     + disabled yield modification function for now, on the assumption that this becomes an offline process for the time being. If ybeta_update is set to 1, model will halt.  
 
-3. `targets_dt`
+3. `targets`
 
-    + renamed to targets
+    + name changed from `targets_dt`
     + replaced scheme for modifying current production with simple modification vector, which draws on vector of current production, with argument named `currprodmod`. 
     + yield_mod argument removed. 
     
-4. `constraints_dt`
+4. `constraints`
 
-    + renamed to `targets`
+    + name changed from `contraints_dt`
     + allocation logic checked
     + j loop in inner allocation loop replaced with data.table-centric code
 
-5. `convert_dt`
+5. `convert`
 
-    + Now `convert`
+    + Name changed from `convert_dt`
     + Replaced j for loop with data.table syntax
 
-6. `impact_dt`
+6. `impact`
 
-    + Now `impact`
+    + Name changed from `impact_dt`
     + Modularized - impact metrics now calculated in sub-modules, except for total area converted. 
         + Revised metrics for cost - mean cost and cost/yield calculated also - these will be more appropriate than total cost
         + New metrics for biodiversity, based on rarity. Several flavors to choose from - mean vegetation type rarity of converted pixels (0-1); rarity + protectedness (0 - 1); average intactness (0 - 1); ha of forest reserves lost
@@ -87,12 +82,13 @@ output:
 
 7. `tradeoff_mod`
 
-    + Updated to incorporate changes to 4 primary sub-modules. 
-
+    + Updated to incorporate changes to 4 primary sub-modules.
+    
 8. `tradeoff_batch`
 
     + Simplified (yield_mod disabled) and parallelized with foreach and doMC. 
     + Output saving options altered. Conversion tables written out without xy coordinates, to save disk space and write times. 
+    + Outputs now write into `external/output`
     
 
 9. `pareto`
@@ -103,11 +99,8 @@ output:
        + `batch_stat` calculates summarizes impact metrics of interest from a batch run, which are fed to `non-dominator`. 
        + `non-dominator` Separate function created for code that removes non-dominated solutions from output table of impacts
        + Function engine is `tradeoff_batch`. 
+    + parameter returned with optimization table in output list 
 
 ## Fixes needed
 
-1. `pareto` 
-
-    + save weight combinations
-
-2. `fetch_inputs` - remove datasets in R data folder, because they should be installed as part of library, and therefore not called with a specific path by this function.  To allow users to generate their own data
+1. `impacts` - Change biodiversity impact to be based on both intactness and rarity - i.e. run it on the cons prioritization layer. 

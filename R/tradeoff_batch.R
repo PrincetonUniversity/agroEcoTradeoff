@@ -44,21 +44,24 @@
 #'                              silent = TRUE)
 #' @export
 tradeoff_batch <- function(parms, input_key = "ZA", todisk = FALSE, 
-                           silent = FALSE, ncl = 4, path) {
+                           silent = FALSE, ncl = 4) {
   # prod_targ <- c("maize" = 2, "soy" = 2)
   # cblist <- pareto_steps(c("Y", "C"), step = 0.25)
   # parms <- batch_params(list(c(1, 1)), targlist = list(prod_targ), cblist)
   # todisk <- TRUE; FALSE
   # input_key = "ZA"; ncl = 4
   # currprodmod <- c(1, 1); todisk <- FALSE; path = "external/data/dt/new/"
+  bpath <- set_base_path()
+  path <- full_path(bpath, full_path("external/data", input_key)) 
   bcode <- run_code(input_key)
-  bdnm <- full_path(set_base_path(), "external/output/batch/")
+  bdnm <- full_path(bpath, "external/output/")
   # if(!dir.exists(bdnm)) dir.create(bdnm)
   dnm <- full_path(bdnm, bcode)
   if(todisk == TRUE) dir.create(dnm, recursive = TRUE)  # create batch directory
   
   # Read in inputs
-  il <- input_handler(input_key = input_key, path = path, ybeta_update = 0)
+  
+  il <- input_handler(path = path, ybeta_update = 0)
   
   # fetch inputs first, since we are in batch mode and we aren't modifying 
   # yields
@@ -70,12 +73,12 @@ tradeoff_batch <- function(parms, input_key = "ZA", todisk = FALSE,
 
   registerDoMC(ncl)
   out_list <- foreach(i = 1:nrow(parms)) %dopar% { # i <- 1
-    tof <- tradeoff_mod(prod_targ = parms[i, il$cropnames], 
+    tof <- tradeoff_mod(prod_targ = parms[i, paste0("f", il$cropnames)], 
                         cbetas = parms[i, c("Y", "C", "BD", "COST")], 
-                        ybetas = list(1, 1), 
-                        currprodmod = 1,  ### change this
+                        ybetas = list(1, 1), # hard-coded this to switch off
+                        currprodmod = parms[i, paste0("c", il$cropnames)],
                         input_key = "ZA", exist_list = il,
-                        ybeta_update = 0, silent = silent, path = path)
+                        ybeta_update = 0, silent = silent)
     odf <- cbind.data.frame("iter" = i, "rc" = tof$runcode, tof$impacts)
     
     # write out
