@@ -12,11 +12,10 @@ Installation is in several steps. First, you should have installed already the f
   + Rstudio
   + gdal (mac users should get the frameworks from [kyngchaos](http://www.kyngchaos.com/software/frameworks), get the gdal complete framework)
 
-Once you have those installed, download the full repository to your computer. From a unix command line, within a folder of your choosing, run either: 
+Once you have those installed, download the installer script to a folder of your choosing on your computer, and run execute it from a terminal: 
 
 ```
-> wget https://github.com/PrincetonUniversity/agroEcoTradeoff/archive/devel.zip
-> unzip devel.zip
+> ./installer.sh
 ```
 
 Or you can even do:

@@ -23,3 +23,5 @@ rm parks-roads-mask.zip
 cd $a
 wget https://www.dropbox.com/s/6cnaz0by3umru6x/installer.R
 R CMD BATCH installer.R
+
+echo "Success! (We hope)"
