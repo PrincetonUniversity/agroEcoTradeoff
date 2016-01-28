@@ -4,10 +4,12 @@
 \alias{spatial_meta}
 \title{Fetches raster meta data for study area}
 \usage{
-spatial_meta(input_key)
+spatial_meta(path, input_key)
 }
 \arguments{
-\item{input_key}{Input key (country code) passed through trademod function}
+\item{path}{input path}
+
+\item{input_key}{Location code}
 }
 \description{
 Fetches raster meta data for study area

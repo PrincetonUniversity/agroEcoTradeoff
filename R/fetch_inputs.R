@@ -1,36 +1,34 @@
 #' Fetches inputs from file structure for trademod
 #' @param path Base path to data
-#' @param input_key A unique file identifier for simulation-specific inputs
 #' @details Loads in model inputs
 #' @examples  
-#' ip <- fetch_inputs(path = "external/data/dt/new", input_key = "ZA")
+#' ip <- fetch_inputs(path = "external/data/ZA/")
 #' @export
-fetch_inputs <- function(path = "external/data/dt", input_key = "ZA") {
-  # path = "external/data/dt/latest"; input_key = "ZA"
-  bpath <- set_base_path()
-  path <- full_path(bpath, path) 
+fetch_inputs <- function(path) {
+  # path = "external/data/ZA"
   
   # Don't read in conversion probability tables. Derive them instead from 
   # constraints.
   # ds_nms <- c("cropnames", "carbon-names", "currprod")
-  ds_nms <- c("currprod", paste0(input_key, "-bdprops"))
-  fp <- full_path(bpath, paste0("data/", ds_nms, ".rda"))
+  ds_nms <- c("currprod", paste0(basename(path), "-bdprops"))
+  fp <- full_path(path, paste0(ds_nms, ".rda"))
   for (i in fp) load(i)
   cropnames <- names(currprod)
   
   # spatial metadata
-  sp_parms <- spatial_meta(input_key)
+  sp_parms <- spatial_meta(path, input_key = basename(path))
   
   # data.tables
   dtnms <- c("potential-yields", "carbon", "mask", "cost", "bd", "cons", 
              "convertible", "intpa")
   lnms <- dtnms
   lnms[1] <- "p_yield"
-  in_files <- list.files(path, pattern = input_key, full.names = TRUE)
+  in_files <- list.files(path, pattern = paste0(basename(path), ".*.csv"), 
+                         full.names = TRUE)
   in_files <- unlist(lapply(dtnms, function(x) in_files[grep(x, in_files)]))
   disksize <- sum(file.info(in_files)$size) * 0.00098^2
   if (disksize > 2048) {
-    stop(paste0("The data.table version of tradeoff_mod must still", 
+    stop(paste0("The data.table version of tradeoff_mod still", 
                 "needs to have an intelligent system for dealing with", 
                 "very large file sizes", call. = FALSE))
   }

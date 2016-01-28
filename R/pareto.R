@@ -97,8 +97,9 @@ pareto_steps <- function(cnames, step = 0.1) {
 #' mimicking the traditional weighted sum method for multi-objective optimization.
 #' @param cnames A list of the constraints to optimize over 
 #' @param step The step interval over which to search for optimal solutions
-#' @param yblist A two element list of yield modifiers (currently disabled) 
 #' @param prod_targ Production targets passed as list. See examples for format.
+#' @param yblist A two element list of yield modifiers (currently disabled) 
+#' @param currprodmod Modifier of current production
 #' @param Yv agricultural impact metric (new land required)
 #' @param Cv Carbon impact metric
 #' @param BDv Biodiversity impact metric
@@ -110,13 +111,12 @@ pareto_steps <- function(cnames, step = 0.1) {
 #' @param todisk Write out batch results to disk? TRUE or FALSE (default)
 #' @param silent Verbose simulations?  Doesn't really work with parallel process
 #' @param ncl Number of cpus to use (default = 4)
-#' @param path Input data path
 #' @return data.table
 #' @export
 # pareto <- function(cnames, step = 0.1, yblist, targ) {
 pareto <- function(cnames, step = 0.1, prod_targ, yblist = list(1, 1),
-                   input_key = "ZA", Yv, Cv, BDv, COSTv, Yst, Cst, BDst, COSTst,
-                   todisk = FALSE, silent = TRUE, ncl = 4, path) { 
+                   currprodmod, input_key = "ZA", Yv, Cv, BDv, COSTv, Yst, Cst, 
+                   BDst, COSTst, todisk = FALSE, silent = TRUE, ncl = 4) { 
                    #keepconv = FALSE) {
 
 #   prod_targ <- c("maize" = 2, "soy" = 2); yblist = list(1, 1)
@@ -134,14 +134,15 @@ pareto <- function(cnames, step = 0.1, prod_targ, yblist = list(1, 1),
   # dummy for switched of yield modification
   yblist <- list(do.call(c, yblist))
   targlist <- list(prod_targ)
+  currprodmodlist <- list(currprodmod)
   # yblist <- list(yb1 <- c(1, 1))
   
   # compile parameters
-  parms <- batch_params(yblist, targlist, cblist)
+  parms <- batch_params(yblist, targlist, cblist, currprodmodlist)
 
   # run batch 
   tob <- tradeoff_batch(parms, input_key = input_key, silent = silent, 
-                        todisk = todisk, ncl = ncl, path = path)
+                        todisk = todisk, ncl = ncl)
   if(todisk == TRUE) {
     tobimp <- tob
   } else if(todisk == FALSE) {
@@ -156,5 +157,5 @@ pareto <- function(cnames, step = 0.1, prod_targ, yblist = list(1, 1),
   # remove dominated solutions
   optimal <- non_dominator(impacts, cnames = cnames)
   
-  return(optimal)
+  return(list("optitab" = optimal, "params" = parms))
 }

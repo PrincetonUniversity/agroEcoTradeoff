@@ -5,8 +5,7 @@
 \title{Spatial tradeoffs model}
 \usage{
 tradeoff_mod(prod_targ, ybetas, cbetas, currprodmod = 1, input_key = "ZA",
-  ybeta_update = 0, exist_list = NULL, silent = TRUE,
-  path = "external/data/dt/")
+  ybeta_update = 0, exist_list = NULL, silent = TRUE)
 }
 \arguments{
 \item{prod_targ}{Production targets passed as list. See examples for format.}
@@ -15,13 +14,13 @@ tradeoff_mod(prod_targ, ybetas, cbetas, currprodmod = 1, input_key = "ZA",
 
 \item{cbetas}{Vector of constraints to apply to land use. See examples.}
 
+\item{currprodmod}{Modifiers of current yield/production (default 1)}
+
 \item{input_key}{Country/location code indicating input data to load.}
 
 \item{ybeta_update}{1 or 0 (default) - determines whether yield_mod_* is run.}
 
 \item{silent}{Silent or verbose mode (TRUE [default] or FALSE)}
-
-\item{path}{Path to input data.tables}
 }
 \value{
 Data.frame of impacts, and data.table referencing conversions.
@@ -40,29 +39,13 @@ The impacts module has to be fixed still to not double-count impacts
 resulting from multi-season cropping in converted pixels.
 }
 \examples{
-# Some inputs 
-load("data/cropnames.rda")
-rc <- run_code(input_key = "ZA")  
-
-# # dummy climate/irrigation modifiers
-# dfact <- c(0.9, 1.2)
-# ybetas <- lapply(1:2, function(x) {
-#   m <- brick("external/ext_data/ZA-crop-areas.tif")
-#   r <- m
-#   r <- setValues(r, values = rnorm(n = ncell(r) * nlayers(r), mean = dfact[x], 
-#                  sd = 0.05))
-# nm_up(mask(r, m, maskvalue = 0), cropnames)
-# })
-
-ybetas <- list(1, 1)
 prod_targ <- c("maize" = 4, "soy" = 2)
 
 # cbeta vector
 cbetas <- c(0.5, 0.5, 0, 0)
 names(cbetas) <- c("Y", "C", "BD", "COST")
 
-system.time(tdt <- tradeoff_mod(prod_targ, ybetas, cbetas))  # 2.5 seconds
-
+tdt <- tradeoff_mod("ZA", prod_targ, ybetas, cbetas)  
 CRSobj <- projection(raster("external/ext_data/ZA-carbon-priorities.tif"))
 plot(dt_to_raster(tdt$conv, CRSobj = CRSobj) - tdr$conv)  # check maps
 }

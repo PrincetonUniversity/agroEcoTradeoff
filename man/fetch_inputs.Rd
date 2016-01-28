@@ -4,12 +4,10 @@
 \alias{fetch_inputs}
 \title{Fetches inputs from file structure for trademod}
 \usage{
-fetch_inputs(path = "external/data/dt", input_key = "ZA")
+fetch_inputs(path)
 }
 \arguments{
 \item{path}{Base path to data}
-
-\item{input_key}{A unique file identifier for simulation-specific inputs}
 }
 \description{
 Fetches inputs from file structure for trademod
@@ -19,6 +17,6 @@ Loads in model inputs
 }
 \examples{
  
-ip <- fetch_inputs(path = "external/data/dt/new", input_key = "ZA")
+ip <- fetch_inputs(path = "external/data/ZA/")
 }
 

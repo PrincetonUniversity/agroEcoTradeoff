@@ -1,4 +1,4 @@
-#' Raster ybetas to data.tables
+#' Raster ybetas to data.tables (deprecated)
 #' @param ybetas list of either 2 rasters or 2 vectors providing yield 
 #' modifications for climate & irrigation.
 #' @param cropnames Vector of cropnames in model
@@ -20,8 +20,6 @@ ybeta_rast_to_dt <- function(ybetas, cropnames, base) {
 }
 
 #' Data preparation function
-#' @param input_key Two letter country/location code (but possibly arbitrary) 
-#' indicating input data to load.  
 #' @param ybetas list of either 2 rasters or 2 vectors providing yield 
 #' modifications for climate & irrigation.
 #' @param input "D" or "R". "D" runs the (faster) data.table version of the 
@@ -40,36 +38,17 @@ ybeta_rast_to_dt <- function(ybetas, cropnames, base) {
 #' @note It is currently used internally by tradeoff_mod, but could well be 
 #' pulled outside of it. 
 #' @examples
-#' load("data/cropnames.rda")
-#' rc <- run_code(input_key = "ZA")  
-#' dfact <- c(0.9, 1.2)
-#' ybetas <- lapply(1:2, function(x) {
-#'   m <- brick("external/ext_data/ZA-crop-areas.tif")
-#'   r <- m
-#'   r <- setValues(r, values = rnorm(n = ncell(r) * nlayers(r), mean = dfact[x], 
-#'                                    sd = 0.05))
-#'   nm_up(mask(r, m, maskvalue = 0), cropnames)
-#' })
-#' 
-#' input_handler(input_key = "ZA", ybetas = ybetas, code = rc, 
-#'               ybeta_update = 1)
-#' il <- fetch_inputs(input_key = "ZA")  #' fetch all necessary inputs 
-#' input_handler(input_key = "ZA", ybetas = ybetas, code = rc, 
-#'               ybeta_update = 0, exist_list = il)
-#' input_handler(input_key = "ZA", ybetas = ybetas, code = rc, 
-#'               ybeta_update = 0, exist_list = il[-1])
-#' input_handler(input_key = "ZA", ybetas = ybetas, code = rc, 
-#'               ybeta_update = 1, exist_list = il)
-#' input_handler(input_key = "ZA", ybetas = list(1, 1), code = rc, 
-#'               ybeta_update = 1, exist_list = il)
+#' # Outdated and removed, need to be added
+#' il <- input_handler(path = path)
 #' @export
-input_handler <- function(input_key = "ZA", ybetas, code, ybeta_update, 
-                          exist_list = NULL, silent = TRUE, 
-                          path = "external/data/dt") {
+input_handler <- function(path, ybetas = list(1, 1), ybeta_update = 0, 
+                          exist_list = NULL, silent = TRUE, code = NULL) {
 #   input_key = "ZA"; exist_list = NULL; silent = TRUE; 
-  # path = "external/data/dt/latest/"
+  
+  # path = "external/data/ZA"
 #   ybetas <- list(1, 1); code = run_code(input_key); ybeta_update <- 0
 # exist_list = toff$inputs 
+  
   lnms <- c("p_yield", "carbon", "mask", "cost", "bd", "cons", "cropnames", 
             "convertible", "intpa")
   
@@ -83,7 +62,7 @@ input_handler <- function(input_key = "ZA", ybetas, code, ybeta_update,
   }
   # no existing data list provided 
   if(is.null(exist_list)) {  # il_y
-    il <- fetch_inputs(path = path, input_key = input_key)  # fetch inputs 
+    il <- fetch_inputs(path = path)  # fetch inputs 
     # ybetas <- ybeta_rast_to_dt(ybetas, cropnames = il$cropnames, base = il$mask)
     # ybeta <- yield_mod(inlist = il["p_yield"], ybetas = ybetas, 
     #                   code = code, cropnames = il$cropnames, 
@@ -104,8 +83,6 @@ input_handler <- function(input_key = "ZA", ybetas, code, ybeta_update,
     # standardize
     # Crops
     # Standardize over all values, not by crop
-    ### this standardization assumption needs to be validated
-    # crops
     il$y_std <- 1 - standardize(1 / il$p_yield)  
     
     # carbon

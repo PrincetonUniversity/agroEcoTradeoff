@@ -104,4 +104,10 @@ output:
        + `non-dominator` Separate function created for code that removes non-dominated solutions from output table of impacts
        + Function engine is `tradeoff_batch`. 
 
+## Fixes needed
 
+1. `pareto` 
+
+    + save weight combinations
+
+2. `fetch_inputs` - remove datasets in R data folder, because they should be installed as part of library, and therefore not called with a specific path by this function.  To allow users to generate their own data

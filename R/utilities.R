@@ -208,15 +208,15 @@ shhh <- function(x, silent) {
 } 
 
 #' Fetches raster meta data for study area
-#' @param input_key Input key (country code) passed through trademod function
+#' @param path input path
+#' @param input_key Location code
 #' @keywords internal
 #' @note This will likely be replaced by upgrades to dtraster package, which 
 #' will provide header data for raster tables. Currently this reads metadata 
 #' from a raster mask of the study area.
 #' @export
-spatial_meta <- function(input_key) {
-  rnm <- full_path(set_base_path(), paste0("external/data/", input_key, 
-                                          "-mask.tif"))
+spatial_meta <- function(path, input_key) {
+  rnm <- full_path(path, paste0(input_key, "-mask.tif"))
   r <- raster(rnm)
   ha <- res(r)[1]^2 / 10000  # hectares for study area
   CRSobj <- projection(r)

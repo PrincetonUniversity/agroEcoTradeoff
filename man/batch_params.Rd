@@ -4,7 +4,7 @@
 \alias{batch_params}
 \title{Create parameter table for batch run}
 \usage{
-batch_params(yblist, targlist, cblist)
+batch_params(yblist = list(c(1, 1)), targlist, cblist, currprodmodlist)
 }
 \arguments{
 \item{yblist}{List of yield modification parameters (option switched off now)}
@@ -12,6 +12,8 @@ batch_params(yblist, targlist, cblist)
 \item{targlist}{List of crop target vectors}
 
 \item{cblist}{List of weight parameters}
+
+\item{currprodmodlist}{List of current production-level modifiers}
 }
 \value{
 data.frame of input parameters

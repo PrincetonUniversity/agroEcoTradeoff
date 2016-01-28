@@ -5,9 +5,9 @@
 \title{Approximates Pareto front for multi-objective optimization of AgroEcoTradeoff 
 Model outputs}
 \usage{
-pareto(cnames, step = 0.1, prod_targ, yblist = list(1, 1),
+pareto(cnames, step = 0.1, prod_targ, yblist = list(1, 1), currprodmod,
   input_key = "ZA", Yv, Cv, BDv, COSTv, Yst, Cst, BDst, COSTst,
-  todisk = FALSE, silent = TRUE, ncl = 4, path)
+  todisk = FALSE, silent = TRUE, ncl = 4)
 }
 \arguments{
 \item{cnames}{A list of the constraints to optimize over}
@@ -17,6 +17,8 @@ pareto(cnames, step = 0.1, prod_targ, yblist = list(1, 1),
 \item{prod_targ}{Production targets passed as list. See examples for format.}
 
 \item{yblist}{A two element list of yield modifiers (currently disabled)}
+
+\item{currprodmod}{Modifier of current production}
 
 \item{Yv}{agricultural impact metric (new land required)}
 
@@ -37,8 +39,6 @@ pareto(cnames, step = 0.1, prod_targ, yblist = list(1, 1),
 \item{silent}{Verbose simulations?  Doesn't really work with parallel process}
 
 \item{ncl}{Number of cpus to use (default = 4)}
-
-\item{path}{Input data path}
 
 \item{COSTc}{Cost impact metric}
 }

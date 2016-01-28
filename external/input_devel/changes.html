@@ -55,8 +55,9 @@ img {
 <div id="TOC">
 <ul>
 <li><a href="#upgrades-for-version-2">Upgrades for version 2</a></li>
-<li><a href="#fixes">Fixes</a></li>
-<li><a href="#sequence">Sequence</a></li>
+<li><a href="#changes">Changes</a><ul>
+<li><a href="#fixes-needed">Fixes needed</a></li>
+</ul></li>
 </ul>
 </div>
 
@@ -81,36 +82,28 @@ img {
 </ul></li>
 <li><p>New biodiversity impact metric incorporated</p>
 <ul>
-<li>Status: Done</li>
+<li>Status: Mostly</li>
 </ul></li>
 </ol>
 </div>
-<div id="fixes" class="section level1">
-<h1>Fixes</h1>
-<ol style="list-style-type: decimal">
-<li><p>Yield standardization procedure</p>
-<ul>
-<li>Notes:
-<ul>
-<li>Might need to move this back to standardizing against each crop</li>
-<li>Current version is correct, checked by Marcus</li>
-</ul></li>
-</ul></li>
-</ol>
-</div>
-<div id="sequence" class="section level1">
-<h1>Sequence</h1>
+<div id="changes" class="section level1">
+<h1>Changes</h1>
 <ol style="list-style-type: decimal">
 <li><p><code>fetch_inputs</code></p>
 <ul>
 <li>including altering carbon-names.rda, dumping cropnames.rda entirely</li>
 <li>Updated fetch_inputs to read in convertible fraction data.table, and to find spatial metadata.</li>
 <li>Put in logic to check for equality of row number in input data.tables, and to call a halt if there are NAs in any of the inputs.</li>
+<li>removed datasets in R data folder, because they should be installed as part of library, and therefore not called with a specific path by this function. To allow users to generate their own data.
+<ul>
+<li>All inputs now live under <code>external/data/[ID]</code>, and are read in directly from there. These changes are designed to separate model from R package structure.</li>
+</ul></li>
 </ul></li>
 <li><p><code>input_handler</code></p>
 <ul>
-<li>fixes to <code>yield_mod_dt</code>
+<li><code>yield_mod</code>
 <ul>
+<li>Name changed from <code>yield_mod_dt</code></li>
 <li>fixed to remove pp_curr from list of modified rasters</li>
 <li>noticed potential standardization issue</li>
 <li>renamed to just <code>yield_mod</code></li>
@@ -124,26 +117,26 @@ img {
 <li>rearranged order of inputs to properly deal with recyled input list</li>
 <li>disabled yield modification function for now, on the assumption that this becomes an offline process for the time being. If ybeta_update is set to 1, model will halt.</li>
 </ul></li>
-<li><p><code>targets_dt</code></p>
+<li><p><code>targets</code></p>
 <ul>
-<li>renamed to targets</li>
+<li>name changed from <code>targets_dt</code></li>
 <li>replaced scheme for modifying current production with simple modification vector, which draws on vector of current production, with argument named <code>currprodmod</code>.</li>
 <li>yield_mod argument removed.</li>
 </ul></li>
-<li><p><code>constraints_dt</code></p>
+<li><p><code>constraints</code></p>
 <ul>
-<li>renamed to <code>targets</code></li>
+<li>name changed from <code>contraints_dt</code></li>
 <li>allocation logic checked</li>
 <li>j loop in inner allocation loop replaced with data.table-centric code</li>
 </ul></li>
-<li><p><code>convert_dt</code></p>
+<li><p><code>convert</code></p>
 <ul>
-<li>Now <code>convert</code></li>
+<li>Name changed from <code>convert_dt</code></li>
 <li>Replaced j for loop with data.table syntax</li>
 </ul></li>
-<li><p><code>impact_dt</code></p>
+<li><p><code>impact</code></p>
 <ul>
-<li>Now <code>impact</code></li>
+<li>Name changed from <code>impact_dt</code></li>
 <li>Modularized - impact metrics now calculated in sub-modules, except for total area converted.
 <ul>
 <li>Revised metrics for cost - mean cost and cost/yield calculated also - these will be more appropriate than total cost</li>
@@ -159,6 +152,7 @@ img {
 <ul>
 <li>Simplified (yield_mod disabled) and parallelized with foreach and doMC.</li>
 <li>Output saving options altered. Conversion tables written out without xy coordinates, to save disk space and write times.</li>
+<li>Outputs now write into <code>external/output</code></li>
 </ul></li>
 <li><p><code>pareto</code></p>
 <ul>
@@ -168,8 +162,15 @@ img {
 <li><code>batch_stat</code> calculates summarizes impact metrics of interest from a batch run, which are fed to <code>non-dominator</code>.</li>
 <li><code>non-dominator</code> Separate function created for code that removes non-dominated solutions from output table of impacts</li>
 <li>Function engine is <code>tradeoff_batch</code>.</li>
+<li>parameter returned with optimization table in output list</li>
 </ul></li>
 </ol>
+<div id="fixes-needed" class="section level2">
+<h2>Fixes needed</h2>
+<ol style="list-style-type: decimal">
+<li><code>impacts</code> - Change biodiversity impact to be based on both intactness and rarity - i.e. run it on the cons prioritization layer.</li>
+</ol>
+</div>
 </div>
 
 

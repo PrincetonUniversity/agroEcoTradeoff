@@ -2,7 +2,7 @@
 % Please edit documentation in R/input_handler.R
 \name{ybeta_rast_to_dt}
 \alias{ybeta_rast_to_dt}
-\title{Raster ybetas to data.tables}
+\title{Raster ybetas to data.tables (deprecated)}
 \usage{
 ybeta_rast_to_dt(ybetas, cropnames, base)
 }
@@ -13,7 +13,7 @@ modifications for climate & irrigation.}
 \item{cropnames}{Vector of cropnames in model}
 }
 \description{
-Raster ybetas to data.tables
+Raster ybetas to data.tables (deprecated)
 }
 \keyword{internal}
 
