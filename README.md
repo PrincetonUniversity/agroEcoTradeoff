@@ -15,8 +15,9 @@ Installation is in several steps. First, you should have installed already the f
 Once you have those installed, download and the installer script to a folder of your choosing on your computer, using the following two lines within a terminal: 
 
 ```
-> wget https://github.com/PrincetonUniversity/agroEcoTradeoff/blob/devel/installer.sh
-> ./installer.sh
+wget https://github.com/PrincetonUniversity/agroEcoTradeoff/raw/devel/installer.sh
+chmod +x installer.sh
+./installer.sh
 ```
 
 ___Below here deprecated___

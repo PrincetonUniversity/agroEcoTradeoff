@@ -1,11 +1,11 @@
 #!/bin/bash
 
-echo "Installing agroEcoTradeoffs"
+echo "Installing agroEcoTradeoff"
 
-a=`pwd`
+a=`pwd`'/agroEcoTradeoff'
 echo "Setting up file structure"
-mkdir -p $a/agroEcoTradeoffs/external/data/ZA
-mkdir $a/agroEcoTradeoffs/external/output
+mkdir -p $a/external/data/ZA
+mkdir $a/external/output
 
 echo "Fetching demo datasets"
 cd $a/external/data/ZA
