@@ -23,6 +23,7 @@ unzip parks-roads-mask.zip
 rm demodat.zip
 rm parks-roads-mask.zip
 
+echo "Installing R libraries"
 cd $a
 wget https://www.dropbox.com/s/6cnaz0by3umru6x/installer.R
 R CMD BATCH installer.R
