@@ -10,8 +10,9 @@ set_base_path()
 Gives model base path
 }
 \note{
-This sets the working directory for the model to the lowest level
-directory containing the model name
+This sets the working directory for the model to the highest level
+directory containing the model name. This won't run the model if you set it 
+up in a lower level directory of the same name
 }
 \keyword{internal}
 

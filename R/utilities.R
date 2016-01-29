@@ -102,19 +102,21 @@ nm_up <- function(x, namevec) {
 
 #' Gives model base path
 #' @keywords internal
-#' @note This sets the working directory for the model to the lowest level
-#' directory containing the model name
+#' @note This sets the working directory for the model to the highest level
+#' directory containing the model name. This won't run the model if you set it 
+#' up in a lower level directory of the same name
 #' @export
 #' 
 set_base_path <- function() {
   dpath <- getwd()
   dpathrt <- strsplit(dpath, .Platform$file.sep)[[1]]
   bnames <- c("agroEcoTradeoff", "agroecotradeoff")
-  if(!dpathrt %in% bnames) {
+  if(!any(dpathrt %in% bnames)) {
     stop("You need to setwd() into agroEcoTradeoff")
   }
-  full_path(gsub("(agroEcoTradeoff$.*)", "", dpath, ignore.case = TRUE, 
-                 perl = TRUE), "agroEcoTradeoff")
+  wpath <- full_path(gsub("(agroEcoTradeoff.*)", "", dpath, ignore.case = TRUE, 
+                          perl = TRUE), "agroEcoTradeoff")
+  return(wpath)
 }
 
 # #' Fetches inputs from file structure for trademod
