@@ -1,23 +1,21 @@
 #!/bin/bash
 
 echo "Installing agroEcoTradeoffs"
-echo "Fetching demo datasets"
 
 a=`pwd`
-
+echo "Setting up file structure"
 mkdir -p $a/agroEcoTradeoffs/external/data/ZA
 mkdir $a/agroEcoTradeoffs/external/output
 
-
+echo "Fetching demo datasets"
 cd $a/external/data/ZA
 wget https://www.dropbox.com/s/ka91x59ujuqprjn/demodat.zip
+wget https://www.dropbox.com/s/k2kys4b7odvyjd2/parks-roads-mask.zip
 
 echo "Decompressing demo data"
 unzip demodat.zip
+unzip parks-roads-mask.zip
 rm demodat.zip
-
-cd $a/external/data/
-wget https://www.dropbox.com/s/k2kys4b7odvyjd2/parks-roads-mask.zip
 rm parks-roads-mask.zip
 
 cd $a
