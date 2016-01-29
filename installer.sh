@@ -6,6 +6,11 @@ a=`pwd`'/agroEcoTradeoff'
 echo "Setting up file structure"
 mkdir -p $a/external/data/ZA
 mkdir $a/external/output
+mkdir $a/Rmd
+
+cd $a/Rmd
+wget https://www.dropbox.com/s/dyeenvfam2oo8cu/tradeoff-simulator.html
+wget https://www.dropbox.com/s/97910nhavhbjg6x/tradeoff-simulator.Rmd
 
 echo "Fetching demo datasets"
 cd $a/external/data/ZA

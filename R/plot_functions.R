@@ -103,5 +103,49 @@
 #   leg_fun(ldim, sdim, tdim, legdim, brks, brks2, cx, yor, gr, bp, ladj)
 # } 
 
+#' Impact map plot
+#' @param dtr Conversion raster 
+#' @param impacts data.table of conversion impacts from tradeoff_mod
+#' @param fpath Directory where you want map image written
+#' @param fnm Name for the map impact image
+#' @param ftitle Text string for map title
+#' @param input_key Location code
+#' @return Output map of conversion impacts in png format
+#' @export
+imp_plot <- function(dtr, impacts, fpath, fnm, ftitle, input_key) {
+  # input_key = "ZA"
+  load(full_path(set_base_path(), 
+                 paste0("external/data/", input_key, "/parks_roads.rda")))
+  ccols <- c("grey90", "orange", "red")
+  pacols <- c("transparent", rgb(1, 0, 0, alpha = 0.1),
+              rgb(0, 0, 1, alpha = 0.1), "transparent")
+  impacts <- as.data.frame(impacts)
+  v1 <- round(sum(impacts$conv_area) / 100)
+  v2 <- round(sum(impacts$tot_C) / 100000)
+  v3 <- round(mean(impacts$priority, na.rm = TRUE) * 100, 2)
+  v4 <- round(mean(impacts$mu_cost, na.rm = TRUE), 2)
+ 
+  png(full_path(fpath, paste0(fnm, ".png")), height = 700, width = 700)
+  par(mar = c(1, 1, 1, 1))
+  plot(zambia, col = "grey90", border = "transparent")
+  plot(dtr, legend = FALSE, col = ccols, add = TRUE)
+  plot(pas[pas@data$type == "gma", ], add = TRUE, col = pacols[2],
+       border = FALSE)
+  plot(pas[pas@data$type == "npark", ], add = TRUE, col = pacols[3],
+       border = FALSE)
+  plot(roads, add = TRUE, lwd = 0.1, col = "grey")
+  mtext(text = ftitle, side = 3, line = -1, cex = 2.5)
+  mtext(paste(v1, "km^2 converted"), side = 3, adj = 0, line = -5, cex = 2)
+  mtext(paste(v2, "Mt C lost"), side = 3, adj = 0, line = -7, cex = 2)
+  mtext(paste(v3, "BIOD score"), side = 3, adj = 0, line = -9,
+        cex = 2)
+  mtext(paste(round(v4, 1), "avg hours"), side = 3, adj = 0, line = -11,
+        cex = 2)
+  legend("bottomright", legend = c("Maize", "Soy", "NatParks", "GMAs"),
+         pch = 15, col = c(ccols[2:3], pacols[2:3]), bty = "n", pt.cex = 3,
+         cex = 1.5)
+  dev.off()
+}
+
 
 

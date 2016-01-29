@@ -12,7 +12,7 @@ Installation is in several steps. First, you should have installed already the f
   + Rstudio
   + gdal (mac users should get the frameworks from [kyngchaos](http://www.kyngchaos.com/software/frameworks), get the gdal complete framework)
 
-Once you have those installed, download and the installer script to a folder of your choosing on your computer, using the following two lines within a terminal: 
+Once you have those installed, download and the installer script to a folder of your choosing on your computer, run the following lines within a terminal: 
 
 ```
 wget https://github.com/PrincetonUniversity/agroEcoTradeoff/raw/devel/installer.sh
@@ -20,15 +20,7 @@ chmod +x installer.sh
 ./installer.sh
 ```
 
-___Below here deprecated___
+## Running the model
 
-If all went well, the model should work.  See `optimization-runner.Rmd` and `tradeoff-simulator.Rmd` for examples of how to run the model. 
-
-## Demonstration
-
-A key part of the model is to find optimal tradeoffs between different land use priorities, based on different impact metrics.  For example, the following presents the optimal solutions for balancing the interests in a) selecting the most productive land for new agricultural development b) minimizing carbon emissions due to land use change. Here the impact of a) is measured in terms of the total land converted to meet an agricultural production target, while b) is measured in terms of tons of carbon lost. Different weights are applied to each priority. 
-
-![pareto front](external/presentations/agc_pareto.png)
-
-In this example, point 1 represents 100% weighting on the maximizing productivity interest, while point 5 represents 100% interest in carbon conservation. Both of these points result in the worst outcomes for the other interest. In contrast, redirecting just 25% of the weight to either carbon conservation (point 2) or selecting the most productive land (point 4) produces nearly as much gain for each of those interests as applying 50-50 weighting (point 3).  
+If all went well, the model should work. See [tradeoff-simulator](Rmd/tradeoff-simulator.Rmd) for an example of how to run the model. 
 
