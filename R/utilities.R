@@ -102,15 +102,18 @@ nm_up <- function(x, namevec) {
 
 #' Gives model base path
 #' @keywords internal
+#' @note This sets the working directory for the model to the lowest level
+#' directory containing the model name
 #' @export
+#' 
 set_base_path <- function() {
   dpath <- getwd()
   dpathrt <- strsplit(dpath, .Platform$file.sep)[[1]]
   bnames <- c("agroEcoTradeoff", "agroecotradeoff")
-  if(!dpathrt[length(dpathrt)] %in% bnames) {
-    stop("setwd() into agroEcoTradeoff", .call = FALSE)
+  if(!dpathrt %in% bnames) {
+    stop("You need to setwd() into agroEcoTradeoff")
   }
-  full_path(gsub("(agroEcoTradeoff.*)", "", dpath, ignore.case = TRUE, 
+  full_path(gsub("(agroEcoTradeoff$.*)", "", dpath, ignore.case = TRUE, 
                  perl = TRUE), "agroEcoTradeoff")
 }
 

@@ -9,5 +9,9 @@ set_base_path()
 \description{
 Gives model base path
 }
+\note{
+This sets the working directory for the model to the lowest level
+directory containing the model name
+}
 \keyword{internal}
 
