@@ -12,31 +12,14 @@ Installation is in several steps. First, you should have installed already the f
   + Rstudio
   + gdal (mac users should get the frameworks from [kyngchaos](http://www.kyngchaos.com/software/frameworks), get the gdal complete framework)
 
-Once you have those installed, download the installer script to a folder of your choosing on your computer, and run execute it from a terminal: 
+Once you have those installed, download and the installer script to a folder of your choosing on your computer, using the following two lines within a terminal: 
 
 ```
+> wget https://github.com/PrincetonUniversity/agroEcoTradeoff/blob/devel/installer.sh
 > ./installer.sh
 ```
 
-Or you can even do:
-
-```
-> git clone git@github.com:PrincetonUniversity/agroEcoTradeoff.git
-```
-
-Or you can just press the download zip button on github and unzip through your file explorer.  
-
-Then within the folder tree of `agroEcoTradeoff`, find `installer.sh`, and execute that from the command line. 
-
-```
-> ./installer.sh
-```
-
-[insk file](https://www.dropbox.com/s/ncy76swgnhqx98h/ZA-mask.tif?dl=0)
-
-[roads/parks file](https://www.dropbox.com/s/gwnt9svs6fwurah/parks_roads.rda?dl=0)
-
-___Below here deprecated for time being___
+___Below here deprecated___
 
 If all went well, the model should work.  See `optimization-runner.Rmd` and `tradeoff-simulator.Rmd` for examples of how to run the model. 
 
