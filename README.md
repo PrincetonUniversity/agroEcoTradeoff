@@ -1,7 +1,5 @@
 # agroEcoTradeoff
 
-___Note___: ___This is the development branch. Instructions below are likely to be broken.___ 
-
 A spatial tradeoff analysis model, focusing on minimizing the ecological costs of agricultural expansion.  Based on Koh and Ghazoul (2010). 
 
 ## Installation
