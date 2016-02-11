@@ -36,7 +36,7 @@ toff <- tradeoff_mod(prod_targ, ybetas = list(1, 1), cbetas = cbetas,
                      currprodmod = 1, input_key = "ZA", ybeta_update = 0,
                      exist_list = NULL, silent = TRUE)
 convr <- calc(dt_to_raster(toff$conv, CRS(toff$inputs$sp$crs)) * c(1, 2), sum)
-imp_plot(convr, toff$impacts, fpath = "Rmd", fnm = "demo", 
+imp_plot(convr, toff$impacts, fpath = ".", fnm = "demo", 
          ftitle = "50% Yield, 50% Carbon", input_key = "ZA")
 ```
 

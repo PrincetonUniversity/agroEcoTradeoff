@@ -87,7 +87,6 @@ impact_mod3 <- function(il, conv_area) {
     gt0 <- function(x) length(which(x > 0))
    
     # calculate mean BD weight, across both types
-    wv <- copy(il$bdprops)[-1, ]
     metric <- unique(wv$var)
     imps <- do.call(rbind, lapply(1:nrow(wv), function(y) {
       wvdt <- wv[var == metric[y]]  
@@ -103,8 +102,11 @@ impact_mod3 <- function(il, conv_area) {
     # other measures
     intpa_mat <- as.matrix(il$intpa[cid, ])
     int_mean <- mean(intpa_mat[, 1])  # mean intactness of converted areas
+    int_prior <- mean(c(int_mean, imps["priority", 1]))  # mean of int + prior 
     fpa_conv <- sum(conv_mat[which(intpa_mat[, 2] == 3)])  # converted for res
-    fragmet <- data.frame(rbind(int_mean, fpa_conv))
+    
+    # assemble
+    fragmet <- data.frame(rbind(int_prior, int_mean, fpa_conv))
     colnames(fragmet) <- x
     
     # output

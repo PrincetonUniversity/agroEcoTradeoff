@@ -82,7 +82,7 @@ img {
 </ul></li>
 <li><p>New biodiversity impact metric incorporated</p>
 <ul>
-<li>Status: Mostly</li>
+<li>Status: Mostly - still need to change the biodiversity metric so that impact can be weighted evenly on protected weighted rarity and intactness</li>
 </ul></li>
 </ol>
 </div>
@@ -140,7 +140,8 @@ img {
 <li>Modularized - impact metrics now calculated in sub-modules, except for total area converted.
 <ul>
 <li>Revised metrics for cost - mean cost and cost/yield calculated also - these will be more appropriate than total cost</li>
-<li>New metrics for biodiversity, based on rarity. Several flavors to choose from - mean vegetation type rarity of converted pixels (0-1); rarity + protectedness (0 - 1); average intactness (0 - 1); ha of forest reserves lost</li>
+<li>New metrics for biodiversity, based on rarity. Several flavors to choose from - mean vegetation type rarity of converted pixels (0-1); rarity + protectedness (priority, 0 - 1); average intactness (0 - 1); mean of intactness and priority (the measure currently used by <code>constraints</code>); ha of forest reserves lost</li>
+<li>Added additional biodiversityChanged biodiversity impact to be based on both intactness and rarity - i.e. run it on the cons prioritization layer.</li>
 </ul></li>
 <li>Reduced number of input arguments to 2 (il and conv).</li>
 </ul></li>
@@ -167,9 +168,7 @@ img {
 </ol>
 <div id="fixes-needed" class="section level2">
 <h2>Fixes needed</h2>
-<ol style="list-style-type: decimal">
-<li><code>impacts</code> - Change biodiversity impact to be based on both intactness and rarity - i.e. run it on the cons prioritization layer.</li>
-</ol>
+<p>Up to date</p>
 </div>
 </div>
 

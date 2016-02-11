@@ -77,7 +77,8 @@ output:
     + Name changed from `impact_dt`
     + Modularized - impact metrics now calculated in sub-modules, except for total area converted. 
         + Revised metrics for cost - mean cost and cost/yield calculated also - these will be more appropriate than total cost
-        + New metrics for biodiversity, based on rarity. Several flavors to choose from - mean vegetation type rarity of converted pixels (0-1); rarity + protectedness (0 - 1); average intactness (0 - 1); ha of forest reserves lost
+        + New metrics for biodiversity, based on rarity. Several flavors to choose from - mean vegetation type rarity of converted pixels (0-1); rarity + protectedness (priority, 0 - 1); average intactness (0 - 1); mean of intactness and priority (the measure currently used by `constraints`); ha of forest reserves lost
+        + Added additional biodiversityChanged biodiversity impact to be based on both intactness and rarity - i.e. run it on the cons prioritization layer. 
     + Reduced number of input arguments to 2 (il and conv).
 
 7. `tradeoff_mod`
@@ -103,4 +104,4 @@ output:
 
 ## Fixes needed
 
-1. `impacts` - Change biodiversity impact to be based on both intactness and rarity - i.e. run it on the cons prioritization layer. 
+Up to date
