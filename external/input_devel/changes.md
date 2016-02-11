@@ -27,7 +27,7 @@ output:
      
 3. New biodiversity impact metric incorporated
 
-     + Status: Mostly
+     + Status: Mostly - still need to change the biodiversity metric so that impact can be weighted evenly on protected weighted rarity and intactness
 
 # Changes
 

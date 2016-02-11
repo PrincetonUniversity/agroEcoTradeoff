@@ -62,7 +62,13 @@ input_handler <- function(path, ybetas = list(1, 1), ybeta_update = 0,
   }
   # no existing data list provided 
   if(is.null(exist_list)) {  # il_y
-    il <- fetch_inputs(path = path)  # fetch inputs 
+    il <- fetch_inputs(path = path)  # fetch inputs
+    
+    # check for zeros in yields
+    zerocheck <- function(x) if(any(x == 0)) {
+      stop("Yields can't have zeros because normalization fails", call. = FALSE)
+    }
+    il$p_yield[, zerocheck(.SD)]  
     # ybetas <- ybeta_rast_to_dt(ybetas, cropnames = il$cropnames, base = il$mask)
     # ybeta <- yield_mod(inlist = il["p_yield"], ybetas = ybetas, 
     #                   code = code, cropnames = il$cropnames, 
