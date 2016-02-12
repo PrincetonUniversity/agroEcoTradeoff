@@ -4,19 +4,21 @@
 \alias{tradeoff_mod}
 \title{Spatial tradeoffs model}
 \usage{
-tradeoff_mod(prod_targ, ybetas, cbetas, currprodmod = 1, input_key = "ZA",
-  ybeta_update = 0, exist_list = NULL, silent = TRUE)
+tradeoff_mod(prod_targ, cbetas, currprodmod = 1, exist_list = NULL,
+  input_key = "ZA", ybetas, ybeta_update = 0, silent = TRUE)
 }
 \arguments{
 \item{prod_targ}{Production targets passed as list. See examples for format.}
-
-\item{ybetas}{list of 2 rasters or 2 vectors providing yield modifications}
 
 \item{cbetas}{Vector of constraints to apply to land use. See examples.}
 
 \item{currprodmod}{Modifiers of current yield/production (default 1)}
 
+\item{exist_list}{NULL, otherwise list of inputs (from input_handler)}
+
 \item{input_key}{Country/location code indicating input data to load.}
+
+\item{ybetas}{list of 2 rasters or 2 vectors providing yield modifications}
 
 \item{ybeta_update}{1 or 0 (default) - determines whether yield_mod_* is run.}
 

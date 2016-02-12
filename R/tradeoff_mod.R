@@ -2,10 +2,11 @@
 #' @description Master module that calls four major modules and associated 
 #' helper functions, to create a single land use tradeoff scenario.  
 #' @param prod_targ Production targets passed as list. See examples for format.
-#' @param ybetas list of 2 rasters or 2 vectors providing yield modifications
 #' @param cbetas Vector of constraints to apply to land use. See examples. 
 #' @param currprodmod Modifiers of current yield/production (default 1)
+#' @param exist_list NULL, otherwise list of inputs (from input_handler)
 #' @param input_key Country/location code indicating input data to load.  
+#' @param ybetas list of 2 rasters or 2 vectors providing yield modifications
 #' @param ybeta_update 1 or 0 (default) - determines whether yield_mod_* is run.
 #' @param silent Silent or verbose mode (TRUE [default] or FALSE) 
 #' @details Much of the detail of running the model, and examples that help to 
@@ -28,8 +29,8 @@
 #' @export 
 # input_key = "ZA"; ybeta_update = 0; exist_list = NULL; 
 # path = "external/data/dt/"
-tradeoff_mod <- function(prod_targ, ybetas, cbetas, currprodmod = 1, 
-                         input_key = "ZA", ybeta_update = 0, exist_list = NULL, 
+tradeoff_mod <- function(prod_targ, cbetas, currprodmod = 1, exist_list = NULL, 
+                         input_key = "ZA", ybetas, ybeta_update = 0, 
                          silent = TRUE) {
   names(cbetas) <- c("Y", "C", "BD", "COST")
   
