@@ -13,6 +13,11 @@ output:
 ## Improvements
 + Added (back) ability to select a subset of crops, based on target values passed into `targets`, via `tradeoff_mod`, `tradeoff_batch`, and `pareto`. Switch is made in `input_handler`. 
 
++ Reordered arguments in `tradeoff_mod`.
+
+## Bugs
++ Removed hard-coded `input_key` ("ZA") in `tradeoff_batch` call to `tradeoff_mod`. 
+
 # v2.0
 
 ## Summary of improvements

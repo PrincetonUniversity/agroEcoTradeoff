@@ -53,7 +53,7 @@ tradeoff_batch <- function(parms, input_key = "ZA", todisk = FALSE,
                         cbetas = parms[i, c("Y", "C", "BD", "COST")], 
                         ybetas = list(1, 1), # hard-coded this to switch off
                         currprodmod = parms[i, paste0("c", il$cropnames)],
-                        input_key = "ZA", exist_list = il,
+                        input_key = input_key, exist_list = il,
                         ybeta_update = 0, silent = silent)
     odf <- cbind.data.frame("iter" = i, "rc" = tof$runcode, tof$impacts)
     
