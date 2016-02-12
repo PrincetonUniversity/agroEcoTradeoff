@@ -41,6 +41,6 @@ pulled outside of it.
 }
 \examples{
 # Outdated and removed, need to be added
-il <- input_handler(path = path)
+il <- input_handler(path = "external/data/ZA", crops = "maize")
 }
 
