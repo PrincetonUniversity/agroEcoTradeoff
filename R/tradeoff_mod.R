@@ -38,8 +38,9 @@ tradeoff_mod <- function(prod_targ, ybetas, cbetas, currprodmod = 1,
   path <- full_path(bpath, full_path("external/data", input_key)) 
   # ha <- spatial_meta(input_key)$ha
   rc <- run_code(input_key)  # creates a once off code for any outputs
-  il <- input_handler(path = path, ybetas = ybetas, ybeta_update = ybeta_update, 
-                      exist_list = exist_list, silent = silent)
+  il <- input_handler(path = path, crops = names(prod_targ), ybetas = ybetas, 
+                      ybeta_update = ybeta_update, exist_list = exist_list, 
+                      silent = silent)
   
   # target module
   target <- targets(prod_targ = prod_targ, currprod = il$currprod, 

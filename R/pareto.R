@@ -15,7 +15,6 @@ pareto_steps <- function(cnames, step = 0.1) {
     stop("Constraint choices are Y, C, BD, and COST.", call. = FALSE)
   } 
  
-  
   incl <- compnames %in% cnames
   if (length(cnames) > 0) {
     colone <- min(which(incl == TRUE))

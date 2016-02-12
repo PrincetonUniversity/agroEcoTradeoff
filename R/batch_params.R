@@ -9,10 +9,10 @@
 #' @export
 batch_params <- function(yblist = list(c(1, 1)), targlist, cblist, 
                          currprodmodlist) {
-  parms <- do.call(rbind, lapply(yblist, function(x) {
-    do.call(rbind, lapply(targlist, function(y) {
-      do.call(rbind, lapply(currprodmodlist, function(z) {
-        do.call(rbind, lapply(cblist, function(zz) {
+  parms <- do.call(rbind, lapply(yblist, function(x) { # x <- yblist[[1]]
+    do.call(rbind, lapply(targlist, function(y) {  # y <- targlist[[1]]
+      do.call(rbind, lapply(currprodmodlist, function(z) {  # z <- currprodmodlist[[1]]
+        do.call(rbind, lapply(cblist, function(zz) {  # zz <- cblist[[1]]
          v <- c(x, y, z, zz)
          tlistnms <- names(targlist[[1]])
          tlistnms <- ifelse(is.null(tlistnms), 

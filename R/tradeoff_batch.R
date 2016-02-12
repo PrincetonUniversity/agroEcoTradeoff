@@ -9,37 +9,12 @@
 #' @note This is one place where parallelizing could be useful, replacing for 
 #' loop with foreach.
 #' @examples
-#' # Define parameter sets
-#' # Constraint space
-#' cnames <- c("Ag", "C", "bd", "cost")
-#' cblist <- list(cb1 <- c(1, 0, 0, 0), 
-#'                cb2 <- c(1, 1, 0, 0), 
-#'                cb3 <- c(1, 1, 1, 0), 
-#'                cb1r <- c(1, 0, 0, 1), 
-#'                cb2r <- c(1, 1, 0, 1), 
-#'                cb3r <- c(1, 1, 1, 1))
-#'                
-#' # ymod space
-#' yblist <- list(yb1 <- c(1, 1), 
-#'                yb2 <- c(0.8, 1),
-#'                yb3 <- c(1.2, 1))
-#' # prod_targ space
-#' tnames <- c("maize", "cassava", "ground", "cotton", "soy", "pulse", 
-#'             "sunflower", "sugarcane", "wheat")
-#' targlist <- list(targ1 <- rep(2, length(tnames)), 
-#'                  targ2 <- rep(3, length(tnames)), 
-#'                  targ3 <- rep(4, length(tnames)))
-#'                  
-#' parms <- do.call(rbind, lapply(yblist, function(x) {
-#'   do.call(rbind, lapply(targlist, function(y) {
-#'     do.call(rbind, lapply(cblist, function(z) {
-#'       v <- c(z, x, y)
-#'       names(v) <- c(cnames, "y1", "y2", tnames)
-#'       v
-#'    }))
-#'  }))
-#'}))
-#' parms <- parms[1:5, ]
+#' targlist <- list(c("maize" = 2, "soy" = 2))
+#' #targlist <- list(c("maize" = 2))
+#' cpmlist <- list(c(1, 1))
+#' cblist <- pareto_steps(c("Y", "C"), step = 0.25)
+#' parms <- batch_params(targlist = targlist, cblist = cblist, 
+#'                       currprodmodlist = list(c(1, 1)))
 #' batch_test <- tradeoff_batch(parms = parms, input_key = "ZA", todisk = FALSE, 
 #'                              silent = TRUE)
 #' @export
@@ -60,8 +35,9 @@ tradeoff_batch <- function(parms, input_key = "ZA", todisk = FALSE,
   if(todisk == TRUE) dir.create(dnm, recursive = TRUE)  # create batch directory
   
   # Read in inputs
-  
-  il <- input_handler(path = path, ybeta_update = 0)
+  parmnames <- colnames(parms)
+  crops <- gsub("f", "", parmnames[grep("f", parmnames)])  # select cropnames
+  il <- input_handler(path = path, crops = crops, ybeta_update = 0)
   
   # fetch inputs first, since we are in batch mode and we aren't modifying 
   # yields

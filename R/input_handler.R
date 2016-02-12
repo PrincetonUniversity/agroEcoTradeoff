@@ -20,11 +20,10 @@ ybeta_rast_to_dt <- function(ybetas, cropnames, base) {
 }
 
 #' Data preparation function
+#' @param path Path to data directory
+#' @param crops Character vector of crop names
 #' @param ybetas list of either 2 rasters or 2 vectors providing yield 
-#' modifications for climate & irrigation.
-#' @param input "D" or "R". "D" runs the (faster) data.table version of the 
-#' model, "R" the raster version.
-#' @param code Unique simulation code.
+#' modifications for climate & irrigation. Defaults to 1, 1, currently inactive
 #' @param ybeta_update 1 or 0; determines whether yield_mod_* is run or not.
 #' @param exist_list Default is NULL, other an existing list of processed inputs
 #' @param silent Hide or show print statements describing processing steps 
@@ -39,15 +38,15 @@ ybeta_rast_to_dt <- function(ybetas, cropnames, base) {
 #' pulled outside of it. 
 #' @examples
 #' # Outdated and removed, need to be added
-#' il <- input_handler(path = path)
+#' il <- input_handler(path = "external/data/ZA", crops = "maize")
 #' @export
-input_handler <- function(path, ybetas = list(1, 1), ybeta_update = 0, 
+input_handler <- function(path, crops, ybetas = list(1, 1), ybeta_update = 0, 
                           exist_list = NULL, silent = TRUE, code = NULL) {
-#   input_key = "ZA"; exist_list = NULL; silent = TRUE; 
-  
+  # input_key = "ZA"; exist_list = NULL; silent = TRUE; 
+  # crops <- "maize"
   # path = "external/data/ZA"
-#   ybetas <- list(1, 1); code = run_code(input_key); ybeta_update <- 0
-# exist_list = toff$inputs 
+  # ybetas <- list(1, 1); code = run_code(input_key); ybeta_update <- 0
+  # exist_list = toff$inputs 
   
   lnms <- c("p_yield", "carbon", "mask", "cost", "bd", "cons", "cropnames", 
             "convertible", "intpa")
@@ -68,7 +67,17 @@ input_handler <- function(path, ybetas = list(1, 1), ybeta_update = 0,
     zerocheck <- function(x) if(any(x == 0)) {
       stop("Yields can't have zeros because normalization fails", call. = FALSE)
     }
+    
+    # reduce to subset of crop names
+    if(length(crops) < length(il$currprod)) {
+      il$p_yield <- il$p_yield[, crops, with = FALSE]
+      il$cropnames <- crops
+      il$currprod <- il$currprod[crops]
+    }
+    
+    # checks yield data for zeros
     il$p_yield[, zerocheck(.SD)]  
+    
     # ybetas <- ybeta_rast_to_dt(ybetas, cropnames = il$cropnames, base = il$mask)
     # ybeta <- yield_mod(inlist = il["p_yield"], ybetas = ybetas, 
     #                   code = code, cropnames = il$cropnames, 

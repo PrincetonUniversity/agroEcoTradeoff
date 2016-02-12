@@ -4,12 +4,16 @@
 \alias{input_handler}
 \title{Data preparation function}
 \usage{
-input_handler(path, ybetas = list(1, 1), ybeta_update = 0,
+input_handler(path, crops, ybetas = list(1, 1), ybeta_update = 0,
   exist_list = NULL, silent = TRUE, code = NULL)
 }
 \arguments{
+\item{path}{Path to data directory}
+
+\item{crops}{Character vector of crop names}
+
 \item{ybetas}{list of either 2 rasters or 2 vectors providing yield 
-modifications for climate & irrigation.}
+modifications for climate & irrigation. Defaults to 1, 1, currently inactive}
 
 \item{ybeta_update}{1 or 0; determines whether yield_mod_* is run or not.}
 
@@ -17,11 +21,6 @@ modifications for climate & irrigation.}
 
 \item{silent}{Hide or show print statements describing processing steps 
 (TRUE [default] or FALSE)}
-
-\item{code}{Unique simulation code.}
-
-\item{input}{"D" or "R". "D" runs the (faster) data.table version of the 
-model, "R" the raster version.}
 }
 \value{
 List of input variables for model
