@@ -2,7 +2,7 @@ Package: agroEcoTradeoff
 Type: Package
 Title: Landuse Tradeoff analysis model
 Description: As above, but package was developed later than initial model
-Version: 2.0.0.1
+Version: 2.0.1.1
 Date: 26-10-2015
 Author: Lyndon Estes <lestes@princeton.edu>, Marcus Spiegel
     <mspiegel@princeton.edu>

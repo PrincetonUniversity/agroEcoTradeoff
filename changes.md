@@ -8,15 +8,16 @@ output:
     toc: yes 
 ---
 
-# v2.0.0.1
+# v2.0.1
 
 ## Improvements
 + Added (back) ability to select a subset of crops, based on target values passed into `targets`, via `tradeoff_mod`, `tradeoff_batch`, and `pareto`. Switch is made in `input_handler`. 
-
 + Reordered arguments in `tradeoff_mod`.
++ Added save for batch parameters to `tradeoff_batch`. 
 
 ## Bugs
 + Removed hard-coded `input_key` ("ZA") in `tradeoff_batch` call to `tradeoff_mod`. 
++ Fixed .tif append to `impacts_tab.rda` output from `tradeoff_batch`.  
 
 # v2.0
 
