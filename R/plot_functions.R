@@ -109,7 +109,11 @@
 #' @param fpath Directory where you want map image written
 #' @param fnm Name for the map impact image
 #' @param ftitle Text string for map title
+#' @param crops Name of crops whose conversions are being plotted
+#' @param stats TRUE/FALSE if impact statistics should be plotted on map
+#' @param cols Vector of map colors to use. 
 #' @param input_key Location code
+#' @param legend TRUE/FALSE Plot legend added to map or not
 #' @return Output map of conversion impacts in png format
 #' @export
 imp_plot <- function(dtr, impacts, fpath, fnm, ftitle, crops, stats = TRUE,
@@ -126,7 +130,7 @@ imp_plot <- function(dtr, impacts, fpath, fnm, ftitle, crops, stats = TRUE,
   impacts <- as.data.frame(impacts)
   v1 <- round(sum(impacts$conv_area) / 100)
   v2 <- round(sum(impacts$tot_C) / 100000)
-  v3 <- round(mean(impacts$priority, na.rm = TRUE) * 100, 2)
+  v3 <- round(mean(impacts$int_mean, na.rm = TRUE) * 100, 2)
   v4 <- round(mean(impacts$mu_cost, na.rm = TRUE), 2)
   
   png(full_path(fpath, paste0(fnm, ".png")), height = 700, width = 700)

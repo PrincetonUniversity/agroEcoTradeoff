@@ -4,7 +4,8 @@
 \alias{imp_plot}
 \title{Impact map plot}
 \usage{
-imp_plot(dtr, impacts, fpath, fnm, ftitle, input_key)
+imp_plot(dtr, impacts, fpath, fnm, ftitle, crops, stats = TRUE,
+  cols = c("orange", "red"), input_key = "ZA", legend = TRUE)
 }
 \arguments{
 \item{dtr}{Conversion raster}
@@ -17,7 +18,15 @@ imp_plot(dtr, impacts, fpath, fnm, ftitle, input_key)
 
 \item{ftitle}{Text string for map title}
 
+\item{crops}{Name of crops whose conversions are being plotted}
+
+\item{stats}{TRUE/FALSE if impact statistics should be plotted on map}
+
+\item{cols}{Vector of map colors to use.}
+
 \item{input_key}{Location code}
+
+\item{legend}{TRUE/FALSE Plot legend added to map or not}
 }
 \value{
 Output map of conversion impacts in png format
