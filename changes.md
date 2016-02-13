@@ -16,10 +16,13 @@ output:
 + Added save for batch parameters to `tradeoff_batch`. 
 + Added more plot flexibility (N crops plotted, colors) to `imp_plot`. 
 + Added `heat` to create raster showing frequency of conversions.
++ `tradeoff_batch` passes out the bcode now
++ `pareto` uses bcode passed from `tradeoff_batch`, and saves optitab to batch directory. 
 
 ## Bugs
 + Removed hard-coded `input_key` ("ZA") in `tradeoff_batch` call to `tradeoff_mod`. 
 + Fixed .tif append to `impacts_tab.rda` output from `tradeoff_batch`.  
++ Fixed `tradeoff_batch` so that `impacts_tab.rda` is a data.frame not a list.  
 
 # v2.0
 

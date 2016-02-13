@@ -121,10 +121,11 @@ pareto <- function(cnames, step = 0.1, prod_targ, yblist = list(1, 1),
 #   prod_targ <- c("maize" = 2, "soy" = 2); yblist = list(1, 1)
 #   cnames <- c("Y", "C", "BD"); step = 0.25
 #   cnames <- c("Y", "C", "BD", "COST"); step = 0.1
-#   cnames <- c("Y", "C"); step = 0.05; silent = FALSE
+#   cnames <- c("Y", "C"); step = 0.25; silent = FALSE
 #   Yv = "conv_area"; Cv = "tot_C"; BDv = "priority"; COSTv = "mu_cost"
 #   Yst = sum; Cst = sum; BDst = mean; COSTst = mean
 #   input_key = "ZA"; ncl = 4
+#   todisk = FALSE 
 #   currprodmod <- c(1, 1); todisk <- TRUE; path = "external/data/dt/latest/"
 
   # weight combinations
@@ -143,18 +144,22 @@ pareto <- function(cnames, step = 0.1, prod_targ, yblist = list(1, 1),
   tob <- tradeoff_batch(parms, input_key = input_key, silent = silent, 
                         todisk = todisk, ncl = ncl)
   if(todisk == TRUE) {
-    tobimp <- tob
+    tobimp <- tob$imp_list
   } else if(todisk == FALSE) {
-    tobimp <- lapply(tob, function(x) x[[1]]) 
-  } # else {
-    # tobimp <- tob
-  # }
+    tobimp <- lapply(tob$imp_list, function(x) x$impacts) 
+  } 
   
   # summarize impacts across crops
   impacts <- batch_stat(tobimp, Yv, Cv, BDv, COSTv, Yst, Cst, BDst, COSTst)
   
   # remove dominated solutions
   optimal <- non_dominator(impacts, cnames = cnames)
+  
+  if(todisk == TRUE) {
+   bpath <- set_base_path()
+   bdnm <- full_path(bpath, paste0("external/output/", tob$bcode))
+   save(optimal, file = full_path(bdnm, "optitab.rda"))
+  }
   
   return(list("optitab" = optimal, "params" = parms))
 }

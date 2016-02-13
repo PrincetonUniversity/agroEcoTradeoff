@@ -23,10 +23,10 @@ tradeoff_batch <- function(parms, input_key = "ZA", todisk = FALSE,
   # prod_targ <- c("maize" = 2, "soy" = 2)
   # cblist <- pareto_steps(c("Y", "C"), step = 0.25)
   # parms <- batch_params(list(c(1, 1)), targlist = list(prod_targ), 
-  #                      cblist, list(c(1, 1)))
+  #                     cblist, list(c(1, 1)))
   # todisk <- TRUE; # FALSE
   # input_key = "ZA"; ncl = 4
-  # currprodmod <- c(1, 1); todisk <- FALSE; silent = FALSE
+  # currprodmod <- c(1, 1); silent = FALSE
   bpath <- set_base_path()
   path <- full_path(bpath, full_path("external/data", input_key)) 
   bcode <- run_code(input_key)
@@ -69,11 +69,13 @@ tradeoff_batch <- function(parms, input_key = "ZA", todisk = FALSE,
     }
     return(out)
   }
+
   if(todisk == TRUE) {
+    outtab <- do.call(rbind, out_list)
     save(bcode, file = full_path(bdnm, "bcode.rda"))
     print(paste("Batch code is", bcode))
-    save(out_list, file = full_path(dnm, "impacts_tab.rda"))
+    save(outtab, file = full_path(dnm, "impacts_tab.rda"))
     save(parms, file = full_path(dnm, "parms.rda"))
   }
-  return(out_list)  
+  return(list("bcode" = bcode, "imp_list" = out_list))  
 }
