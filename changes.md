@@ -14,6 +14,8 @@ output:
 + Added (back) ability to select a subset of crops, based on target values passed into `targets`, via `tradeoff_mod`, `tradeoff_batch`, and `pareto`. Switch is made in `input_handler`. 
 + Reordered arguments in `tradeoff_mod`.
 + Added save for batch parameters to `tradeoff_batch`. 
++ Added more plot flexibility (N crops plotted, colors) to `imp_plot`. 
++ Added `heat` to create raster showing frequency of conversions.
 
 ## Bugs
 + Removed hard-coded `input_key` ("ZA") in `tradeoff_batch` call to `tradeoff_mod`. 
