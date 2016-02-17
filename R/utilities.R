@@ -70,17 +70,10 @@ check_length <- function(x, lx, name = "") {
 #' @export
 run_code <- function(input_key, it) {
   # it = 1
-  #code <- paste0(input_key, "-", gsub("\\-|\\:|\\ ", "", strptime(Sys.time(), "%Y-%m-%d %H:%M:%S")))
-#   code <- paste0(input_key, "_", 
-#                  paste0(gsub(" ", "_", 
-#                              format(Sys.time(), format = "%Y_%j_%H%M%S"), 
-#                              #gsub(":|-", "", as.character(Sys.time()))), 
-#                         # "_", Sys.getpid(), "_", 
-#                         paste0(sample(0:9, 5, replace = TRUE), collapse = ""))))
   op <- options(digits.secs = 6)
   tme <- gsub("\\.", "", format(Sys.time(), format = "%y%j_%H%M%OS"))
   options(op)
-  code <- paste0(input_key, "_", tme, "_", it)
+  code <- paste0(input_key, "_", it, "_", tme)
   return(code)
 }
 
