@@ -5,7 +5,7 @@
 \title{Spatial tradeoffs model}
 \usage{
 tradeoff_mod(prod_targ, cbetas, currprodmod = 1, exist_list = NULL,
-  input_key = "ZA", ybetas, ybeta_update = 0, silent = TRUE)
+  it = 1, input_key = "ZA", ybetas, ybeta_update = 0, silent = TRUE)
 }
 \arguments{
 \item{prod_targ}{Production targets passed as list. See examples for format.}
@@ -15,6 +15,8 @@ tradeoff_mod(prod_targ, cbetas, currprodmod = 1, exist_list = NULL,
 \item{currprodmod}{Modifiers of current yield/production (default 1)}
 
 \item{exist_list}{NULL, otherwise list of inputs (from input_handler)}
+
+\item{it}{Iteration number, default 1, used to suffix for run_code}
 
 \item{input_key}{Country/location code indicating input data to load.}
 
@@ -38,7 +40,8 @@ including checks for consistency between "D" and "R" versions.
 }
 \note{
 The impacts module has to be fixed still to not double-count impacts 
-resulting from multi-season cropping in converted pixels.
+resulting from multi-season cropping in converted pixels. The iter parameter
+is used to keep the grid outputs from batch run in sequence.
 }
 \examples{
 prod_targ <- c("maize" = 4, "soy" = 2)

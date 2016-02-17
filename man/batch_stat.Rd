@@ -4,10 +4,10 @@
 \alias{batch_stat}
 \title{Extract and summarize batch impact statistics}
 \usage{
-batch_stat(inlist, Yv = "conv_area", Cv, BDv, COSTv, Yst, Cst, BDst, COSTst)
+batch_stat(intab, Yv = "conv_area", Cv, BDv, COSTv, Yst, Cst, BDst, COSTst)
 }
 \arguments{
-\item{inlist}{List of impact tables from batch run}
+\item{intab}{Impact table from batch run}
 
 \item{Yv}{agricultural impact metric (new land required)}
 

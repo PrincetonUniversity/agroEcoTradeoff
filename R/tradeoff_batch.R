@@ -20,16 +20,17 @@
 #' @export
 tradeoff_batch <- function(parms, input_key = "ZA", todisk = FALSE, 
                            silent = FALSE, ncl = 4) {
-  # prod_targ <- c("maize" = 2, "soy" = 2)
-  # cblist <- pareto_steps(c("Y", "C"), step = 0.25)
-  # parms <- batch_params(list(c(1, 1)), targlist = list(prod_targ), 
-  #                     cblist, list(c(1, 1)))
-  # todisk <- TRUE; # FALSE
-  # input_key = "ZA"; ncl = 4
-  # currprodmod <- c(1, 1); silent = FALSE
+#   prod_targ <- c("maize" = 2, "soy" = 2)
+#   cblist <- pareto_steps(c("Y", "C"), step = 0.25)
+#   parms <- batch_params(list(c(1, 1)), targlist = list(prod_targ), 
+#                       cblist, list(c(1, 1)))
+#   todisk <- TRUE; # todisk <- FALSE
+#   input_key = "ZA"; ncl = 4
+#   currprodmod <- c(1, 1); silent = FALSE
+
   bpath <- set_base_path()
   path <- full_path(bpath, full_path("external/data", input_key)) 
-  bcode <- run_code(input_key)
+  bcode <- run_code(input_key, it = "B")
   bdnm <- full_path(bpath, "external/output/")
   # if(!dir.exists(bdnm)) dir.create(bdnm)
   dnm <- full_path(bdnm, bcode)
@@ -54,7 +55,7 @@ tradeoff_batch <- function(parms, input_key = "ZA", todisk = FALSE,
                         cbetas = parms[i, c("Y", "C", "BD", "COST")], 
                         ybetas = list(1, 1), # hard-coded this to switch off
                         currprodmod = parms[i, paste0("c", il$cropnames)],
-                        input_key = input_key, exist_list = il,
+                        it = i, input_key = input_key, exist_list = il,
                         ybeta_update = 0, silent = silent)
     odf <- cbind.data.frame("iter" = i, "rc" = tof$runcode, tof$impacts)
     
@@ -63,19 +64,28 @@ tradeoff_batch <- function(parms, input_key = "ZA", todisk = FALSE,
       fnm <- fname(dnm, paste0("/", tof$runcode), ".csv")
       write.table(tof$conv[, 3:ncol(tof$conv), with = FALSE], file = fnm, 
                   sep = ",", col.names = TRUE, row.names = FALSE)
-      out <- odf
+      out <- list("impacts" = odf)
     } else if(todisk == FALSE) {
       out <- list("impacts" = odf, "conv" = tof$conv)
     }
     return(out)
   }
-
+  
+  outtab <- do.call(rbind, lapply(out_list, function(x) x$impacts))
   if(todisk == TRUE) {
-    outtab <- do.call(rbind, out_list)
     save(bcode, file = full_path(bdnm, "bcode.rda"))
     print(paste("Batch code is", bcode))
     save(outtab, file = full_path(dnm, "impacts_tab.rda"))
     save(parms, file = full_path(dnm, "parms.rda"))
+    outf <- list("bcode" = bcode, "imp_list" = list("impacts" = outtab))
   }
-  return(list("bcode" = bcode, "imp_list" = out_list))  
+  if(todisk == FALSE) {
+    convlist <- lapply(out_list, function(x) x$conv)
+    convnames <- sapply(out_list, function(x) as.character(x$impacts$rc[1]))
+    names(convlist) <- convnames
+    outf <- list("bcode" = bcode, 
+                 "imp_list" = list("impacts" = outtab, "conv" = convlist))
+    
+  }
+  return(outf)  
 }

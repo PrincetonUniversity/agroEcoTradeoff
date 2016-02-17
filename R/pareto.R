@@ -122,11 +122,15 @@ pareto <- function(cnames, step = 0.1, prod_targ, yblist = list(1, 1),
 #   cnames <- c("Y", "C", "BD"); step = 0.25
 #   cnames <- c("Y", "C", "BD", "COST"); step = 0.1
 #   cnames <- c("Y", "C"); step = 0.25; silent = FALSE
-#   Yv = "conv_area"; Cv = "tot_C"; BDv = "priority"; COSTv = "mu_cost"
-#   Yst = sum; Cst = sum; BDst = mean; COSTst = mean
+#   Yv = "conv_area"; Cv = "tot_C"; 
+#   BDv = c(Yv, "int_prior"); COSTv = c(Yv, "mu_cost")
+#   wmu <- function(x, na.rm = na.rm) {
+#     weighted.mean(x = x[, 2], w = x[, 1], na.rm = na.rm)
+#   }
+#   Yst = sum; Cst = sum; BDst = wmu; COSTst = wmu
 #   input_key = "ZA"; ncl = 4
 #   todisk = FALSE 
-#   currprodmod <- c(1, 1); todisk <- TRUE; path = "external/data/dt/latest/"
+#   currprodmod <- c(1, 1); todisk <- TRUE; #path = "external/data/dt/latest/"
 
   # weight combinations
   cblist <- pareto_steps(cnames, step = step)
@@ -143,13 +147,14 @@ pareto <- function(cnames, step = 0.1, prod_targ, yblist = list(1, 1),
   # run batch 
   tob <- tradeoff_batch(parms, input_key = input_key, silent = silent, 
                         todisk = todisk, ncl = ncl)
-  if(todisk == TRUE) {
-    tobimp <- tob$imp_list
-  } else if(todisk == FALSE) {
-    tobimp <- lapply(tob$imp_list, function(x) x$impacts) 
-  } 
+#   if(todisk == TRUE) {
+#     tobimp <- tob$imp_list$impacts
+#   } else if(todisk == FALSE) {
+#     tobimp <- lapply(tob$imp_list, function(x) x$impacts) 
+#   } 
   
   # summarize impacts across crops
+  tobimp <- tob$imp_list$impacts
   impacts <- batch_stat(tobimp, Yv, Cv, BDv, COSTv, Yst, Cst, BDst, COSTst)
   
   # remove dominated solutions
@@ -160,6 +165,5 @@ pareto <- function(cnames, step = 0.1, prod_targ, yblist = list(1, 1),
    bdnm <- full_path(bpath, paste0("external/output/", tob$bcode))
    save(optimal, file = full_path(bdnm, "optitab.rda"))
   }
-  
   return(list("optitab" = optimal, "params" = parms))
 }

@@ -1,5 +1,5 @@
 #' Extract and summarize batch impact statistics
-#' @param inlist List of impact tables from batch run
+#' @param intab Impact table from batch run
 #' @param Yv agricultural impact metric (new land required)
 #' @param Cv Carbon impact metric
 #' @param BDv Biodiversity impact metric
@@ -11,15 +11,20 @@
 #' @return data.table
 #' @keywords internal
 #' @export
-batch_stat <- function(inlist, Yv = "conv_area", Cv, BDv, COSTv, Yst, Cst, BDst, 
+batch_stat <- function(intab, Yv = "conv_area", Cv, BDv, COSTv, Yst, Cst, BDst, 
                        COSTst) {
  
-  # inlist <- tobimp
-  # Yv = "conv_area"; Cv = "tot_C"; BDv = "priority"; COSTv = "mu_cost"
-  # Yst = sum; Cst = sum; BDst = mean; COSTst = mean
+  # intab <- tobimp
+  # Yv = "conv_area"; Cv = "tot_C"; 
+  # BDv = c(Yv, "int_prior"); COSTv = c(Yv, "mu_cost")
+  # wmu <- function(x, na.rm = na.rm) {
+    # weighted.mean(x = x[, 2], w = x[, 1], na.rm = na.rm)
+  # }
+  # Yst = sum; Cst = sum; BDst = wmu; COSTst = wmu
   vars <- list("Y" = Yv, "C" = Cv, "BD" = BDv, "COST" = COSTv)
   ostat <- list("Y" = Yst, "C" = Cst, "BD" = BDst, "COST" = COSTst)
-  out_dt <- do.call(rbind, lapply(inlist, function(x) {  # x <- tobimp[[1]]
+  out_dt <- do.call(rbind, lapply(unique(intab$iter), function(i) {  # i <- 1
+    x <- intab[intab$iter == i, ]
     land <- ostat$Y(x[, vars$Y], na.rm = TRUE)
     carbon <- ostat$C(x[, vars$C], na.rm = TRUE)
     bd <- ostat$BD(x[, vars$BD], na.rm = TRUE)

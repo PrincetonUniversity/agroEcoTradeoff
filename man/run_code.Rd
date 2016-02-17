@@ -4,7 +4,7 @@
 \alias{run_code}
 \title{Creates unique code for outputs from each simulation}
 \usage{
-run_code(input_key)
+run_code(input_key, it)
 }
 \arguments{
 \item{input_key}{Input key (country code) passed through trademod function}

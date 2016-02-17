@@ -5,6 +5,7 @@
 #' @param cbetas Vector of constraints to apply to land use. See examples. 
 #' @param currprodmod Modifiers of current yield/production (default 1)
 #' @param exist_list NULL, otherwise list of inputs (from input_handler)
+#' @param it Iteration number, default 1, used to suffix for run_code
 #' @param input_key Country/location code indicating input data to load.  
 #' @param ybetas list of 2 rasters or 2 vectors providing yield modifications
 #' @param ybeta_update 1 or 0 (default) - determines whether yield_mod_* is run.
@@ -14,7 +15,8 @@
 #' including checks for consistency between "D" and "R" versions.
 #' @return Data.frame of impacts, and data.table referencing conversions.
 #' @note The impacts module has to be fixed still to not double-count impacts 
-#' resulting from multi-season cropping in converted pixels. 
+#' resulting from multi-season cropping in converted pixels. The iter parameter
+#' is used to keep the grid outputs from batch run in sequence. 
 #' @examples
 # # production target list
 #' prod_targ <- c("maize" = 4, "soy" = 2)
@@ -29,7 +31,8 @@
 #' @export 
 # input_key = "ZA"; ybeta_update = 0; exist_list = NULL; 
 # path = "external/data/dt/"
-tradeoff_mod <- function(prod_targ, cbetas, currprodmod = 1, exist_list = NULL, 
+tradeoff_mod <- function(prod_targ, cbetas, currprodmod = 1, 
+                         exist_list = NULL, it = 1, 
                          input_key = "ZA", ybetas, ybeta_update = 0, 
                          silent = TRUE) {
   names(cbetas) <- c("Y", "C", "BD", "COST")
@@ -38,7 +41,7 @@ tradeoff_mod <- function(prod_targ, cbetas, currprodmod = 1, exist_list = NULL,
   bpath <- set_base_path()
   path <- full_path(bpath, full_path("external/data", input_key)) 
   # ha <- spatial_meta(input_key)$ha
-  rc <- run_code(input_key)  # creates a once off code for any outputs
+  rc <- run_code(input_key, it)  # creates a once off code for any outputs
   il <- input_handler(path = path, crops = names(prod_targ), ybetas = ybetas, 
                       ybeta_update = ybeta_update, exist_list = exist_list, 
                       silent = silent)

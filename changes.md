@@ -18,11 +18,13 @@ output:
 + Added `heat` to create raster showing frequency of conversions.
 + `tradeoff_batch` passes out the bcode now
 + `pareto` uses bcode passed from `tradeoff_batch`, and saves optitab to batch directory. 
++ `tradeoff_batch` impact tables now come out as data.frames from both todisk TRUE and FALSE cases.  Changes to `batch_param` made to accomodate (table rather than list). From the todisk=FALSE case, the output conversion tables are served as a list that is the second element of the output list. 
 
 ## Bugs
 + Removed hard-coded `input_key` ("ZA") in `tradeoff_batch` call to `tradeoff_mod`. 
 + Fixed .tif append to `impacts_tab.rda` output from `tradeoff_batch`.  
-+ Fixed `tradeoff_batch` so that `impacts_tab.rda` is a data.frame not a list.  
++ Fixed `tradeoff_batch` so that `impacts_tab.rda` is a data.frame not a list. 
++ Conversion tables from `tradeoff_batch` were being re-ordered because of random numbers/time-stamp structure in `run_code`. The run/batch/name is simplified and fixed, with corresponding changes to `tradeoff_batch`, `tradeoff_mod`, `pareto`. 
 
 # v2.0
 

@@ -64,18 +64,26 @@ check_length <- function(x, lx, name = "") {
 
 #' Creates unique code for outputs from each simulation
 #' @param input_key Input key (country code) passed through trademod function
+#' @parm it Iteration number, for code suffix
 #' @keywords internal
 #' @note This borrow the file-naming bit of raster::rasterTmpFile()
 #' @export
-run_code <- function(input_key) {
+run_code <- function(input_key, it) {
+  # it = 1
   #code <- paste0(input_key, "-", gsub("\\-|\\:|\\ ", "", strptime(Sys.time(), "%Y-%m-%d %H:%M:%S")))
-  code <- paste0(input_key, "_", 
-                 paste0(gsub(" ", "_", 
-                             gsub(":|-", "", as.character(Sys.time()))), 
-                        "_", Sys.getpid(), "_", 
-                        paste0(sample(0:9, 5, replace = TRUE), collapse = "")))
+#   code <- paste0(input_key, "_", 
+#                  paste0(gsub(" ", "_", 
+#                              format(Sys.time(), format = "%Y_%j_%H%M%S"), 
+#                              #gsub(":|-", "", as.character(Sys.time()))), 
+#                         # "_", Sys.getpid(), "_", 
+#                         paste0(sample(0:9, 5, replace = TRUE), collapse = ""))))
+  op <- options(digits.secs = 6)
+  tme <- gsub("\\.", "", format(Sys.time(), format = "%y%j_%H%M%OS"))
+  options(op)
+  code <- paste0(input_key, "_", tme, "_", it)
   return(code)
 }
+
 
 #' Filenaming function for rasters
 #' @param path folder and name root for file
