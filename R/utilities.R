@@ -228,6 +228,26 @@ spatial_meta <- function(path, input_key) {
   CRSobj <- projection(r)
   list("ha" = ha, "crs" = CRSobj)
 }
+
+#' Correctly order file names of conversion maps from a batch directory
+#' @param bpath Path to the batch run you want to make
+#' @param inds Vector of iteration index numbers
+#' @param pattern csv to get conversion maps (note: argument can be internalized)
+#' @return A sorted list of impact table file names
+#' @note This function is useful for analyzing model results and necessary to 
+#' correctly match maps with impact table results. 
+#' @export
+imp_sorter <- function(bpath, inds = NULL, pattern = "csv", fullnames = FALSE) {
+  fnames <- dir(bpath, pattern = pattern)
+  iters <- as.numeric(tstrsplit(fnames, "_")[[2]])
+  itertab <- cbind.data.frame("ind" = 1:length(iters), iters, fnames)
+  itertab <- itertab[order(itertab[, 2]), ]
+  if(!is.null(inds)) itertab <- itertab[inds, ]
+  if(fullnames == TRUE) out <- fp(bpath, as.character(itertab$fnames))
+  if(fullnames == FALSE) out <- as.character(itertab$fnames)
+  return(out)
+}
+
  
 # #' Cumulative sum, ignoring NA.
 # #' @param x numeric vector
