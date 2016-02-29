@@ -22,9 +22,9 @@
 input_handler <- function(path, crops, ybetas = list(1, 1), ybeta_update = 0, 
                           exist_list = NULL, silent = TRUE, code = NULL) {
   # input_key = "ZA"; exist_list = NULL; silent = TRUE; 
-  # crops <- "maize"
+  # crops <- c("maize", "soy")
   # path = "external/data/ZA"
-  # ybetas <- list(1, 1); code = run_code(input_key); ybeta_update <- 0
+  # ybetas <- list(1, 1); code = run_code(input_key, it = 1); ybeta_update <- 0
   # exist_list = toff$inputs 
   
   lnms <- c("p_yield", "carbon", "mask", "cost", "bd", "cons", "cropnames", 

@@ -10,7 +10,7 @@
 impact <- function(conv, il) {
   
   cn <- il$cropnames
-  
+
   # area converted to each crop (ha)
   conv_area <- conv[, lapply(.SD, function(x) {
     x * il$mask[, convertible * il$sp$ha]

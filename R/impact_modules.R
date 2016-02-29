@@ -39,8 +39,12 @@ impact_mod2 <- function(il, conv, conv_area) {
   # Total cost
   cn <- il$cropnames
   
+  # total cost in travel time, per 20 tons
+  cprod <- conv_area * il$p_yield
+  tot_cost <- cprod[, lapply(.SD, function(x) sum((x * il$cost)) / 20)]
+  
   # total cost
-  tot_cost <- conv[, lapply(.SD, function(x) sum(x * il$cost)), .SDcols = cn]
+  # tot_cost <- conv[, lapply(.SD, function(x) sum(x * il$cost)), .SDcols = cn]
   
   mymean <- function(x) mean(x[x > 0], na.rm = TRUE)
   # mean cost
@@ -88,7 +92,7 @@ impact_mod3 <- function(il, conv_area) {
    
     # calculate mean BD weight, across both types
     metric <- unique(wv$var)
-    imps <- do.call(rbind, lapply(1:nrow(wv), function(y) {
+    imps <- do.call(rbind, lapply(1:nrow(wv), function(y) {  # y <- 1
       wvdt <- wv[var == metric[y]]  
       wvnms <- names(wvdt)[!names(wvdt) %in% "var"]
       wvec <- as.matrix(wvdt[, wvnms, with = FALSE])[1, ]
@@ -99,6 +103,11 @@ impact_mod3 <- function(il, conv_area) {
       out_stat
     }))
     
+    # new measure - summed biodiversity cost per hectare - simply multiply 
+    # conservation surface by number of converted ha, treating bd value as a per
+    # ha value
+    cons_tot <- sum(il$cons[[1]] * conv_area[[x]])
+    
     # other measures
     intpa_mat <- as.matrix(il$intpa[cid, ])
     int_mean <- mean(intpa_mat[, 1])  # mean intactness of converted areas
@@ -106,7 +115,7 @@ impact_mod3 <- function(il, conv_area) {
     fpa_conv <- sum(conv_mat[which(intpa_mat[, 2] == 3)])  # converted for res
     
     # assemble
-    fragmet <- data.frame(rbind(int_prior, int_mean, fpa_conv))
+    fragmet <- data.frame(rbind(cons_tot, int_prior, int_mean, fpa_conv))
     colnames(fragmet) <- x
     
     # output
